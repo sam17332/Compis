@@ -8,7 +8,8 @@ NUM: DIGIT (DIGIT)*;
 CHAR: LETTER;
 WS : [ \t\r\n]+ -> skip;
 
-program: 'class' 'Program' '{' (declaration)* '}';
+program: 'class' 'Program' '{' (declaration)* '}'
+;
 declaration: structDeclaration
     | varDeclaration
     | methodDeclaration
@@ -16,7 +17,8 @@ declaration: structDeclaration
 varDeclaration: varType ID ';'
     | varType ID '[' NUM ']' ';'
 ;
-structDeclaration: 'struct' ID '{' (varDeclaration)* '}';
+structDeclaration: 'struct' ID '{' (varDeclaration)* '}' ';'
+;
 varType: 'int'
     |'char'
     | 'boolean'
@@ -24,18 +26,20 @@ varType: 'int'
     | structDeclaration
     | 'void'
 ;
-methodDeclaration: methodType ID '(' (parameter (',')?)* ')' block;
+methodDeclaration: methodType ID '(' (parameter (',')? )* ')' block
+;
 methodType: 'int'
     | 'char'
     | 'boolean'
     | 'void'
 ;
-parameter: parameterType ID
+parameter: parameterType (ID)?
     | parameterType ID '[' ']'
 ;
 parameterType: 'int'
     | 'char'
     | 'boolean'
+    | 'void'
 ;
 block: '{' (varDeclaration)* (statement)* '}';
 statement: 'if' '(' expression ')' block ('else' block)?
@@ -55,8 +59,10 @@ expression: location
     | '!' expression
     | '(' expression ')'
 ;
-methodCall: ID '(' (arg (',')?)* ')';
-arg: expression;
+methodCall: ID '(' (arg (',')?)* ')'
+;
+arg: expression
+;
 op: arith_op
     | rel_op
     | eq_op
@@ -83,8 +89,10 @@ literal: int_literal
     | char_literal
     | bool_literal
 ;
-int_literal: NUM;
-char_literal: '"' CHAR '"';
+int_literal: NUM
+;
+char_literal: '"' CHAR '"'
+;
 bool_literal: 'true'
     | 'false'
 ;
