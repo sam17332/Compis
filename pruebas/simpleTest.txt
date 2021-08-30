@@ -1,0 +1,20 @@
+class Program
+{
+    int s;
+    void main(void)
+    {
+        int s;
+        if(a > 4)
+        {
+            if(b > 10)
+            {
+                int h;
+                if(c > 1)
+                {
+                    h = 1;
+                    s = 10;
+                }
+            }
+        }
+    }
+}

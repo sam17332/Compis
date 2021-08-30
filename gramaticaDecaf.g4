@@ -68,10 +68,10 @@ op: arith_op
     | eq_op
     | cond_op
 ;
-arith_op: '+'
-    | '-'
-    | '*'
+arith_op: '*'
     | '/'
+    | '+'
+    | '-'
     | '%'
 ;
 rel_op: '<'
