@@ -7,8 +7,8 @@ class Tablas:
         self.metodos = {}
         self.print = pprint.PrettyPrinter()
 
-    def setMetodo(self, key, name, returnType, arrayParams, padre = ''):
-        self.metodos[key] = [name, returnType, arrayParams, padre]
+    def setMetodo(self, key, name, returnType, arrayParams, padre = '', retorna = False):
+        self.metodos[key] = [name, returnType, arrayParams, padre, retorna]
 
     def getMetodo(self, nombre):
         if len(self.metodos) > 0:
@@ -44,7 +44,7 @@ class Tablas:
                     return self.getVariable(nombre, nuevoScope)
         return var
 
-    def varExistsOnce(self, nombre, scope, existe = False):
+    def varExistsOnce(self, nombre, scope):
         if len(self.variables) > 0:
             for i in range(len(self.variables)):
                 valor = self.variables[i+1]
@@ -80,8 +80,24 @@ class Tablas:
                     return self.setValueToVariable(nombre, value, nuevoScope)
         return existe
 
-    def setEstructura(self, key, name):
-        self.estructuras[key] = [name]
+    def setEstructura(self, key, name, tipo, defi, scope, tam = 0):
+        self.estructuras[key] = [name, tipo, defi, scope, tam]
+
+    def getArray(self, nombre, scope, existe = False, var = ''):
+        if existe:
+            return var
+        if len(self.estructuras) > 0:
+            for i in range(len(self.estructuras)):
+                valor = self.estructuras[i+1]
+                if str(nombre) == str(valor[0]) and scope == valor[3]:
+                    existe = True
+                    var = valor
+            if self.metodoExists(scope) and existe == False:
+                metodo = self.getMetodo(scope)
+                nuevoScope = metodo[3]
+                if nuevoScope != '':
+                    return self.getArray(nombre, nuevoScope)
+        return var
 
     def estruturaExists(self, nombre):
         if len(self.estructuras) > 0:
@@ -90,6 +106,22 @@ class Tablas:
                 if nombre == valor[0]:
                     return True
         return False
+
+    def arrayExists(self, nombre, scope, existe = False):
+        if existe:
+            return True
+        if len(self.estructuras) > 0:
+            for i in range(len(self.estructuras)):
+                valor = self.estructuras[i+1]
+                if str(nombre) == str(valor[0]) and scope == valor[3]:
+                    existe = True
+            if self.metodoExists(scope) and existe == False:
+                metodo = self.getMetodo(scope)
+                nuevoScope = metodo[3]
+                if nuevoScope != '':
+                    return self.arrayExists(nombre, nuevoScope)
+        return existe
+
 
     def showFullDicc(self, name = ""):
         if name == "met":

@@ -22,9 +22,18 @@ class KeyPrinter(DecafListener):
         return self.error
 
     def enterStatement(self, ctx: DecafParser.StatementContext):
-        if "[" and "]" in ctx.getText():
-            print("array")
-            print(ctx.location().array_id().ID())
+        if ctx.location().array_id():
+            name = ctx.location().array_id().ID()
+            if self.tablas.arrayExists(name, self.scopeActual):
+                var = self.tablas.getArray(name, self.scopeActual)
+                print('var', var)
+                if isinstance(var, list):
+                    if var[2] != 'array':
+                        self.error.append(f'ERROR: La variable "{name}", no es un array, linea: {ctx.start.line}')
+                else:
+                    self.error.append(f'ERROR: La variable "{name}", no es un array, linea: {ctx.start.line}')
+            else:
+                self.error.append(f'ERROR: La variable "{name}", no es un array, linea: {ctx.start.line}')
         elif 'struct' in ctx.getText():
             print('struct')
             print(ctx.location().array_id().ID())
@@ -48,19 +57,30 @@ class KeyPrinter(DecafListener):
             metodo = self.tablas.getMetodo(self.scopeActual)
             returnType = metodo[1]
             if returnType == 'void':
-                self.error.append(f'ERROR: Hay un error en el scope "{self.scopeActual}", es de tipo void y tiene un return, linea: {ctx.start.line}')
+                self.error.append(f'ERROR: Hay un error en el método "{self.scopeActual}", es de tipo void y tiene un return, linea: {ctx.start.line}')
             else:
                 for i in range(len(value)):
-                    var = self.tablas.getVariable(value[i], self.scopeActual)
-                    if isinstance(var, list):
-                        arrayVars.append(var[1])
+                    if value[i] != '+' or value[i] != '-' or value[i] != '/' or value[i] != '*' or value[i] != ' ':
+                        var = self.tablas.getVariable(value[i], self.scopeActual)
+                        if isinstance(var, list):
+                            arrayVars.append(var[1])
+                        elif var == 'True' or var == 'False':
+                            arrayVars.append('boolean')
+                        elif "'" in var:
+                            arrayVars.append('string')
+                        else:
+                            try:
+                                int(var)
+                                arrayVars.append('int')
+                            except:
+                                self.error.append(f'ERROR: El parametro "{value[i]}" no es una variable existente ni un tipo valido, linea: {ctx.start.line}')
                 if len(arrayVars) > 0:
                     setArray = set(arrayVars)
                     if len(setArray) > 1:
-                        self.error.append(f'ERROR: Hay un error en el valor de retorno en el scope "{self.scopeActual}", linea: {ctx.start.line}')
+                        self.error.append(f'ERROR: Hay un error en el valor de retorno en el método "{self.scopeActual}", linea: {ctx.start.line}')
                     else:
                         if list(setArray)[0] != returnType:
-                            self.error.append(f'ERROR: Hay un error en el valor de retorno en el scope "{self.scopeActual}", linea: {ctx.start.line}')
+                            self.error.append(f'ERROR: Hay un error en el valor de retorno en el método "{self.scopeActual}", linea: {ctx.start.line}')
         elif ctx.location():
             # print(ctx.getText())
             name = ctx.location().var_id().getText()
@@ -83,27 +103,28 @@ class KeyPrinter(DecafListener):
                     tipo = variable[1]
                     if tipo == "string":
                         if "'" not in valor:
-                            print('error string')
                             error = True
                     elif tipo == "int":
-                        if "'" in valor:
-                            print('error int')
+                        if "'" in valor or valor == 'True' or valor == 'False':
                             error = True
                         else:
                             try:
                                 int(valor)
                             except ValueError:
-                                print('error int')
                                 error = True
                     elif tipo == "boolean":
                         if "'" in valor:
-                            print('error bool')
                             error = True
-                        # TODO: verificar caso cuando el valor es un numero
+                        else:
+                            try:
+                                int(valor)
+                                error = True
+                            except:
+                                pass
                     if not error:
                         self.tablas.setValueToVariable(name, valor, self.scopeActual)
                     else:
-                        self.error.append(f'ERROR: Hay un error en el valor de la variable "{name}" en el scope "{self.scopeActual}", linea: {ctx.start.line}')
+                        self.error.append(f'ERROR: Hay un error en el valor de la variable "{name}" en el método "{self.scopeActual}", linea: {ctx.start.line}')
                 # Condicion si se iguala a un metodo
                 elif ctx.expr().method_call():
                     methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
@@ -113,38 +134,70 @@ class KeyPrinter(DecafListener):
                         metodoType = metodo[1]
                         metodoParams = metodo[2]
                         varType = variable[1]
-                        if varType != metodoType:
-                            self.error.append(f'ERROR: El tipo del método "{methodName} - ({metodoType})" es diferente del tipo de la variable "{name} - ({varType})",linea: {ctx.start.line}')
-                        if len(params) == len(metodoParams):
-                            cont = 0
-                            for i in params:
-                                if i.literal():
-                                    if i.literal().int_literal():
-                                        tipo = 'int'
-                                    elif i.literal().bool_literal():
-                                        tipo = 'boolean'
-                                    elif i.literal().string_literal():
-                                        tipo = 'string'
-                                elif i.location():
-                                    var = i.location().getText()
-                                    if self.tablas.varExists(var, self.scopeActual):
-                                        tipo = self.tablas.getVariable(var, self.scopeActual)[1]
-                                    else:
-                                        print('entra1')
-                                        self.error.append(f'ERROR: La variable "{var}" a enviar como parametro al metodo "{methodName}" no existe en el scope "{self.scopeActual}", linea: {ctx.start.line}')
-                                if metodoParams[cont][0] != tipo:
-                                    self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
-                                cont += 1
+                        if metodo[4]:
+                            if varType != metodoType:
+                                self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{name} ({varType})",linea: {ctx.start.line}')
+                            else:
+                                if len(params) == len(metodoParams):
+                                    cont = 0
+                                    for i in params:
+                                        if i.literal():
+                                            if i.literal().int_literal():
+                                                tipo = 'int'
+                                            elif i.literal().bool_literal():
+                                                tipo = 'boolean'
+                                            elif i.literal().string_literal():
+                                                tipo = 'string'
+                                        elif i.location():
+                                            var = i.location().getText()
+                                            if self.tablas.varExists(var, self.scopeActual):
+                                                tipo = self.tablas.getVariable(var, self.scopeActual)[1]
+                                            else:
+                                                self.error.append(f'ERROR: La variable "{var}" a enviar como parametro al metodo "{methodName}" no existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
+                                        if metodoParams[cont][0] != tipo:
+                                            self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
+                                        cont += 1
+                                else:
+                                    self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
                         else:
-                            self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta,linea: {ctx.start.line}')
+                            self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
                     else:
                         self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
             else:
-                print('entra2')
-                self.error.append(f'ERROR: La variable "{name}" no esta definida en el scope "{self.scopeActual}", linea: {ctx.start.line}')
+                self.error.append(f'ERROR: La variable "{name}" no esta definida en el método "{self.scopeActual}", linea: {ctx.start.line}')
         elif ctx.method_call():
-            # TODO: verificar que los tipo de los parametros que se esten enviando sean los que espera el metodo.
-            print(ctx.getText())
+            name = ctx.method_call().method_call_inter().method_name().getText()
+            actualParams = ctx.method_call().method_call_inter().expr()
+            if self.tablas.metodoExists(name):
+                methodParams = self.tablas.getMetodo(name)[2]
+                if len(actualParams) == len(methodParams):
+                    cont = 0
+                    for i in actualParams:
+                        var = i.getText()
+                        tipo = ''
+                        existe = self.tablas.varExists(var, self.scopeActual)
+                        if existe:
+                            varInfo = self.tablas.getVariable(var, self.scopeActual)
+                            tipo = varInfo[1]
+                        elif var == 'True' or var == 'False':
+                            tipo = 'boolean'
+                        elif "'" in var:
+                            tipo = 'string'
+                        else:
+                            try:
+                                int(var)
+                                tipo = 'int'
+                            except:
+                                self.error.append(f'ERROR: El parametro "{var}" no es una variable existente ni un tipo valido, linea: {ctx.start.line}')
+                        if tipo != '':
+                            param = methodParams[cont]
+                            if param[0] != tipo:
+                                self.error.append(f'ERROR: El tipo del parametro "{cont + 1}" no es el esperado en la funcion "{name}", se espera "{param[0]}" y se envio "{tipo}", linea: {ctx.start.line}')
+                        cont += 1
+                else:
+                    self.error.append(f'ERROR: La cantidad de parametros enviados al método "{name}" no es la correcta, linea: {ctx.start.line}')
+            else:
+                self.error.append(f'ERROR: El método "{name}" no es esta definido, linea: {ctx.start.line}')
 
     def exitStatement(self, ctx: DecafParser.StatementContext):
         if 'if' in ctx.getText() or 'for' in ctx.getText() or 'while' in ctx.getText() or 'else' in ctx.getText():
@@ -163,20 +216,26 @@ class KeyPrinter(DecafListener):
             type = ctx.var_type()[i].getText()
             if fieldVar.var_id():
                 name = fieldVar.var_id().getText()
+                if not self.tablas.varExistsOnce(name, self.scopeActual):
+                    self.contVariables += 1
+                    self.tablas.setVariable(self.contVariables, name, type, self.scopeActual)
+                else:
+                    self.error.append(f'ERROR: La variable "{name}" ya existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
             elif fieldVar.array_id():
                 name = fieldVar.array_id().ID().getText()
                 if fieldVar.array_id().int_literal():
                     tam = int(fieldVar.array_id().int_literal().getText())
-                    if tam <= 0:
-                        self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser mayor a 0, linea: {ctx.start.line}')
+                    if tam <= 0 or tam == None:
+                        self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un número mayor a 0, linea: {ctx.start.line}')
+                    else:
+                        if not self.tablas.varExistsOnce(name, self.scopeActual):
+                            self.contEstructuras += 1
+                            self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam)
+                        else:
+                            self.error.append(f'ERROR: La variable "{name}" ya existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
                 else:
                     self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un numero mayor a 0, linea: {ctx.start.line}')
             # print(self.scopeActual)
-            if not self.tablas.varExistsOnce(name, self.scopeActual):
-                self.contVariables += 1
-                self.tablas.setVariable(self.contVariables, name, type, self.scopeActual)
-            else:
-                self.error.append(f'ERROR: La variable "{name}" ya existe en el scope "{self.scopeActual}", linea: {ctx.start.line}')
 
     def enterMethod_declr(self, ctx: DecafParser.Method_declrContext):
         name = ctx.method_name().getText()
@@ -185,6 +244,10 @@ class KeyPrinter(DecafListener):
             returnName = ctx.return_type().getText()
             self.scopes.append(name)
             self.scopeActual = name
+            retorna = False
+            for i in ctx.block().statement():
+                if i.RETURN():
+                  retorna = True
             if name == "main":
                 self.notMainFunction = False
             arrayParams = []
@@ -199,9 +262,9 @@ class KeyPrinter(DecafListener):
                         self.tablas.setVariable(self.contVariables, param2, param1, self.scopeActual)
                         arrayParams.append([param1, param2])
                     else:
-                        self.error.append(f'ERROR: La variable "{param2}" ya existe en el scope "{self.scopeActual}", linea: {ctx.start.line}')
+                        self.error.append(f'ERROR: La variable "{param2}" ya existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
 
-            self.tablas.setMetodo(self.contFunciones, name, returnName, arrayParams, self.scopes[len(self.scopes)-2])
+            self.tablas.setMetodo(self.contFunciones, name, returnName, arrayParams, self.scopes[len(self.scopes)-2], retorna)
         else:
             self.error.append(f'ERROR: El método "{name}" ya existe, linea: {ctx.start.line}')
 
@@ -222,7 +285,7 @@ class KeyPrinter(DecafListener):
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
 def main():
-    data = open('./pruebas/scope.txt').read()
+    data = open('./pruebas/simpleTest.txt').read()
     lexer = DecafLexer(InputStream(data))
     stream = CommonTokenStream(lexer)
     parser = DecafParser(stream)
@@ -238,6 +301,8 @@ def main():
     if printer.notMainFunction:
         printer.error.append("El metodo main no esta defindo")
     if len(printer.getErrors()) > 0:
+        print()
+        print('Errores')
         for i in printer.getErrors():
             print(i)
 
