@@ -21,7 +21,7 @@ class Tablas:
         if len(self.metodos) > 0:
             for i in range(len(self.metodos)):
                 valor = self.metodos[i+1]
-                if nombre == valor[0]:
+                if str(nombre) == str(valor[0]):
                     return True
         return False
 
@@ -34,7 +34,7 @@ class Tablas:
         if len(self.variables) > 0:
             for i in range(len(self.variables)):
                 valor = self.variables[i+1]
-                if nombre == valor[0] and scope == valor[3]:
+                if str(nombre) == str(valor[0]) and str(scope) == str(valor[3]):
                     existe = True
                     var = valor
             if self.metodoExists(scope) and existe == False:
@@ -80,7 +80,7 @@ class Tablas:
                     return self.setValueToVariable(nombre, value, nuevoScope)
         return existe
 
-    def setEstructura(self, key, name, tipo, defi, scope, tam = 0):
+    def setEstructura(self, key, name, tipo, defi, scope = '', tam = 0):
         self.estructuras[key] = [name, tipo, defi, scope, tam]
 
     def getArray(self, nombre, scope, existe = False, var = ''):
