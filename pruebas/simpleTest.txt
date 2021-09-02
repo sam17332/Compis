@@ -1,9 +1,13 @@
 class Program
 {
-    void main(void)
+    int resta(int x)
     {
-        int a;
-        int b[10];
-        b[10] = '10';
+        return x;
+    }
+
+    int suma()
+    {
+        int a[10];
+        return resta(a[11]);
     }
 }
