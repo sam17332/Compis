@@ -25,8 +25,8 @@ class Tablas:
                     return True
         return False
 
-    def setVariable(self, key, name, type, scope, value = 0, size = 0):
-        self.variables[key] = [name, type, value, scope, size]
+    def setVariable(self, key, name, type, scope, value = 0, size = 0, struct = False):
+        self.variables[key] = [name, type, value, scope, size, struct]
 
     def getVariable(self, nombre, scope, existe = False, var = ''):
         if existe:
@@ -80,8 +80,39 @@ class Tablas:
                     return self.setValueToVariable(nombre, value, nuevoScope)
         return existe
 
-    def setEstructura(self, key, name, tipo, defi, scope = '', tam = 0):
-        self.estructuras[key] = [name, tipo, defi, scope, tam]
+    def getStructVar(self, nombre, scope, existe = False, var = ''):
+        if existe:
+            return var
+        if len(self.variables) > 0:
+            for i in range(len(self.variables)):
+                valor = self.variables[i+1]
+                if str(nombre) == str(valor[0]) and str(scope) == str(valor[3]) and valor[5]:
+                    existe = True
+                    var = valor
+            if self.metodoExists(scope) and existe == False:
+                metodo = self.getMetodo(scope)
+                nuevoScope = metodo[3]
+                if nuevoScope != '':
+                    return self.getStructVar(nombre, nuevoScope)
+        return var
+
+    def structVarExists(self, nombre, scope, existe = False):
+        if existe:
+            return True
+        if len(self.variables) > 0:
+            for i in range(len(self.variables)):
+                valor = self.variables[i+1]
+                if nombre == valor[0] and scope == valor[3] and valor[5]:
+                    existe = True
+            if self.metodoExists(scope) and existe == False:
+                metodo = self.getMetodo(scope)
+                nuevoScope = metodo[3]
+                if nuevoScope != '':
+                    return self.structVarExists(nombre, nuevoScope)
+        return existe
+
+    def setEstructura(self, key, name, tipo, defi, scope = '', tam = 0, struct = False):
+        self.estructuras[key] = [name, tipo, defi, scope, tam, struct]
 
     def getArray(self, nombre, scope, existe = False, var = ''):
         if existe:

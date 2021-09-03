@@ -242,265 +242,741 @@ class KeyPrinter(DecafListener):
                                 self.error.append(f'ERROR: Hay un error en el valor de retorno en el método "{self.scopeActual}", linea: {ctx.start.line}')
         elif ctx.location():
             if ctx.location().var_id():
-                name = ctx.location().var_id().getText()
-                error = False
-                valor = ''
-                # print(self.scopeActual)
-                if self.tablas.varExists(name, self.scopeActual):
-                    variable = self.tablas.getVariable(name, self.scopeActual)
-                    tipo = variable[1]
-                    # print('variable', variable)
-                    # Condicion si se iguala a una literal
-                    if ctx.expr().literal():
-                        if ctx.expr().literal().int_literal():
-                            valor = ctx.expr().literal().int_literal().getText()
-                        elif ctx.expr().literal().bool_literal():
-                            valor = ctx.expr().literal().bool_literal().getText()
-                        elif ctx.expr().literal().string_literal():
-                            valor = ctx.expr().literal().string_literal().getText()
-
-                        if tipo == "string":
-                            if "'" not in valor:
-                                error = True
-                        elif tipo == "int":
-                            if "'" in valor or valor == 'True' or valor == 'False':
-                                error = True
-                            else:
-                                try:
-                                    int(valor)
-                                except ValueError:
-                                    error = True
-                        elif tipo == "boolean":
-                            if "'" in valor:
-                                error = True
-                            else:
-                                try:
-                                    int(valor)
-                                    error = True
-                                except:
-                                    pass
-                        if not error:
-                            self.tablas.setValueToVariable(name, valor, self.scopeActual)
-                        else:
-                            self.error.append(f'ERROR: Hay un error en el valor de la variable "{name}", linea: {ctx.start.line}')
-                    # Si se iguala a una variable
-                    elif ctx.expr().location():
-                        var = ctx.expr().location().getText()
-                        if ctx.expr().location().array_id():
-                            var = ctx.expr().location().array_id().ID()
-                            posi = 0
-                            if  ctx.expr().location().array_id().int_literal():
-                                posi = ctx.expr().location().array_id().int_literal().getText()
-                            else:
-                                self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
-
-                        if self.tablas.varExists(var, self.scopeActual):
-                            variableIgual = self.tablas.getVariable(var, self.scopeActual)
-                            tipoIgual = variableIgual[1]
-                            if not tipo == tipoIgual:
-                                self.error.append(f'ERROR: El tipo de la variable "{variableIgual[0]}" no es igual que al de "{variable[0]}", linea: {ctx.start.line}')
-                        elif self.tablas.arrayExists(var, self.scopeActual):
-                            variableIgual = self.tablas.getArray(var, self.scopeActual)
-                            tipoIgual = variableIgual[1]
-                            if not tipo == tipoIgual:
-                                self.error.append(f'ERROR: El tipo de la variable "{variableIgual[0]}" no es igual que al de "{variable[0]}", linea: {ctx.start.line}')
-                            if int(posi) < 0 or int(posi) > variableIgual[4]:
-                                self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
-                    # Condicion si se iguala a un metodo
-                    elif ctx.expr().method_call():
-                        methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
-                        if self.tablas.metodoExists(methodName):
-                            params = ctx.expr().method_call().method_call_inter().expr()
-                            metodo = self.tablas.getMetodo(methodName)
-                            metodoType = metodo[1]
-                            metodoParams = metodo[2]
-                            varType = variable[1]
-                            if metodo[4]:
-                                if varType != metodoType:
-                                    self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{name} ({varType})",linea: {ctx.start.line}')
+                if ctx.location().var_id().POINT():
+                    exp = ctx.location().var_id().getText()
+                    arrayExp = []
+                    if "." in exp:
+                        arrayExp = exp.split(".")
+                        tam = len(arrayExp)
+                        cont = 1
+                        structName = self.scopeActual
+                        tipoIzq = ''
+                        for i in arrayExp:
+                            if "[" in i and "]" in i:
+                                index = i.find("[")
+                                value = i[0:index]
+                                if self.tablas.arrayExists(value, structName):
+                                    struct = self.tablas.getArray(value, structName)
+                                    structName = struct[1]
                                 else:
-                                    if len(params) == len(metodoParams):
-                                        cont = 0
-                                        for i in params:
-                                            if i.literal():
-                                                if i.literal().int_literal():
-                                                    tipo = 'int'
-                                                elif i.literal().bool_literal():
-                                                    tipo = 'boolean'
-                                                elif i.literal().string_literal():
-                                                    tipo = 'string'
-                                            elif i.location():
-                                                var = i.location().getText()
-                                                if self.tablas.varExists(var, self.scopeActual):
-                                                    tipo = self.tablas.getVariable(var, self.scopeActual)[1]
-                                                else:
-                                                    self.error.append(f'ERROR: La variable "{var}" a enviar como parametro al metodo "{methodName}" no existe, linea: {ctx.start.line}')
-                                            if metodoParams[cont][0] != tipo:
-                                                self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
-                                            cont += 1
-                                    else:
-                                        self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
+                                    self.error.append(f'ERROR: La variable "{value}" no existe, linea: {ctx.start.line}')
                             else:
-                                self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
+                                if cont == tam:
+                                    if self.tablas.varExists(i, structName):
+                                        var = self.tablas.getVariable(i, structName)
+                                        tipoIzq = var[1]
+                                    else:
+                                        self.error.append(f'ERROR: La variable "{i}" no existe, linea: {ctx.start.line}')
+                                else:
+                                    if self.tablas.structVarExists(i, structName):
+                                        struct = self.tablas.getStructVar(i, structName)
+                                        structName = struct[1]
+                                    else:
+                                        self.error.append(f'ERROR: La variable "{i}" no existe, linea: {ctx.start.line}')
+                            cont += 1
+
+                        entro = False
+                        tipoDer = ''
+                        expDer =''
+                        if ctx.expr().literal():
+                            if ctx.expr().literal().int_literal():
+                                tipoDer = 'int'
+                            elif ctx.expr().literal().bool_literal():
+                                tipoDer = 'boolean'
+                            elif ctx.expr().literal().string_literal():
+                                tipoDer = 'string'
+                        elif ctx.expr().location():
+                            varDer = ctx.expr().location().getText()
+                            if ctx.expr().location().array_id():
+                                if ctx.expr().location().array_id().POINT():
+                                    arrayExpDer = []
+                                    if "." in varDer:
+                                        arrayExpDer = varDer.split(".")
+                                        tamNuevo = len(arrayExpDer)
+                                        contNuevo = 1
+                                        structNameDer = self.scopeActual
+                                        for i in arrayExpDer:
+                                            if "[" in i and "]" in i:
+                                                index = i.find("[")
+                                                value = i[0:index]
+                                                if self.tablas.arrayExists(value, structNameDer):
+                                                    struct = self.tablas.getArray(value, structNameDer)
+                                                    structNameDer = struct[1]
+                                                else:
+                                                    self.error.append(f'ERROR: La variable "{value}" no existe, linea: {ctx.start.line}')
+                                            else:
+                                                if contNuevo == tamNuevo:
+                                                    if self.tablas.varExists(i, structNameDer):
+                                                        entro = True
+                                                        varDer = self.tablas.getVariable(i, structNameDer)
+                                                        tipoDer = varDer[1]
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{i}" no existe, linea: {ctx.start.line}')
+                                                else:
+                                                    if self.tablas.structVarExists(i, structNameDer):
+                                                        struct = self.tablas.getStructVar(i, structNameDer)
+                                                        structNameDer = struct[1]
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{i}" no existe, linea: {ctx.start.line}')
+                                            contNuevo += 1
+                                else:
+                                    varDer = ctx.expr().location().array_id().ID()
+                                    posi = 0
+                                    if ctx.expr().location().array_id().int_literal():
+                                        posi = ctx.expr().location().array_id().int_literal().getText()
+                                    else:
+                                        self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                                    if self.tablas.arrayExists(varDer, self.scopeActual):
+                                        tama = self.tablas.getArray(varDer, self.scopeActual)[4]
+                                        if str(tama) < posi or str(tama) == 0:
+                                            self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                            elif ctx.expr().location().var_id().POINT():
+                                varDer = ctx.expr().location().var_id().getText()
+                                arrayExpDer = []
+                                if "." in varDer:
+                                    arrayExpDer = varDer.split(".")
+                                    tam = len(arrayExpDer)
+                                    contNuevo = 1
+                                    structNameDer = self.scopeActual
+                                    for j in arrayExpDer:
+                                        if "[" in j and "]" in j:
+                                            index = j.find("[")
+                                            value = j[0:index]
+                                            if self.tablas.arrayExists(value, structNameDer):
+                                                struct = self.tablas.getArray(value, structNameDer)
+                                                structNameDer = struct[1]
+                                            else:
+                                                self.error.append(f'ERROR: La variable "{value}" no existe, linea: {ctx.start.line}')
+                                        else:
+                                            if contNuevo == tam:
+                                                if self.tablas.varExists(j, structNameDer):
+                                                    varDer2 = self.tablas.getVariable(j, structNameDer)
+                                                    entro = True
+                                                    tipoDer = varDer2[1]
+                                                    varDer = varDer2[0]
+                                                else:
+                                                    self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                            else:
+                                                if self.tablas.structVarExists(j, structNameDer):
+                                                    struct = self.tablas.getStructVar(j, structNameDer)
+                                                    structNameDer = struct[1]
+                                                else:
+                                                    self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                        contNuevo += 1
+                            if self.tablas.varExists(varDer, self.scopeActual):
+                                variableIgual = self.tablas.getVariable(varDer, self.scopeActual)
+                                tipoDer = variableIgual[1]
+                            elif self.tablas.arrayExists(varDer, self.scopeActual):
+                                variableIgual = self.tablas.getArray(varDer, self.scopeActual)
+                                tipoDer = variableIgual[1]
+                            elif entro:
+                                pass
+                            else:
+                                self.error.append(f'ERROR: La variable "{varDer}" no existe, linea: {ctx.start.line}')
+                        elif ctx.expr().method_call():
+                            methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
+                            if self.tablas.metodoExists(methodName):
+                                params = ctx.expr().method_call().method_call_inter().expr()
+                                metodo = self.tablas.getMetodo(methodName)
+                                metodoType = metodo[1]
+                                metodoParams = metodo[2]
+                                if metodo[4]:
+                                    if tipoIzq != metodoType:
+                                        self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{var[0]} ({tipoIzq})",linea: {ctx.start.line}')
+                                    else:
+                                        tipoDer = metodoType
+                                        if len(params) == len(metodoParams):
+                                            cont = 0
+                                            for i in params:
+                                                if i.literal():
+                                                    if i.literal().int_literal():
+                                                        tipo = 'int'
+                                                    elif i.literal().bool_literal():
+                                                        tipo = 'boolean'
+                                                    elif i.literal().string_literal():
+                                                        tipo = 'string'
+                                                elif i.location():
+                                                    tipo = ''
+                                                    varDer = i.location().getText()
+                                                    if i.location().array_id():
+                                                        varDer = i.location().array_id().ID()
+                                                        posi = 0
+                                                        if i.location().array_id().int_literal():
+                                                            posi = i.location().array_id().int_literal().getText()
+                                                        else:
+                                                            self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                                                    elif i.location().var_id().POINT():
+                                                        expDer = i.location().var_id().getText()
+                                                        arrayExpDer = []
+                                                        if "." in expDer:
+                                                            arrayExpDer = expDer.split(".")
+                                                            tam = len(arrayExpDer)
+                                                            contNuevo = 1
+                                                            structNameDer = self.scopeActual
+                                                            for j in arrayExpDer:
+                                                                if contNuevo == tam:
+                                                                    if self.tablas.varExists(j, structNameDer):
+                                                                        varDer2 = self.tablas.getVariable(j, structNameDer)
+                                                                        entro = True
+                                                                        tipoDer = varDer2[1]
+                                                                        varDer = varDer2[0]
+                                                                        tipo = tipoDer
+                                                                    else:
+                                                                        self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                                                else:
+                                                                    if self.tablas.structVarExists(j, structNameDer):
+                                                                        struct = self.tablas.getStructVar(j, structNameDer)
+                                                                        structNameDer = struct[1]
+                                                                    else:
+                                                                        self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                                                contNuevo += 1
+                                                    if self.tablas.varExists(varDer, self.scopeActual):
+                                                        tipo = self.tablas.getVariable(varDer, self.scopeActual)[1]
+                                                    elif self.tablas.arrayExists(varDer, self.scopeActual):
+                                                        tipo = self.tablas.getArray(varDer, self.scopeActual)[1]
+                                                    elif entro:
+                                                        pass
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{varDer}" a enviar como parametro al metodo "{methodName}" no existe, linea: {ctx.start.line}')
+                                                if metodoParams[cont][0] != tipo:
+                                                    self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
+                                                cont += 1
+                                        else:
+                                            self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
+                                else:
+                                    self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
+                            else:
+                                self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
                         else:
-                            self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
+                            self.error.append(f'ERROR: Se debe igualar a algo valido,linea: {ctx.start.line}')
+
+                        if tipoIzq != tipoDer:
+                            self.error.append(f'ERROR: La variable "{var[0]}" se debe igualar a algo del mismo tipo, linea: {ctx.start.line}')
                     else:
-                        # Validar caso por si se iguala a una operacion de literales o variables
-                        if ctx.expr():
-                            varDer = ctx.expr().getText()
-                            arraySplit = []
-                            if "+" in varDer:
-                                varDer = varDer.replace("+", " ")
-                            if "-" in varDer:
-                                varDer = varDer.replace("-", " ")
-                            if "/" in varDer:
-                                varDer = varDer.replace("/", " ")
-                            if "*" in varDer:
-                                varDer = varDer.replace("*", " ")
-                            if "%" in varDer:
-                                varDer = varDer.replace("%", " ")
-                            if "(" in varDer:
-                                varDer = varDer.replace("(", " ")
-                            if ")" in varDer:
-                                varDer = varDer.replace(")", " ")
-                            arraySplit = varDer.split(" ")
-                            arrayTypes = []
-                            for i in arraySplit:
-                                if self.tablas.varExists(i, self.scopeActual):
-                                    varInfo = self.tablas.getVariable(i, self.scopeActual)
-                                    arrayTypes.append(varInfo[1])
-                                elif i == 'True' or i == 'False':
-                                    arrayTypes.append('boolean')
-                                elif "'" in i:
-                                    arrayTypes.append('string')
+                        self.error.append(f'ERROR: Struct invalida, linea: {ctx.start.line}')
+                else:
+                    name = ctx.location().var_id().getText()
+                    error = False
+                    valor = ''
+                    # print(self.scopeActual)
+                    if self.tablas.varExists(name, self.scopeActual):
+                        variable = self.tablas.getVariable(name, self.scopeActual)
+                        tipo = variable[1]
+                        # print('variable', variable)
+                        # Condicion si se iguala a una literal
+                        if ctx.expr().literal():
+                            if ctx.expr().literal().int_literal():
+                                valor = ctx.expr().literal().int_literal().getText()
+                            elif ctx.expr().literal().bool_literal():
+                                valor = ctx.expr().literal().bool_literal().getText()
+                            elif ctx.expr().literal().string_literal():
+                                valor = ctx.expr().literal().string_literal().getText()
+
+                            if tipo == "string":
+                                if "'" not in valor:
+                                    error = True
+                            elif tipo == "int":
+                                if "'" in valor or valor == 'True' or valor == 'False':
+                                    error = True
                                 else:
                                     try:
-                                        int(i)
-                                        arrayTypes.append('int')
-                                    except:
-                                        self.error.append(f'ERROR: El parametro "{i}" no es un tipo valido, linea: {ctx.start.line}')
-                            setArrayTypes = set(arrayTypes)
-                            if len(setArrayTypes) > 1:
-                                self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
-                            else:
-                                arrayTypes2 = list(arrayTypes)
-                                if arrayTypes2[0] != tipo:
-                                    self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
-                else:
-                    self.error.append(f'ERROR: La variable "{name}" no esta definida, linea: {ctx.start.line}')
-            elif ctx.location().array_id():
-                varName = ctx.location().array_id().ID().getText()
-                if self.tablas.arrayExists(varName, self.scopeActual):
-                    variable = self.tablas.getArray(varName, self.scopeActual)
-                    tipo = variable[1]
-                    if ctx.location().array_id().int_literal():
-                        posi = ctx.location().array_id().int_literal().getText()
-                        if int(posi) <= int(variable[4]):
-                            # TODO: Condicion para verificar si se iguala a una estructura
-                            if ctx.expr().location():
-                                varDerName = ctx.expr().location().var_id().getText()
-                                if self.tablas.varExists(varDerName, self.scopeActual):
-                                    variableDer = self.tablas.getVariable(varDerName, self.scopeActual)
-                                    if variableDer[1] != tipo:
-                                        self.error.append(f'ERROR: El tipo de la variable "{variable[0]}" no es igual que al de "{variableDer[0]}", linea: {ctx.start.line}')
-                            # Validar caso por si se iguala a una literal
-                            elif ctx.expr().literal():
-                                tipoDer = ''
-                                if ctx.expr().literal().int_literal():
-                                    tipoDer = 'int'
-                                elif ctx.expr().literal().string_literal():
-                                    tipoDer = 'string'
-                                elif ctx.expr().literal().bool_literal():
-                                    tipoDer = 'boolean'
-
-                                if tipoDer != tipo:
-                                    self.error.append(f'ERROR: El tipo de la variable "{variable[0]}" no es igual al tipo al que se esta igualando", linea: {ctx.start.line}')
-                            # Validar caso por si se iguala a un metodo
-                            elif ctx.expr().method_call():
-                                methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
-                                if self.tablas.metodoExists(methodName):
-                                    params = ctx.expr().method_call().method_call_inter().expr()
-                                    metodo = self.tablas.getMetodo(methodName)
-                                    metodoType = metodo[1]
-                                    metodoParams = metodo[2]
-                                    varType = variable[1]
-                                    if metodo[4]:
-                                        if varType != metodoType:
-                                            self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{variable[0]} ({varType})",linea: {ctx.start.line}')
-                                        else:
-                                            if len(params) == len(metodoParams):
-                                                cont = 0
-                                                for i in params:
-                                                    if i.literal():
-                                                        if i.literal().int_literal():
-                                                            tipo = 'int'
-                                                        elif i.literal().bool_literal():
-                                                            tipo = 'boolean'
-                                                        elif i.literal().string_literal():
-                                                            tipo = 'string'
-                                                    elif i.location():
-                                                        var = i.location().getText()
-                                                        if self.tablas.varExists(var, self.scopeActual):
-                                                            tipo = self.tablas.getVariable(var, self.scopeActual)[1]
-                                                        else:
-                                                            self.error.append(f'ERROR: La variable "{var}" a enviar como parametro al metodo "{methodName}" no existe, linea: {ctx.start.line}')
-                                                    if metodoParams[cont][0] != tipo:
-                                                        self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
-                                                    cont += 1
-                                            else:
-                                                self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
-                                    else:
-                                        self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
+                                        int(valor)
+                                    except ValueError:
+                                        error = True
+                            elif tipo == "boolean":
+                                if "'" in valor:
+                                    error = True
                                 else:
-                                    self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
-                            # Validar caso por si se iguala a una operacion de literales o variables
+                                    try:
+                                        int(valor)
+                                        error = True
+                                    except:
+                                        pass
+                            if not error:
+                                self.tablas.setValueToVariable(name, valor, self.scopeActual)
                             else:
-                                if ctx.expr():
-                                    varDer = ctx.expr().getText()
-                                    arraySplit = []
-                                    if "+" in varDer:
-                                        varDer = varDer.replace("+", " ")
-                                    if "-" in varDer:
-                                        varDer = varDer.replace("-", " ")
-                                    if "/" in varDer:
-                                        varDer = varDer.replace("/", " ")
-                                    if "*" in varDer:
-                                        varDer = varDer.replace("*", " ")
-                                    if "%" in varDer:
-                                        varDer = varDer.replace("%", " ")
-                                    if "(" in varDer:
-                                        varDer = varDer.replace("(", " ")
-                                    if ")" in varDer:
-                                        varDer = varDer.replace(")", " ")
-                                    arraySplit = varDer.split(" ")
-                                    arrayTypes = []
-                                    for i in arraySplit:
-                                        if self.tablas.varExists(i, self.scopeActual):
-                                            varInfo = self.tablas.getVariable(i, self.scopeActual)
-                                            arrayTypes.append(varInfo[1])
-                                        elif i == 'True' or i == 'False':
-                                            arrayTypes.append('boolean')
-                                        elif "'" in i:
-                                            arrayTypes.append('string')
-                                        else:
-                                            try:
-                                                int(i)
-                                                arrayTypes.append('int')
-                                            except:
-                                                self.error.append(f'ERROR: El parametro "{i}" no es un tipo valido, linea: {ctx.start.line}')
-                                    setArrayTypes = set(arrayTypes)
-                                    if len(setArrayTypes) > 1:
-                                        self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
+                                self.error.append(f'ERROR: Hay un error en el valor de la variable "{name}", linea: {ctx.start.line}')
+                        # Si se iguala a una variable
+                        elif ctx.expr().location():
+                            var = ctx.expr().location().getText()
+                            if ctx.expr().location().array_id():
+                                var = ctx.expr().location().array_id().ID()
+                                posi = 0
+                                if  ctx.expr().location().array_id().int_literal():
+                                    posi = ctx.expr().location().array_id().int_literal().getText()
+                                else:
+                                    self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+
+                            if self.tablas.varExists(var, self.scopeActual):
+                                variableIgual = self.tablas.getVariable(var, self.scopeActual)
+                                tipoIgual = variableIgual[1]
+                                if not tipo == tipoIgual:
+                                    self.error.append(f'ERROR: El tipo de la variable "{variableIgual[0]}" no es igual que al de "{variable[0]}", linea: {ctx.start.line}')
+                            elif self.tablas.arrayExists(var, self.scopeActual):
+                                variableIgual = self.tablas.getArray(var, self.scopeActual)
+                                tipoIgual = variableIgual[1]
+                                if not tipo == tipoIgual:
+                                    self.error.append(f'ERROR: El tipo de la variable "{variableIgual[0]}" no es igual que al de "{variable[0]}", linea: {ctx.start.line}')
+                                if int(posi) < 0 or int(posi) > variableIgual[4]:
+                                    self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                            else:
+                                self.error.append(f'ERROR: La variable "{var}" no existe, linea: {ctx.start.line}')
+                        # Condicion si se iguala a un metodo
+                        elif ctx.expr().method_call():
+                            methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
+                            if self.tablas.metodoExists(methodName):
+                                params = ctx.expr().method_call().method_call_inter().expr()
+                                metodo = self.tablas.getMetodo(methodName)
+                                metodoType = metodo[1]
+                                metodoParams = metodo[2]
+                                varType = variable[1]
+                                if metodo[4]:
+                                    if varType != metodoType:
+                                        self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{name} ({varType})",linea: {ctx.start.line}')
                                     else:
-                                        arrayTypes2 = list(arrayTypes)
-                                        if arrayTypes2[0] != tipo:
+                                        if len(params) == len(metodoParams):
+                                            cont = 0
+                                            for i in params:
+                                                if i.literal():
+                                                    if i.literal().int_literal():
+                                                        tipo = 'int'
+                                                    elif i.literal().bool_literal():
+                                                        tipo = 'boolean'
+                                                    elif i.literal().string_literal():
+                                                        tipo = 'string'
+                                                elif i.location():
+                                                    var = i.location().getText()
+                                                    if self.tablas.varExists(var, self.scopeActual):
+                                                        tipo = self.tablas.getVariable(var, self.scopeActual)[1]
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{var}" a enviar como parametro al metodo "{methodName}" no existe, linea: {ctx.start.line}')
+                                                if metodoParams[cont][0] != tipo:
+                                                    self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
+                                                cont += 1
+                                        else:
+                                            self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
+                                else:
+                                    self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
+                            else:
+                                self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
+                        else:
+                            # Validar caso por si se iguala a una operacion de literales o variables
+                            if ctx.expr():
+                                varDer = ctx.expr().getText()
+                                arraySplit = []
+                                if "+" in varDer:
+                                    varDer = varDer.replace("+", " ")
+                                if "-" in varDer:
+                                    varDer = varDer.replace("-", " ")
+                                if "/" in varDer:
+                                    varDer = varDer.replace("/", " ")
+                                if "*" in varDer:
+                                    varDer = varDer.replace("*", " ")
+                                if "%" in varDer:
+                                    varDer = varDer.replace("%", " ")
+                                if "(" in varDer:
+                                    varDer = varDer.replace("(", " ")
+                                if ")" in varDer:
+                                    varDer = varDer.replace(")", " ")
+                                arraySplit = varDer.split(" ")
+                                arrayTypes = []
+                                for i in arraySplit:
+                                    if self.tablas.varExists(i, self.scopeActual):
+                                        varInfo = self.tablas.getVariable(i, self.scopeActual)
+                                        arrayTypes.append(varInfo[1])
+                                    elif i == 'True' or i == 'False':
+                                        arrayTypes.append('boolean')
+                                    elif "'" in i:
+                                        arrayTypes.append('string')
+                                    else:
+                                        try:
+                                            int(i)
+                                            arrayTypes.append('int')
+                                        except:
+                                            self.error.append(f'ERROR: El parametro "{i}" no es un tipo valido, linea: {ctx.start.line}')
+                                setArrayTypes = set(arrayTypes)
+                                if len(setArrayTypes) > 1:
+                                    self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
+                                else:
+                                    arrayTypes2 = list(arrayTypes)
+                                    if arrayTypes2[0] != tipo:
+                                        self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
+                    else:
+                        self.error.append(f'ERROR: La variable "{name}" no esta definida, linea: {ctx.start.line}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            elif ctx.location().array_id():
+                if ctx.location().array_id().POINT():
+                    exp = ctx.location().array_id().getText()
+                    arrayExpDer = []
+                    if "." in exp:
+                        arrayExpDer = exp.split(".")
+                        tam = len(arrayExpDer)
+                        cont = 1
+                        structNameDer = self.scopeActual
+                        tipoIzq = ''
+                        for j in arrayExpDer:
+                            if "[" in j and "]" in j:
+                                index = j.find("[")
+                                value = j[0:index]
+                                if self.tablas.arrayExists(value, structNameDer):
+                                    struct = self.tablas.getArray(value, structNameDer)
+                                    structNameDer = struct[1]
+                                else:
+                                    self.error.append(f'ERROR: La variable "{value}" no existe, linea: {ctx.start.line}')
+                            else:
+                                if cont == tam:
+                                    if self.tablas.varExists(j, structNameDer):
+                                        var = self.tablas.getVariable(j, structNameDer)
+                                        tipoIzq = var[1]
+                                    else:
+                                        self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                else:
+                                    if self.tablas.structVarExists(j, structNameDer):
+                                        struct = self.tablas.getStructVar(j, structNameDer)
+                                        structNameDer = struct[1]
+                                    else:
+                                        self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                            cont += 1
+
+                        entro = False
+                        tipoDer = ''
+                        expDer =''
+                        if ctx.expr().literal():
+                            if ctx.expr().literal().int_literal():
+                                tipoDer = 'int'
+                            elif ctx.expr().literal().bool_literal():
+                                tipoDer = 'boolean'
+                            elif ctx.expr().literal().string_literal():
+                                tipoDer = 'string'
+                        elif ctx.expr().location():
+                            varDer = ctx.expr().location().getText()
+                            if ctx.expr().location().array_id():
+                                if ctx.expr().location().array_id().POINT():
+                                    arrayExpDer = []
+                                    if "." in varDer:
+                                        arrayExpDer = varDer.split(".")
+                                        tamNuevo = len(arrayExpDer)
+                                        contNuevo = 1
+                                        structNameDer = self.scopeActual
+                                        for i in arrayExpDer:
+                                            if "[" in i and "]" in i:
+                                                index = i.find("[")
+                                                value = i[0:index]
+                                                if self.tablas.arrayExists(value, structNameDer):
+                                                    struct = self.tablas.getArray(value, structNameDer)
+                                                    structNameDer = struct[1]
+                                                else:
+                                                    self.error.append(f'ERROR: La variable "{value}" no existe, linea: {ctx.start.line}')
+                                            else:
+                                                if contNuevo == tamNuevo:
+                                                    if self.tablas.varExists(i, structNameDer):
+                                                        entro = True
+                                                        varDer = self.tablas.getVariable(i, structNameDer)
+                                                        tipoDer = varDer[1]
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{i}" no existe, linea: {ctx.start.line}')
+                                                else:
+                                                    if self.tablas.structVarExists(i, structNameDer):
+                                                        struct = self.tablas.getStructVar(i, structNameDer)
+                                                        structNameDer = struct[1]
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{i}" no existe, linea: {ctx.start.line}')
+                                            contNuevo += 1
+                                else:
+                                    varDer = ctx.expr().location().array_id().ID()
+                                    posi = 0
+                                    if ctx.expr().location().array_id().int_literal():
+                                        posi = ctx.expr().location().array_id().int_literal().getText()
+                                    else:
+                                        self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                                    if self.tablas.arrayExists(varDer, self.scopeActual):
+                                        tama = self.tablas.getArray(varDer, self.scopeActual)[4]
+                                        if str(tama) < posi or str(tama) == 0:
+                                            self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                            elif ctx.expr().location().var_id().POINT():
+                                varDer = ctx.expr().location().var_id().getText()
+                                arrayExpDer = []
+                                if "." in varDer:
+                                    arrayExpDer = varDer.split(".")
+                                    tam = len(arrayExpDer)
+                                    contNuevo = 1
+                                    structNameDer = self.scopeActual
+                                    for j in arrayExpDer:
+                                        if "[" in j and "]" in j:
+                                            index = j.find("[")
+                                            value = j[0:index]
+                                            if self.tablas.arrayExists(value, structNameDer):
+                                                struct = self.tablas.getArray(value, structNameDer)
+                                                structNameDer = struct[1]
+                                                print('struct', struct)
+                                            else:
+                                                self.error.append(f'ERROR: La variable "{value}" no existe, linea: {ctx.start.line}')
+                                        else:
+                                            if contNuevo == tam:
+                                                if self.tablas.varExists(j, structNameDer):
+                                                    var = self.tablas.getVariable(j, structNameDer)
+                                                    entro = True
+                                                    tipoDer = var[1]
+                                                    varDer = var[0]
+                                                else:
+                                                    self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                            else:
+                                                if self.tablas.structVarExists(j, structNameDer):
+                                                    struct = self.tablas.getStructVar(j, structNameDer)
+                                                    structNameDer = struct[1]
+                                                else:
+                                                    self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                        contNuevo += 1
+                            if self.tablas.varExists(varDer, self.scopeActual):
+                                variableIgual = self.tablas.getVariable(varDer, self.scopeActual)
+                                tipoDer = variableIgual[1]
+                            elif self.tablas.arrayExists(varDer, self.scopeActual):
+                                variableIgual = self.tablas.getArray(varDer, self.scopeActual)
+                                tipoDer = variableIgual[1]
+                            elif entro:
+                                pass
+                            else:
+                                self.error.append(f'ERROR: La variable "{varDer}" no existe, linea: {ctx.start.line}')
+                        elif ctx.expr().method_call():
+                            methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
+                            if self.tablas.metodoExists(methodName):
+                                params = ctx.expr().method_call().method_call_inter().expr()
+                                metodo = self.tablas.getMetodo(methodName)
+                                metodoType = metodo[1]
+                                metodoParams = metodo[2]
+                                if metodo[4]:
+                                    if tipoIzq != metodoType:
+                                        self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{var[0]} ({tipoIzq})",linea: {ctx.start.line}')
+                                    else:
+                                        tipoDer = metodoType
+                                        if len(params) == len(metodoParams):
+                                            cont = 0
+                                            for i in params:
+                                                if i.literal():
+                                                    if i.literal().int_literal():
+                                                        tipo = 'int'
+                                                    elif i.literal().bool_literal():
+                                                        tipo = 'boolean'
+                                                    elif i.literal().string_literal():
+                                                        tipo = 'string'
+                                                elif i.location():
+                                                    tipo = ''
+                                                    varDer = i.location().getText()
+                                                    if i.location().array_id():
+                                                        varDer = i.location().array_id().ID()
+                                                        posi = 0
+                                                        if i.location().array_id().int_literal():
+                                                            posi = i.location().array_id().int_literal().getText()
+                                                        else:
+                                                            self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                                                    elif i.location().var_id().POINT():
+                                                        expDer = i.location().var_id().getText()
+                                                        arrayExpDer = []
+                                                        if "." in expDer:
+                                                            arrayExpDer = expDer.split(".")
+                                                            tam = len(arrayExpDer)
+                                                            contNuevo = 1
+                                                            structNameDer = self.scopeActual
+                                                            for j in arrayExpDer:
+                                                                if contNuevo == tam:
+                                                                    if self.tablas.varExists(j, structNameDer):
+                                                                        varDer2 = self.tablas.getVariable(j, structNameDer)
+                                                                        entro = True
+                                                                        tipoDer = varDer2[1]
+                                                                        varDer = varDer2[0]
+                                                                        tipo = tipoDer
+                                                                    else:
+                                                                        self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                                                else:
+                                                                    if self.tablas.structVarExists(j, structNameDer):
+                                                                        struct = self.tablas.getStructVar(j, structNameDer)
+                                                                        structNameDer = struct[1]
+                                                                    else:
+                                                                        self.error.append(f'ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
+                                                                contNuevo += 1
+                                                    if self.tablas.varExists(varDer, self.scopeActual):
+                                                        tipo = self.tablas.getVariable(varDer, self.scopeActual)[1]
+                                                    elif self.tablas.arrayExists(varDer, self.scopeActual):
+                                                        tipo = self.tablas.getArray(varDer, self.scopeActual)[1]
+                                                    elif entro:
+                                                        pass
+                                                    else:
+                                                        self.error.append(f'ERROR: La variable "{varDer}" a enviar como parametro al metodo "{methodName}" no existe, linea: {ctx.start.line}')
+                                                if metodoParams[cont][0] != tipo:
+                                                    self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
+                                                cont += 1
+                                        else:
+                                            self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
+                                else:
+                                    self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
+                            else:
+                                self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
+                        else:
+                            self.error.append(f'ERROR: Se debe igualar a algo valido,linea: {ctx.start.line}')
+
+                        if tipoIzq != tipoDer:
+                            self.error.append(f'ERROR: La variable "{var[0]}" se debe igualar a algo del mismo tipo, linea: {ctx.start.line}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                else:
+                    varName = ctx.location().array_id().ID().getText()
+                    if self.tablas.arrayExists(varName, self.scopeActual):
+                        variable = self.tablas.getArray(varName, self.scopeActual)
+                        tipo = variable[1]
+                        if ctx.location().array_id().int_literal():
+                            posi = ctx.location().array_id().int_literal().getText()
+                            if int(posi) <= int(variable[4]):
+                                # TODO: Condicion para verificar si se iguala a una estructura
+                                if ctx.expr().location():
+                                    varDerName = ctx.expr().location().var_id().getText()
+                                    if self.tablas.varExists(varDerName, self.scopeActual):
+                                        variableDer = self.tablas.getVariable(varDerName, self.scopeActual)
+                                        if variableDer[1] != tipo:
+                                            self.error.append(f'ERROR: El tipo de la variable "{variable[0]}" no es igual que al de "{variableDer[0]}", linea: {ctx.start.line}')
+                                # Validar caso por si se iguala a una literal
+                                elif ctx.expr().literal():
+                                    tipoDer = ''
+                                    if ctx.expr().literal().int_literal():
+                                        tipoDer = 'int'
+                                    elif ctx.expr().literal().string_literal():
+                                        tipoDer = 'string'
+                                    elif ctx.expr().literal().bool_literal():
+                                        tipoDer = 'boolean'
+
+                                    if tipoDer != tipo:
+                                        self.error.append(f'ERROR: El tipo de la variable "{variable[0]}" no es igual al tipo al que se esta igualando", linea: {ctx.start.line}')
+                                # Validar caso por si se iguala a un metodo
+                                elif ctx.expr().method_call():
+                                    methodName = ctx.expr().method_call().method_call_inter().method_name().getText()
+                                    if self.tablas.metodoExists(methodName):
+                                        params = ctx.expr().method_call().method_call_inter().expr()
+                                        metodo = self.tablas.getMetodo(methodName)
+                                        metodoType = metodo[1]
+                                        metodoParams = metodo[2]
+                                        varType = variable[1]
+                                        if metodo[4]:
+                                            if varType != metodoType:
+                                                self.error.append(f'ERROR: El tipo del método "{methodName} ({metodoType})" es diferente del tipo de la variable "{variable[0]} ({varType})",linea: {ctx.start.line}')
+                                            else:
+                                                if len(params) == len(metodoParams):
+                                                    cont = 0
+                                                    for i in params:
+                                                        if i.literal():
+                                                            if i.literal().int_literal():
+                                                                tipo = 'int'
+                                                            elif i.literal().bool_literal():
+                                                                tipo = 'boolean'
+                                                            elif i.literal().string_literal():
+                                                                tipo = 'string'
+                                                        elif i.location():
+                                                            var = i.location().getText()
+                                                            if self.tablas.varExists(var, self.scopeActual):
+                                                                tipo = self.tablas.getVariable(var, self.scopeActual)[1]
+                                                            else:
+                                                                self.error.append(f'ERROR: La variable "{var}" a enviar como parametro al metodo "{methodName}" no existe, linea: {ctx.start.line}')
+                                                        if metodoParams[cont][0] != tipo:
+                                                            self.error.append(f'ERROR: El parametro "{cont + 1}" es de tipo "{tipo}", se espera "{metodoParams[cont][0]}", linea: {ctx.start.line}')
+                                                        cont += 1
+                                                else:
+                                                    self.error.append(f'ERROR: La cantidad de parametros a enviar en el método "{methodName}" no es la correcta, linea: {ctx.start.line}')
+                                        else:
+                                            self.error.append(f'ERROR: Se espera que el método "{methodName}" tenga un return, linea: {ctx.start.line}')
+                                    else:
+                                        self.error.append(f'ERROR: El método "{methodName}" no existe,linea: {ctx.start.line}')
+                                # Validar caso por si se iguala a una operacion de literales o variables
+                                else:
+                                    if ctx.expr():
+                                        varDer = ctx.expr().getText()
+                                        arraySplit = []
+                                        if "+" in varDer:
+                                            varDer = varDer.replace("+", " ")
+                                        if "-" in varDer:
+                                            varDer = varDer.replace("-", " ")
+                                        if "/" in varDer:
+                                            varDer = varDer.replace("/", " ")
+                                        if "*" in varDer:
+                                            varDer = varDer.replace("*", " ")
+                                        if "%" in varDer:
+                                            varDer = varDer.replace("%", " ")
+                                        if "(" in varDer:
+                                            varDer = varDer.replace("(", " ")
+                                        if ")" in varDer:
+                                            varDer = varDer.replace(")", " ")
+                                        arraySplit = varDer.split(" ")
+                                        arrayTypes = []
+                                        for i in arraySplit:
+                                            if self.tablas.varExists(i, self.scopeActual):
+                                                varInfo = self.tablas.getVariable(i, self.scopeActual)
+                                                arrayTypes.append(varInfo[1])
+                                            elif i == 'True' or i == 'False':
+                                                arrayTypes.append('boolean')
+                                            elif "'" in i:
+                                                arrayTypes.append('string')
+                                            else:
+                                                try:
+                                                    int(i)
+                                                    arrayTypes.append('int')
+                                                except:
+                                                    self.error.append(f'ERROR: El parametro "{i}" no es un tipo valido, linea: {ctx.start.line}')
+                                        setArrayTypes = set(arrayTypes)
+                                        if len(setArrayTypes) > 1:
                                             self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
+                                        else:
+                                            arrayTypes2 = list(arrayTypes)
+                                            if arrayTypes2[0] != tipo:
+                                                self.error.append(f'ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
+                            else:
+                                self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
                         else:
                             self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
-                    else:
-                        self.error.append(f'ERROR: La posición del array no es valida, linea: {ctx.start.line}')
-            # Caso de una variable de una estructura
-            # elif
         elif ctx.method_call():
             name = ctx.method_call().method_call_inter().method_name().getText()
             actualParams = ctx.method_call().method_call_inter().expr()
@@ -566,29 +1042,53 @@ class KeyPrinter(DecafListener):
 
     def enterVardeclr(self, ctx: DecafParser.VardeclrContext):
         for i in range(len(ctx.field_var())):
-            fieldVar = ctx.field_var()[i]
-            type = ctx.var_type()[i].getText()
-            if fieldVar.var_id():
-                name = fieldVar.var_id().getText()
-                if not self.tablas.varExistsOnce(name, self.scopeActual):
-                    self.contVariables += 1
-                    self.tablas.setVariable(self.contVariables, name, type, self.scopeActual)
-                else:
-                    self.error.append(f'ERROR: La variable "{name}" ya existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
-            elif fieldVar.array_id():
-                name = fieldVar.array_id().ID().getText()
-                if fieldVar.array_id().int_literal():
-                    tam = int(fieldVar.array_id().int_literal().getText())
-                    if tam <= 0 or tam == None:
-                        self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un número mayor a 0, linea: {ctx.start.line}')
+            if ctx.var_type()[i].STRUCT():
+                type = ctx.var_type()[i].ID().getText()
+                if ctx.field_var()[i].var_id():
+                    name = ctx.field_var()[i].var_id().getText()
+                    if not self.tablas.varExistsOnce(name, self.scopeActual):
+                        self.contVariables += 1
+                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual, 0, 0, True)
                     else:
-                        if not self.tablas.varExistsOnce(name, self.scopeActual):
-                            self.contEstructuras += 1
-                            self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam)
+                        self.error.append(f'ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
+                elif ctx.field_var()[i].array_id():
+                    name = ctx.field_var()[i].array_id().ID().getText()
+                    if ctx.field_var()[i].array_id().int_literal():
+                        tam = int(ctx.field_var()[i].array_id().int_literal().getText())
+                        if tam <= 0 or tam == None:
+                            self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un número mayor a 0, linea: {ctx.start.line}')
                         else:
-                            self.error.append(f'ERROR: La variable "{name}" ya existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
-                else:
-                    self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un numero mayor a 0, linea: {ctx.start.line}')
+                            if not self.tablas.varExistsOnce(name, self.scopeActual):
+                                self.contEstructuras += 1
+                                self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam, True)
+                            else:
+                                self.error.append(f'ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
+                    else:
+                        self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un numero mayor a 0, linea: {ctx.start.line}')
+            else:
+                fieldVar = ctx.field_var()[i]
+                type = ctx.var_type()[i].getText()
+                if fieldVar.var_id():
+                    name = fieldVar.var_id().getText()
+                    if not self.tablas.varExistsOnce(name, self.scopeActual):
+                        self.contVariables += 1
+                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual)
+                    else:
+                        self.error.append(f'ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
+                elif fieldVar.array_id():
+                    name = fieldVar.array_id().ID().getText()
+                    if fieldVar.array_id().int_literal():
+                        tam = int(fieldVar.array_id().int_literal().getText())
+                        if tam <= 0 or tam == None:
+                            self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un número mayor a 0, linea: {ctx.start.line}')
+                        else:
+                            if not self.tablas.varExistsOnce(name, self.scopeActual):
+                                self.contEstructuras += 1
+                                self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam)
+                            else:
+                                self.error.append(f'ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
+                    else:
+                        self.error.append(f'ERROR: El tamaño del array "{name}" debe de ser un numero mayor a 0, linea: {ctx.start.line}')
 
     def enterMethod_declr(self, ctx: DecafParser.Method_declrContext):
         name = ctx.method_name().getText()
@@ -638,8 +1138,8 @@ class KeyPrinter(DecafListener):
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
 def main():
-    # data = open('./pruebas/simpletests.txt').read()
-    data = open('./pruebas/multiple_tests.txt').read()
+    data = open('./pruebas/simpleTest.txt').read()
+    # data = open('./pruebas/multiple_tests.txt').read()
     lexer = DecafLexer(InputStream(data))
     stream = CommonTokenStream(lexer)
     parser = DecafParser(stream)

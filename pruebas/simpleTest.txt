@@ -1,13 +1,37 @@
 class Program
 {
-    int resta(int x)
-    {
-        return x;
-    }
 
-    int suma()
-    {
-        int a[10];
-        return resta(a[11]);
-    }
+struct A
+{
+	int a;
+    int w;
+};
+
+struct B
+{
+	int b[5];
+	struct A c[1];
+};
+
+struct A y;
+struct B z;
+
+int suma(int x)
+{
+    return x;
+}
+
+void main(void)
+{
+	struct B y[5];
+	int i;
+	int j;
+	int k;
+    int l[10];
+
+	i = 0;
+	j=0;
+	y[0].c[1].a = z.c[0].w;
+}
+
 }
