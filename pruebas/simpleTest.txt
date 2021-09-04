@@ -4,22 +4,36 @@ class Program
 struct A
 {
 	int a;
-    int w;
+    int g;
 };
 
 struct B
 {
 	int b[5];
-	struct A c[1];
+	struct A c;
 };
 
 struct A y;
-struct B z;
+struct A z;
+struct A p[1];
 
-int suma(int x)
+int factorial(int n)
 {
-    return x;
+	if (n==0)
+	{return 1;}
+	else
+	{return n*factorial(n-1);}
 }
+
+void OutputInt(int n)
+{
+}
+
+int InputInt(void)
+{return 0;}
+
+int ReturnNumber(void)
+{return p[0].g;}
 
 void main(void)
 {
@@ -27,11 +41,26 @@ void main(void)
 	int i;
 	int j;
 	int k;
-    int l[10];
+
 
 	i = 0;
 	j=0;
-	y[0].c[1].a = z.c[0].w;
-}
+	z.a = 3;
 
+	while(i<=10)
+	{
+		y[j].b[0]=InputInt();
+
+		if(y[j].b[0]==y[j].c.a)
+		{
+			y[j].b[0]=z.a;
+			k=factorial(ReturnNumber());
+			OutputInt(k);
+		}
+
+		y[j].c.a=factorial(y[j].b[0]);
+		OutputInt(y[j].c.a);
+		i = i + 1;
+	}
+}
 }

@@ -16,6 +16,13 @@ class Tablas:
                 valor = self.metodos[i+1]
                 if nombre == valor[0]:
                     return valor
+    
+    def metodoSetReturn(self, nombre):
+        if len(self.metodos) > 0:
+            for i in range(len(self.metodos)):
+                valor = self.metodos[i+1]
+                if str(nombre) == str(valor[0]):
+                    valor[4] = True
 
     def metodoExists(self, nombre):
         if len(self.metodos) > 0:
@@ -152,7 +159,6 @@ class Tablas:
                 if nuevoScope != '':
                     return self.arrayExists(nombre, nuevoScope)
         return existe
-
 
     def showFullDicc(self, name = ""):
         if name == "met":
