@@ -349,7 +349,6 @@ class KeyPrinter(DecafListener):
                                 self.error.append(f'312ERROR: Hay un error en el valor de retorno en el método "{self.scopeActual}", linea: {ctx.start.line}')
                             else:
                                 arrayTypes2 = list(setArrayTypes)
-                                print(arrayTypes2, returnType)
                                 if arrayTypes2[0] != returnType:
                                     self.error.append(f'316ERROR: Hay un error en el valor de retorno en el método "{self.scopeActual}", linea: {ctx.start.line}')
             else:
@@ -954,7 +953,6 @@ class KeyPrinter(DecafListener):
                                             cont = 0
                                             for i in params:
                                                 if i.literal():
-                                                    print('literal')
                                                     if i.literal().int_literal():
                                                         tipo = 'int'
                                                     elif i.literal().bool_literal():
@@ -1195,7 +1193,6 @@ class KeyPrinter(DecafListener):
                     cont = 0
                     for i in actualParams:
                         var = i.getText()
-                        print(var)
                         tipo = ''
                         entro = False
                         if i.location():
@@ -1386,6 +1383,10 @@ class KeyPrinter(DecafListener):
             for i in ctx.block().statement():
                 if i.RETURN():
                   retorna = True
+                elif "return" in i.getText():
+                    retorna = True
+            if retorna == False and returnName != 'void':
+                self.error.append(f'1391ERROR: El método "{name}" no tiene un return, linea: {ctx.start.line}')
             if name == "main":
                 self.notMainFunction = False
             arrayParams = []
@@ -1423,8 +1424,8 @@ class KeyPrinter(DecafListener):
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
 def main():
-    data = open('./pruebas/param.txt').read()
-    # data = open('./pruebas/multiple_tests.txt').read()
+    # data = open('./pruebas/simpleTest.txt').read()
+    data = open('./pruebas/multiple_tests.txt').read()
     lexer = DecafLexer(InputStream(data))
     stream = CommonTokenStream(lexer)
     parser = DecafParser(stream)
@@ -1438,13 +1439,15 @@ def main():
     printer.tablas.showFullDicc()
 
     if printer.notMainFunction:
-        printer.error.append("El metodo main no esta defindo")
+        printer.error.append("ERROR: El metodo main no esta defindo")
+    f = open("errores.txt", "w", encoding="utf8")
+    f.write(f'Han ocurrido {str(len(printer.getErrors()))} errores!')
     if len(printer.getErrors()) > 0:
-        print()
-        print('Errores')
+        f.write('\n')
+        f.write('\n')
         for i in printer.getErrors():
             print(i)
-
-
+            f.write(i)
+            f.write('\n')
 
 main()
