@@ -23,7 +23,7 @@ public class DecafParser extends Parser {
 		ADD=29, SUB=30, MULTIPLY=31, DIVIDE=32, REMINDER=33, AND=34, OR=35, NOT=36, 
 		GREATER_OP=37, LESS_OP=38, GREATER_eq_op=39, LESS_eq_op=40, EQUAL_OP=41, 
 		ADD_eq_op=42, SUB_eq_op=43, EQUALITY_OP=44, UNEQUALITY_OP=45, POINT=46, 
-		ID=47, ALPHA=48, DECIMAL_LITERAL=49, DIGIT=50, STRING_LITERAL=51, ALPHA_NUM=52, 
+		ID=47, ALPHA=48, DECIMAL_LITERAL=49, DIGIT=50, CHAR_LITERAL=51, ALPHA_NUM=52, 
 		HEX_DIGIT=53, LINE_COMMENT=54, COMMENT=55, NEWLINE=56, WHITESPACE=57;
 	public static final int
 		RULE_program = 0, RULE_declaration = 1, RULE_vardeclr = 2, RULE_field_declr = 3, 
@@ -64,8 +64,8 @@ public class DecafParser extends Parser {
 			"RROUND", "COMMA", "QUOTES", "APOSTROPHE", "ADD", "SUB", "MULTIPLY", 
 			"DIVIDE", "REMINDER", "AND", "OR", "NOT", "GREATER_OP", "LESS_OP", "GREATER_eq_op", 
 			"LESS_eq_op", "EQUAL_OP", "ADD_eq_op", "SUB_eq_op", "EQUALITY_OP", "UNEQUALITY_OP", 
-			"POINT", "ID", "ALPHA", "DECIMAL_LITERAL", "DIGIT", "STRING_LITERAL", 
-			"ALPHA_NUM", "HEX_DIGIT", "LINE_COMMENT", "COMMENT", "NEWLINE", "WHITESPACE"
+			"POINT", "ID", "ALPHA", "DECIMAL_LITERAL", "DIGIT", "CHAR_LITERAL", "ALPHA_NUM", 
+			"HEX_DIGIT", "LINE_COMMENT", "COMMENT", "NEWLINE", "WHITESPACE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -152,7 +152,7 @@ public class DecafParser extends Parser {
 			setState(64);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << INT) | (1L << STRING) | (1L << VOID) | (1L << STRUCT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << CHAR) | (1L << INT) | (1L << VOID) | (1L << STRUCT))) != 0)) {
 				{
 				{
 				setState(61);
@@ -579,7 +579,7 @@ public class DecafParser extends Parser {
 			setState(126);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << INT) | (1L << STRING) | (1L << STRUCT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << CHAR) | (1L << INT) | (1L << STRUCT))) != 0)) {
 				{
 				{
 				setState(123);
@@ -658,14 +658,14 @@ public class DecafParser extends Parser {
 			setState(150);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << INT) | (1L << STRING) | (1L << VOID) | (1L << STRUCT))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << CHAR) | (1L << INT) | (1L << VOID) | (1L << STRUCT))) != 0)) {
 				{
 				setState(139);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case BOOLEAN:
+				case CHAR:
 				case INT:
-				case STRING:
 				case STRUCT:
 					{
 					{
@@ -744,8 +744,8 @@ public class DecafParser extends Parser {
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BOOLEAN:
+			case CHAR:
 			case INT:
-			case STRING:
 			case STRUCT:
 				{
 				setState(155);
@@ -807,7 +807,7 @@ public class DecafParser extends Parser {
 			setState(163);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << INT) | (1L << STRING) | (1L << STRUCT))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << CHAR) | (1L << INT) | (1L << STRUCT))) != 0)) {
 				{
 				{
 				setState(160);
@@ -1115,7 +1115,7 @@ public class DecafParser extends Parser {
 			setState(236);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << CALLOUT) | (1L << LROUND) | (1L << SUB) | (1L << NOT) | (1L << ID) | (1L << DECIMAL_LITERAL) | (1L << STRING_LITERAL))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << CALLOUT) | (1L << LROUND) | (1L << SUB) | (1L << NOT) | (1L << ID) | (1L << DECIMAL_LITERAL) | (1L << CHAR_LITERAL))) != 0)) {
 				{
 				setState(228);
 				expr(0);
@@ -1160,7 +1160,7 @@ public class DecafParser extends Parser {
 		public TerminalNode SEMICOLON() { return getToken(DecafParser.SEMICOLON, 0); }
 		public TerminalNode CALLOUT() { return getToken(DecafParser.CALLOUT, 0); }
 		public TerminalNode LROUND() { return getToken(DecafParser.LROUND, 0); }
-		public TerminalNode STRING_LITERAL() { return getToken(DecafParser.STRING_LITERAL, 0); }
+		public TerminalNode CHAR_LITERAL() { return getToken(DecafParser.CHAR_LITERAL, 0); }
 		public TerminalNode RROUND() { return getToken(DecafParser.RROUND, 0); }
 		public List<TerminalNode> COMMA() { return getTokens(DecafParser.COMMA); }
 		public TerminalNode COMMA(int i) {
@@ -1210,7 +1210,7 @@ public class DecafParser extends Parser {
 				setState(245);
 				match(LROUND);
 				setState(246);
-				match(STRING_LITERAL);
+				match(CHAR_LITERAL);
 				setState(256);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -1418,7 +1418,7 @@ public class DecafParser extends Parser {
 				int_literal();
 				}
 				break;
-			case STRING_LITERAL:
+			case CHAR_LITERAL:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(286);
@@ -1499,7 +1499,7 @@ public class DecafParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public TerminalNode STRING_LITERAL() { return getToken(DecafParser.STRING_LITERAL, 0); }
+		public TerminalNode CHAR_LITERAL() { return getToken(DecafParser.CHAR_LITERAL, 0); }
 		public Callout_argContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1524,7 +1524,7 @@ public class DecafParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(295);
-				match(STRING_LITERAL);
+				match(CHAR_LITERAL);
 				}
 				break;
 			}
@@ -1570,7 +1570,7 @@ public class DecafParser extends Parser {
 	}
 
 	public static class String_literalContext extends ParserRuleContext {
-		public TerminalNode STRING_LITERAL() { return getToken(DecafParser.STRING_LITERAL, 0); }
+		public TerminalNode CHAR_LITERAL() { return getToken(DecafParser.CHAR_LITERAL, 0); }
 		public String_literalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1584,7 +1584,7 @@ public class DecafParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(300);
-			match(STRING_LITERAL);
+			match(CHAR_LITERAL);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1877,7 +1877,7 @@ public class DecafParser extends Parser {
 	public static class Var_typeContext extends ParserRuleContext {
 		public TerminalNode INT() { return getToken(DecafParser.INT, 0); }
 		public TerminalNode BOOLEAN() { return getToken(DecafParser.BOOLEAN, 0); }
-		public TerminalNode STRING() { return getToken(DecafParser.STRING, 0); }
+		public TerminalNode CHAR() { return getToken(DecafParser.CHAR, 0); }
 		public TerminalNode STRUCT() { return getToken(DecafParser.STRUCT, 0); }
 		public TerminalNode ID() { return getToken(DecafParser.ID, 0); }
 		public Struct_declrContext struct_declr() {
@@ -1914,7 +1914,7 @@ public class DecafParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(320);
-				match(STRING);
+				match(CHAR);
 				}
 				break;
 			case 4:
@@ -2141,7 +2141,7 @@ public class DecafParser extends Parser {
 		"\u013d\5\64\33\2\u0139\u013d\5,\27\2\u013a\u013d\5.\30\2\u013b\u013d\5"+
 		"\60\31\2\u013c\u0138\3\2\2\2\u013c\u0139\3\2\2\2\u013c\u013a\3\2\2\2\u013c"+
 		"\u013b\3\2\2\2\u013d\63\3\2\2\2\u013e\u013f\t\6\2\2\u013f\65\3\2\2\2\u0140"+
-		"\u0147\7\20\2\2\u0141\u0147\7\16\2\2\u0142\u0147\7\21\2\2\u0143\u0144"+
+		"\u0147\7\20\2\2\u0141\u0147\7\16\2\2\u0142\u0147\7\17\2\2\u0143\u0144"+
 		"\7\23\2\2\u0144\u0147\7\61\2\2\u0145\u0147\5\20\t\2\u0146\u0140\3\2\2"+
 		"\2\u0146\u0141\3\2\2\2\u0146\u0142\3\2\2\2\u0146\u0143\3\2\2\2\u0146\u0145"+
 		"\3\2\2\2\u0147\67\3\2\2\2\u0148\u0149\t\7\2\2\u01499\3\2\2\2\u014a\u014b"+

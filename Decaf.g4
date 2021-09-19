@@ -107,7 +107,7 @@ DIGIT               : [0-9];
 
 //BOOL_LITERAL        : 'True' | 'False';
 
-STRING_LITERAL      : ('"' ( ALPHA_NUM )+ '"') | (APOSTROPHE ( ALPHA_NUM )+ APOSTROPHE);
+CHAR_LITERAL      : ('"' ( ALPHA_NUM )+ '"') | (APOSTROPHE ( ALPHA_NUM )+ APOSTROPHE);
 
 ALPHA_NUM           : ALPHA | DIGIT;
 
@@ -174,7 +174,7 @@ method_call_inter:
 method_call:
 	method_call_inter
 	| method_call_inter SEMICOLON
-	| CALLOUT LROUND STRING_LITERAL (
+	| CALLOUT LROUND CHAR_LITERAL (
 		COMMA callout_arg (COMMA callout_arg)*
 	)? RROUND SEMICOLON;
 
@@ -191,11 +191,11 @@ literal: int_literal | string_literal | bool_literal;
 
 location: var_id | array_id;
 
-callout_arg: expr | STRING_LITERAL;
+callout_arg: expr | CHAR_LITERAL;
 
 int_literal: DECIMAL_LITERAL;
 
-string_literal: STRING_LITERAL;
+string_literal: CHAR_LITERAL;
 
 bool_literal: 'True' | 'False';
 
@@ -209,7 +209,7 @@ bin_op: arith_op | rel_op | eq_op | cond_op;
 
 arith_op: ADD | SUB | MULTIPLY | DIVIDE | REMINDER;
 
-var_type: INT | BOOLEAN | STRING | STRUCT ID | struct_declr;
+var_type: INT | BOOLEAN | CHAR | STRUCT ID | struct_declr;
 
 assign_op: EQUAL_OP | ADD_eq_op | SUB_eq_op;
 

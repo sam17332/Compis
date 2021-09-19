@@ -42,7 +42,7 @@ class KeyPrinter(DecafListener):
                     for i in arraySplit:
                         var = self.tablas.getVariable(i, self.scopes[len(self.scopes)-2])
                         if isinstance(var, list):
-                            if var[1] == 'int' or var[1] == 'boolean' or var[1] == 'string':
+                            if var[1] == 'int' or var[1] == 'boolean' or var[1] == 'char':
                                 arrayTypes.append(var[1])
                             else:
                                 self.contStatements -= 1
@@ -86,7 +86,7 @@ class KeyPrinter(DecafListener):
                         elif i == 'True' or i == 'False':
                             arrayTypes.append('boolean')
                         elif "'" in i:
-                            arrayTypes.append('string')
+                            arrayTypes.append('char')
                         else:
                             try:
                                 int(i)
@@ -244,8 +244,8 @@ class KeyPrinter(DecafListener):
                             tipo = 'int'
                         elif ctx.expr().literal().bool_literal():
                             tipo = 'boolean'
-                        elif ctx.expr().literal().string_literal():
-                            tipo = 'string'
+                        elif ctx.expr().literal().char_literal():
+                            tipo = 'char'
                         else:
                             self.error.append(f'217ERROR: El tipo de lo que retorna el método "{metodo[0]}" no es valido, linea: {ctx.start.line}')
 
@@ -272,8 +272,8 @@ class KeyPrinter(DecafListener):
                                                     tipo = 'int'
                                                 elif i.literal().bool_literal():
                                                     tipo = 'boolean'
-                                                elif i.literal().string_literal():
-                                                    tipo = 'string'
+                                                elif i.literal().char_literal():
+                                                    tipo = 'char'
                                             elif i.location():
                                                 if i.location().var_id():
                                                     var = i.location().var_id().getText()
@@ -337,7 +337,7 @@ class KeyPrinter(DecafListener):
                                     elif i == 'True' or i == 'False':
                                         arrayTypes.append('boolean')
                                     elif "'" in i:
-                                        arrayTypes.append('string')
+                                        arrayTypes.append('char')
                                     else:
                                         try:
                                             int(i)
@@ -397,8 +397,8 @@ class KeyPrinter(DecafListener):
                                 tipoDer = 'int'
                             elif ctx.expr().literal().bool_literal():
                                 tipoDer = 'boolean'
-                            elif ctx.expr().literal().string_literal():
-                                tipoDer = 'string'
+                            elif ctx.expr().literal().char_literal():
+                                tipoDer = 'char'
                         elif ctx.expr().location():
                             varDer = ctx.expr().location().getText()
                             if ctx.expr().location().array_id():
@@ -507,8 +507,8 @@ class KeyPrinter(DecafListener):
                                                         tipo = 'int'
                                                     elif i.literal().bool_literal():
                                                         tipo = 'boolean'
-                                                    elif i.literal().string_literal():
-                                                        tipo = 'string'
+                                                    elif i.literal().char_literal():
+                                                        tipo = 'char'
                                                 elif i.location():
                                                     tipo = ''
                                                     varDer = i.location().getText()
@@ -583,10 +583,10 @@ class KeyPrinter(DecafListener):
                                 valor = ctx.expr().literal().int_literal().getText()
                             elif ctx.expr().literal().bool_literal():
                                 valor = ctx.expr().literal().bool_literal().getText()
-                            elif ctx.expr().literal().string_literal():
-                                valor = ctx.expr().literal().string_literal().getText()
+                            elif ctx.expr().literal().char_literal():
+                                valor = ctx.expr().literal().char_literal().getText()
 
-                            if tipo == "string":
+                            if tipo == "char":
                                 if "'" not in valor:
                                     error = True
                             elif tipo == "int":
@@ -656,8 +656,8 @@ class KeyPrinter(DecafListener):
                                                         tipo = 'int'
                                                     elif i.literal().bool_literal():
                                                         tipo = 'boolean'
-                                                    elif i.literal().string_literal():
-                                                        tipo = 'string'
+                                                    elif i.literal().char_literal():
+                                                        tipo = 'char'
                                                 elif i.location():
                                                     var = i.location().getText()
                                                     if i.location().array_id():
@@ -781,7 +781,7 @@ class KeyPrinter(DecafListener):
                                     elif i == 'True' or i == 'False':
                                         arrayTypes.append('boolean')
                                     elif "'" in i:
-                                        arrayTypes.append('string')
+                                        arrayTypes.append('char')
                                     else:
                                         try:
                                             int(i)
@@ -843,8 +843,8 @@ class KeyPrinter(DecafListener):
                                 tipoDer = 'int'
                             elif ctx.expr().literal().bool_literal():
                                 tipoDer = 'boolean'
-                            elif ctx.expr().literal().string_literal():
-                                tipoDer = 'string'
+                            elif ctx.expr().literal().char_literal():
+                                tipoDer = 'char'
                         elif ctx.expr().location():
                             varDer = ctx.expr().location().getText()
                             if ctx.expr().location().array_id():
@@ -957,8 +957,8 @@ class KeyPrinter(DecafListener):
                                                         tipo = 'int'
                                                     elif i.literal().bool_literal():
                                                         tipo = 'boolean'
-                                                    elif i.literal().string_literal():
-                                                        tipo = 'string'
+                                                    elif i.literal().char_literal():
+                                                        tipo = 'char'
                                                 elif i.location():
                                                     tipo = ''
                                                     varDer = i.location().getText()
@@ -1093,8 +1093,8 @@ class KeyPrinter(DecafListener):
                                     tipoDer = ''
                                     if ctx.expr().literal().int_literal():
                                         tipoDer = 'int'
-                                    elif ctx.expr().literal().string_literal():
-                                        tipoDer = 'string'
+                                    elif ctx.expr().literal().char_literal():
+                                        tipoDer = 'char'
                                     elif ctx.expr().literal().bool_literal():
                                         tipoDer = 'boolean'
 
@@ -1121,8 +1121,8 @@ class KeyPrinter(DecafListener):
                                                                 tipo = 'int'
                                                             elif i.literal().bool_literal():
                                                                 tipo = 'boolean'
-                                                            elif i.literal().string_literal():
-                                                                tipo = 'string'
+                                                            elif i.literal().char_literal():
+                                                                tipo = 'char'
                                                         elif i.location():
                                                             var = i.location().getText()
                                                             if self.tablas.varExists(var, self.scopeActual):
@@ -1166,7 +1166,7 @@ class KeyPrinter(DecafListener):
                                             elif i == 'True' or i == 'False':
                                                 arrayTypes.append('boolean')
                                             elif "'" in i:
-                                                arrayTypes.append('string')
+                                                arrayTypes.append('char')
                                             else:
                                                 try:
                                                     int(i)
@@ -1283,7 +1283,7 @@ class KeyPrinter(DecafListener):
                         elif var == 'True' or var == 'False':
                             tipo = 'boolean'
                         elif "'" in var:
-                            tipo = 'string'
+                            tipo = 'char'
                         else:
                             try:
                                 int(var)
@@ -1424,8 +1424,8 @@ class KeyPrinter(DecafListener):
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
 def main():
-    # data = open('./pruebas/simpleTest.txt').read()
-    data = open('./pruebas/multiple_tests.txt').read()
+    data = open('./pruebas/simpleTest.txt').read()
+    # data = open('./pruebas/multiple_tests.txt').read()
     lexer = DecafLexer(InputStream(data))
     stream = CommonTokenStream(lexer)
     parser = DecafParser(stream)

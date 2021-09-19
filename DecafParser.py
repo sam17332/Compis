@@ -1,168 +1,167 @@
-# Generated from Decaf.g4 by ANTLR 4.9.2
+# Generated from Decaf.g4 by ANTLR 4.9
 # encoding: utf-8
+from __future__ import print_function
 from antlr4 import *
 from io import StringIO
 import sys
-if sys.version_info[1] > 5:
-	from typing import TextIO
-else:
-	from typing.io import TextIO
 
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3;")
-        buf.write("\u014d\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
-        buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
-        buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
-        buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31")
-        buf.write("\t\31\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36")
-        buf.write("\3\2\3\2\3\2\3\2\7\2A\n\2\f\2\16\2D\13\2\3\2\3\2\3\3\3")
-        buf.write("\3\3\3\3\3\5\3L\n\3\3\4\3\4\3\4\3\4\3\4\3\4\3\4\7\4U\n")
-        buf.write("\4\f\4\16\4X\13\4\3\4\3\4\3\5\3\5\3\5\3\5\7\5`\n\5\f\5")
-        buf.write("\16\5c\13\5\3\5\3\5\3\6\3\6\3\6\3\6\5\6k\n\6\3\6\3\6\3")
-        buf.write("\6\5\6p\n\6\3\7\3\7\5\7t\n\7\3\b\3\b\3\b\5\by\n\b\3\t")
-        buf.write("\3\t\3\t\3\t\7\t\177\n\t\f\t\16\t\u0082\13\t\3\t\3\t\3")
-        buf.write("\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u008e\n\n\3\n\3\n\3")
-        buf.write("\n\3\n\7\n\u0094\n\n\f\n\16\n\u0097\13\n\5\n\u0099\n\n")
-        buf.write("\3\n\3\n\3\n\3\13\3\13\5\13\u00a0\n\13\3\f\3\f\7\f\u00a4")
-        buf.write("\n\f\f\f\16\f\u00a7\13\f\3\f\7\f\u00aa\n\f\f\f\16\f\u00ad")
-        buf.write("\13\f\3\f\3\f\3\r\3\r\3\r\3\r\5\r\u00b5\n\r\3\r\3\r\3")
-        buf.write("\r\3\r\3\r\3\r\3\r\3\r\5\r\u00bf\n\r\3\r\3\r\3\r\3\r\3")
-        buf.write("\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r")
-        buf.write("\3\r\5\r\u00d4\n\r\3\r\3\r\3\r\3\r\5\r\u00da\n\r\3\r\5")
-        buf.write("\r\u00dd\n\r\3\r\3\r\3\r\3\r\5\r\u00e3\n\r\3\16\3\16\3")
-        buf.write("\16\3\16\3\16\7\16\u00ea\n\16\f\16\16\16\u00ed\13\16\5")
-        buf.write("\16\u00ef\n\16\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17")
-        buf.write("\3\17\3\17\3\17\3\17\3\17\7\17\u00fe\n\17\f\17\16\17\u0101")
-        buf.write("\13\17\5\17\u0103\n\17\3\17\3\17\5\17\u0107\n\17\3\20")
-        buf.write("\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20")
-        buf.write("\5\20\u0115\n\20\3\20\3\20\3\20\3\20\7\20\u011b\n\20\f")
-        buf.write("\20\16\20\u011e\13\20\3\21\3\21\3\21\5\21\u0123\n\21\3")
-        buf.write("\22\3\22\5\22\u0127\n\22\3\23\3\23\5\23\u012b\n\23\3\24")
-        buf.write("\3\24\3\25\3\25\3\26\3\26\3\27\3\27\3\30\3\30\3\31\3\31")
-        buf.write("\3\32\3\32\3\32\3\32\5\32\u013d\n\32\3\33\3\33\3\34\3")
-        buf.write("\34\3\34\3\34\3\34\3\34\5\34\u0147\n\34\3\35\3\35\3\36")
-        buf.write("\3\36\3\36\2\3\36\37\2\4\6\b\n\f\16\20\22\24\26\30\32")
-        buf.write("\34\36 \"$&(*,.\60\62\64\668:\2\b\3\2\3\4\3\2\'*\3\2.")
-        buf.write("/\3\2$%\3\2\37#\3\2+-\2\u0163\2<\3\2\2\2\4K\3\2\2\2\6")
-        buf.write("M\3\2\2\2\b[\3\2\2\2\nf\3\2\2\2\fs\3\2\2\2\16u\3\2\2\2")
-        buf.write("\20z\3\2\2\2\22\u0086\3\2\2\2\24\u009f\3\2\2\2\26\u00a1")
-        buf.write("\3\2\2\2\30\u00e2\3\2\2\2\32\u00e4\3\2\2\2\34\u0106\3")
-        buf.write("\2\2\2\36\u0114\3\2\2\2 \u0122\3\2\2\2\"\u0126\3\2\2\2")
-        buf.write("$\u012a\3\2\2\2&\u012c\3\2\2\2(\u012e\3\2\2\2*\u0130\3")
-        buf.write("\2\2\2,\u0132\3\2\2\2.\u0134\3\2\2\2\60\u0136\3\2\2\2")
-        buf.write("\62\u013c\3\2\2\2\64\u013e\3\2\2\2\66\u0146\3\2\2\28\u0148")
-        buf.write("\3\2\2\2:\u014a\3\2\2\2<=\7\5\2\2=>\7\6\2\2>B\7\26\2\2")
-        buf.write("?A\5\4\3\2@?\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3\2\2\2CE\3")
-        buf.write("\2\2\2DB\3\2\2\2EF\7\27\2\2F\3\3\2\2\2GL\5\20\t\2HL\5")
-        buf.write("\6\4\2IL\5\22\n\2JL\5\b\5\2KG\3\2\2\2KH\3\2\2\2KI\3\2")
-        buf.write("\2\2KJ\3\2\2\2L\5\3\2\2\2MN\5\66\34\2NO\5\f\7\2OV\3\2")
-        buf.write("\2\2PQ\7\34\2\2QR\5\66\34\2RS\5\f\7\2SU\3\2\2\2TP\3\2")
-        buf.write("\2\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2WY\3\2\2\2XV\3\2\2\2")
-        buf.write("YZ\7\25\2\2Z\7\3\2\2\2[\\\5\66\34\2\\a\5\f\7\2]^\7\34")
-        buf.write("\2\2^`\5\f\7\2_]\3\2\2\2`c\3\2\2\2a_\3\2\2\2ab\3\2\2\2")
-        buf.write("bd\3\2\2\2ca\3\2\2\2de\7\25\2\2e\t\3\2\2\2fg\7\61\2\2")
-        buf.write("gj\7\30\2\2hk\5&\24\2ik\5\16\b\2jh\3\2\2\2ji\3\2\2\2k")
-        buf.write("l\3\2\2\2lo\7\31\2\2mn\7\60\2\2np\5\"\22\2om\3\2\2\2o")
-        buf.write("p\3\2\2\2p\13\3\2\2\2qt\5\16\b\2rt\5\n\6\2sq\3\2\2\2s")
-        buf.write("r\3\2\2\2t\r\3\2\2\2ux\7\61\2\2vw\7\60\2\2wy\5\"\22\2")
-        buf.write("xv\3\2\2\2xy\3\2\2\2y\17\3\2\2\2z{\7\23\2\2{|\7\61\2\2")
-        buf.write("|\u0080\7\26\2\2}\177\5\6\4\2~}\3\2\2\2\177\u0082\3\2")
-        buf.write("\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0083\3")
-        buf.write("\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084\7\27\2\2\u0084")
-        buf.write("\u0085\7\25\2\2\u0085\21\3\2\2\2\u0086\u0087\5\24\13\2")
-        buf.write("\u0087\u0088\5:\36\2\u0088\u0098\7\32\2\2\u0089\u008a")
-        buf.write("\5\66\34\2\u008a\u008b\5\16\b\2\u008b\u008e\3\2\2\2\u008c")
-        buf.write("\u008e\7\22\2\2\u008d\u0089\3\2\2\2\u008d\u008c\3\2\2")
-        buf.write("\2\u008e\u0095\3\2\2\2\u008f\u0090\7\34\2\2\u0090\u0091")
-        buf.write("\5\66\34\2\u0091\u0092\5\16\b\2\u0092\u0094\3\2\2\2\u0093")
-        buf.write("\u008f\3\2\2\2\u0094\u0097\3\2\2\2\u0095\u0093\3\2\2\2")
-        buf.write("\u0095\u0096\3\2\2\2\u0096\u0099\3\2\2\2\u0097\u0095\3")
-        buf.write("\2\2\2\u0098\u008d\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009a")
-        buf.write("\3\2\2\2\u009a\u009b\7\33\2\2\u009b\u009c\5\26\f\2\u009c")
-        buf.write("\23\3\2\2\2\u009d\u00a0\5\66\34\2\u009e\u00a0\7\22\2\2")
-        buf.write("\u009f\u009d\3\2\2\2\u009f\u009e\3\2\2\2\u00a0\25\3\2")
-        buf.write("\2\2\u00a1\u00a5\7\26\2\2\u00a2\u00a4\5\6\4\2\u00a3\u00a2")
-        buf.write("\3\2\2\2\u00a4\u00a7\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a5")
-        buf.write("\u00a6\3\2\2\2\u00a6\u00ab\3\2\2\2\u00a7\u00a5\3\2\2\2")
-        buf.write("\u00a8\u00aa\5\30\r\2\u00a9\u00a8\3\2\2\2\u00aa\u00ad")
-        buf.write("\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac")
-        buf.write("\u00ae\3\2\2\2\u00ad\u00ab\3\2\2\2\u00ae\u00af\7\27\2")
-        buf.write("\2\u00af\27\3\2\2\2\u00b0\u00b1\5\"\22\2\u00b1\u00b2\5")
-        buf.write("8\35\2\u00b2\u00b4\5\36\20\2\u00b3\u00b5\7\25\2\2\u00b4")
-        buf.write("\u00b3\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00e3\3\2\2\2")
-        buf.write("\u00b6\u00e3\5\34\17\2\u00b7\u00b8\7\7\2\2\u00b8\u00b9")
-        buf.write("\7\32\2\2\u00b9\u00ba\5\36\20\2\u00ba\u00bb\7\33\2\2\u00bb")
-        buf.write("\u00be\5\26\f\2\u00bc\u00bd\7\b\2\2\u00bd\u00bf\5\26\f")
-        buf.write("\2\u00be\u00bc\3\2\2\2\u00be\u00bf\3\2\2\2\u00bf\u00e3")
-        buf.write("\3\2\2\2\u00c0\u00c1\7\n\2\2\u00c1\u00c2\7\32\2\2\u00c2")
-        buf.write("\u00c3\5\36\20\2\u00c3\u00c4\7\33\2\2\u00c4\u00c5\5\26")
-        buf.write("\f\2\u00c5\u00e3\3\2\2\2\u00c6\u00c7\5\"\22\2\u00c7\u00c8")
-        buf.write("\7+\2\2\u00c8\u00c9\5\36\20\2\u00c9\u00ca\7\25\2\2\u00ca")
-        buf.write("\u00e3\3\2\2\2\u00cb\u00cc\7\13\2\2\u00cc\u00cd\5\36\20")
-        buf.write("\2\u00cd\u00ce\7\25\2\2\u00ce\u00e3\3\2\2\2\u00cf\u00d0")
-        buf.write("\7\t\2\2\u00d0\u00d3\5\16\b\2\u00d1\u00d2\7+\2\2\u00d2")
-        buf.write("\u00d4\5&\24\2\u00d3\u00d1\3\2\2\2\u00d3\u00d4\3\2\2\2")
-        buf.write("\u00d4\u00d5\3\2\2\2\u00d5\u00dc\7\34\2\2\u00d6\u00d9")
-        buf.write("\5\16\b\2\u00d7\u00d8\7+\2\2\u00d8\u00da\5&\24\2\u00d9")
-        buf.write("\u00d7\3\2\2\2\u00d9\u00da\3\2\2\2\u00da\u00dd\3\2\2\2")
-        buf.write("\u00db\u00dd\5&\24\2\u00dc\u00d6\3\2\2\2\u00dc\u00db\3")
-        buf.write("\2\2\2\u00dd\u00de\3\2\2\2\u00de\u00df\5\26\f\2\u00df")
-        buf.write("\u00e3\3\2\2\2\u00e0\u00e1\7\f\2\2\u00e1\u00e3\7\25\2")
-        buf.write("\2\u00e2\u00b0\3\2\2\2\u00e2\u00b6\3\2\2\2\u00e2\u00b7")
-        buf.write("\3\2\2\2\u00e2\u00c0\3\2\2\2\u00e2\u00c6\3\2\2\2\u00e2")
-        buf.write("\u00cb\3\2\2\2\u00e2\u00cf\3\2\2\2\u00e2\u00e0\3\2\2\2")
-        buf.write("\u00e3\31\3\2\2\2\u00e4\u00e5\5:\36\2\u00e5\u00ee\7\32")
-        buf.write("\2\2\u00e6\u00eb\5\36\20\2\u00e7\u00e8\7\34\2\2\u00e8")
-        buf.write("\u00ea\5\36\20\2\u00e9\u00e7\3\2\2\2\u00ea\u00ed\3\2\2")
-        buf.write("\2\u00eb\u00e9\3\2\2\2\u00eb\u00ec\3\2\2\2\u00ec\u00ef")
-        buf.write("\3\2\2\2\u00ed\u00eb\3\2\2\2\u00ee\u00e6\3\2\2\2\u00ee")
-        buf.write("\u00ef\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0\u00f1\7\33\2")
-        buf.write("\2\u00f1\33\3\2\2\2\u00f2\u0107\5\32\16\2\u00f3\u00f4")
-        buf.write("\5\32\16\2\u00f4\u00f5\7\25\2\2\u00f5\u0107\3\2\2\2\u00f6")
-        buf.write("\u00f7\7\24\2\2\u00f7\u00f8\7\32\2\2\u00f8\u0102\7\65")
-        buf.write("\2\2\u00f9\u00fa\7\34\2\2\u00fa\u00ff\5$\23\2\u00fb\u00fc")
-        buf.write("\7\34\2\2\u00fc\u00fe\5$\23\2\u00fd\u00fb\3\2\2\2\u00fe")
-        buf.write("\u0101\3\2\2\2\u00ff\u00fd\3\2\2\2\u00ff\u0100\3\2\2\2")
-        buf.write("\u0100\u0103\3\2\2\2\u0101\u00ff\3\2\2\2\u0102\u00f9\3")
-        buf.write("\2\2\2\u0102\u0103\3\2\2\2\u0103\u0104\3\2\2\2\u0104\u0105")
-        buf.write("\7\33\2\2\u0105\u0107\7\25\2\2\u0106\u00f2\3\2\2\2\u0106")
-        buf.write("\u00f3\3\2\2\2\u0106\u00f6\3\2\2\2\u0107\35\3\2\2\2\u0108")
-        buf.write("\u0109\b\20\1\2\u0109\u0115\5\"\22\2\u010a\u0115\5 \21")
-        buf.write("\2\u010b\u010c\7 \2\2\u010c\u0115\5\36\20\6\u010d\u0115")
-        buf.write("\5\34\17\2\u010e\u010f\7&\2\2\u010f\u0115\5\36\20\4\u0110")
-        buf.write("\u0111\7\32\2\2\u0111\u0112\5\36\20\2\u0112\u0113\7\33")
-        buf.write("\2\2\u0113\u0115\3\2\2\2\u0114\u0108\3\2\2\2\u0114\u010a")
-        buf.write("\3\2\2\2\u0114\u010b\3\2\2\2\u0114\u010d\3\2\2\2\u0114")
-        buf.write("\u010e\3\2\2\2\u0114\u0110\3\2\2\2\u0115\u011c\3\2\2\2")
-        buf.write("\u0116\u0117\f\7\2\2\u0117\u0118\5\62\32\2\u0118\u0119")
-        buf.write("\5\36\20\b\u0119\u011b\3\2\2\2\u011a\u0116\3\2\2\2\u011b")
-        buf.write("\u011e\3\2\2\2\u011c\u011a\3\2\2\2\u011c\u011d\3\2\2\2")
-        buf.write("\u011d\37\3\2\2\2\u011e\u011c\3\2\2\2\u011f\u0123\5&\24")
-        buf.write("\2\u0120\u0123\5(\25\2\u0121\u0123\5*\26\2\u0122\u011f")
-        buf.write("\3\2\2\2\u0122\u0120\3\2\2\2\u0122\u0121\3\2\2\2\u0123")
-        buf.write("!\3\2\2\2\u0124\u0127\5\16\b\2\u0125\u0127\5\n\6\2\u0126")
-        buf.write("\u0124\3\2\2\2\u0126\u0125\3\2\2\2\u0127#\3\2\2\2\u0128")
-        buf.write("\u012b\5\36\20\2\u0129\u012b\7\65\2\2\u012a\u0128\3\2")
-        buf.write("\2\2\u012a\u0129\3\2\2\2\u012b%\3\2\2\2\u012c\u012d\7")
-        buf.write("\63\2\2\u012d\'\3\2\2\2\u012e\u012f\7\65\2\2\u012f)\3")
-        buf.write("\2\2\2\u0130\u0131\t\2\2\2\u0131+\3\2\2\2\u0132\u0133")
-        buf.write("\t\3\2\2\u0133-\3\2\2\2\u0134\u0135\t\4\2\2\u0135/\3\2")
-        buf.write("\2\2\u0136\u0137\t\5\2\2\u0137\61\3\2\2\2\u0138\u013d")
-        buf.write("\5\64\33\2\u0139\u013d\5,\27\2\u013a\u013d\5.\30\2\u013b")
-        buf.write("\u013d\5\60\31\2\u013c\u0138\3\2\2\2\u013c\u0139\3\2\2")
-        buf.write("\2\u013c\u013a\3\2\2\2\u013c\u013b\3\2\2\2\u013d\63\3")
-        buf.write("\2\2\2\u013e\u013f\t\6\2\2\u013f\65\3\2\2\2\u0140\u0147")
-        buf.write("\7\20\2\2\u0141\u0147\7\16\2\2\u0142\u0147\7\21\2\2\u0143")
-        buf.write("\u0144\7\23\2\2\u0144\u0147\7\61\2\2\u0145\u0147\5\20")
-        buf.write("\t\2\u0146\u0140\3\2\2\2\u0146\u0141\3\2\2\2\u0146\u0142")
-        buf.write("\3\2\2\2\u0146\u0143\3\2\2\2\u0146\u0145\3\2\2\2\u0147")
-        buf.write("\67\3\2\2\2\u0148\u0149\t\7\2\2\u01499\3\2\2\2\u014a\u014b")
-        buf.write("\7\61\2\2\u014b;\3\2\2\2#BKVajosx\u0080\u008d\u0095\u0098")
-        buf.write("\u009f\u00a5\u00ab\u00b4\u00be\u00d3\u00d9\u00dc\u00e2")
-        buf.write("\u00eb\u00ee\u00ff\u0102\u0106\u0114\u011c\u0122\u0126")
-        buf.write("\u012a\u013c\u0146")
+        buf.write(u"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3")
+        buf.write(u";\u014d\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t")
+        buf.write(u"\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r")
+        buf.write(u"\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4")
+        buf.write(u"\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30")
+        buf.write(u"\t\30\4\31\t\31\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t")
+        buf.write(u"\35\4\36\t\36\3\2\3\2\3\2\3\2\7\2A\n\2\f\2\16\2D\13\2")
+        buf.write(u"\3\2\3\2\3\3\3\3\3\3\3\3\5\3L\n\3\3\4\3\4\3\4\3\4\3\4")
+        buf.write(u"\3\4\3\4\7\4U\n\4\f\4\16\4X\13\4\3\4\3\4\3\5\3\5\3\5")
+        buf.write(u"\3\5\7\5`\n\5\f\5\16\5c\13\5\3\5\3\5\3\6\3\6\3\6\3\6")
+        buf.write(u"\5\6k\n\6\3\6\3\6\3\6\5\6p\n\6\3\7\3\7\5\7t\n\7\3\b\3")
+        buf.write(u"\b\3\b\5\by\n\b\3\t\3\t\3\t\3\t\7\t\177\n\t\f\t\16\t")
+        buf.write(u"\u0082\13\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5")
+        buf.write(u"\n\u008e\n\n\3\n\3\n\3\n\3\n\7\n\u0094\n\n\f\n\16\n\u0097")
+        buf.write(u"\13\n\5\n\u0099\n\n\3\n\3\n\3\n\3\13\3\13\5\13\u00a0")
+        buf.write(u"\n\13\3\f\3\f\7\f\u00a4\n\f\f\f\16\f\u00a7\13\f\3\f\7")
+        buf.write(u"\f\u00aa\n\f\f\f\16\f\u00ad\13\f\3\f\3\f\3\r\3\r\3\r")
+        buf.write(u"\3\r\5\r\u00b5\n\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5")
+        buf.write(u"\r\u00bf\n\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r")
+        buf.write(u"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00d4\n\r\3")
+        buf.write(u"\r\3\r\3\r\3\r\5\r\u00da\n\r\3\r\5\r\u00dd\n\r\3\r\3")
+        buf.write(u"\r\3\r\3\r\5\r\u00e3\n\r\3\16\3\16\3\16\3\16\3\16\7\16")
+        buf.write(u"\u00ea\n\16\f\16\16\16\u00ed\13\16\5\16\u00ef\n\16\3")
+        buf.write(u"\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17")
+        buf.write(u"\3\17\3\17\7\17\u00fe\n\17\f\17\16\17\u0101\13\17\5\17")
+        buf.write(u"\u0103\n\17\3\17\3\17\5\17\u0107\n\17\3\20\3\20\3\20")
+        buf.write(u"\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\3\20\5\20\u0115")
+        buf.write(u"\n\20\3\20\3\20\3\20\3\20\7\20\u011b\n\20\f\20\16\20")
+        buf.write(u"\u011e\13\20\3\21\3\21\3\21\5\21\u0123\n\21\3\22\3\22")
+        buf.write(u"\5\22\u0127\n\22\3\23\3\23\5\23\u012b\n\23\3\24\3\24")
+        buf.write(u"\3\25\3\25\3\26\3\26\3\27\3\27\3\30\3\30\3\31\3\31\3")
+        buf.write(u"\32\3\32\3\32\3\32\5\32\u013d\n\32\3\33\3\33\3\34\3\34")
+        buf.write(u"\3\34\3\34\3\34\3\34\5\34\u0147\n\34\3\35\3\35\3\36\3")
+        buf.write(u"\36\3\36\2\3\36\37\2\4\6\b\n\f\16\20\22\24\26\30\32\34")
+        buf.write(u"\36 \"$&(*,.\60\62\64\668:\2\b\3\2\3\4\3\2\'*\3\2./\3")
+        buf.write(u"\2$%\3\2\37#\3\2+-\2\u0163\2<\3\2\2\2\4K\3\2\2\2\6M\3")
+        buf.write(u"\2\2\2\b[\3\2\2\2\nf\3\2\2\2\fs\3\2\2\2\16u\3\2\2\2\20")
+        buf.write(u"z\3\2\2\2\22\u0086\3\2\2\2\24\u009f\3\2\2\2\26\u00a1")
+        buf.write(u"\3\2\2\2\30\u00e2\3\2\2\2\32\u00e4\3\2\2\2\34\u0106\3")
+        buf.write(u"\2\2\2\36\u0114\3\2\2\2 \u0122\3\2\2\2\"\u0126\3\2\2")
+        buf.write(u"\2$\u012a\3\2\2\2&\u012c\3\2\2\2(\u012e\3\2\2\2*\u0130")
+        buf.write(u"\3\2\2\2,\u0132\3\2\2\2.\u0134\3\2\2\2\60\u0136\3\2\2")
+        buf.write(u"\2\62\u013c\3\2\2\2\64\u013e\3\2\2\2\66\u0146\3\2\2\2")
+        buf.write(u"8\u0148\3\2\2\2:\u014a\3\2\2\2<=\7\5\2\2=>\7\6\2\2>B")
+        buf.write(u"\7\26\2\2?A\5\4\3\2@?\3\2\2\2AD\3\2\2\2B@\3\2\2\2BC\3")
+        buf.write(u"\2\2\2CE\3\2\2\2DB\3\2\2\2EF\7\27\2\2F\3\3\2\2\2GL\5")
+        buf.write(u"\20\t\2HL\5\6\4\2IL\5\22\n\2JL\5\b\5\2KG\3\2\2\2KH\3")
+        buf.write(u"\2\2\2KI\3\2\2\2KJ\3\2\2\2L\5\3\2\2\2MN\5\66\34\2NO\5")
+        buf.write(u"\f\7\2OV\3\2\2\2PQ\7\34\2\2QR\5\66\34\2RS\5\f\7\2SU\3")
+        buf.write(u"\2\2\2TP\3\2\2\2UX\3\2\2\2VT\3\2\2\2VW\3\2\2\2WY\3\2")
+        buf.write(u"\2\2XV\3\2\2\2YZ\7\25\2\2Z\7\3\2\2\2[\\\5\66\34\2\\a")
+        buf.write(u"\5\f\7\2]^\7\34\2\2^`\5\f\7\2_]\3\2\2\2`c\3\2\2\2a_\3")
+        buf.write(u"\2\2\2ab\3\2\2\2bd\3\2\2\2ca\3\2\2\2de\7\25\2\2e\t\3")
+        buf.write(u"\2\2\2fg\7\61\2\2gj\7\30\2\2hk\5&\24\2ik\5\16\b\2jh\3")
+        buf.write(u"\2\2\2ji\3\2\2\2kl\3\2\2\2lo\7\31\2\2mn\7\60\2\2np\5")
+        buf.write(u"\"\22\2om\3\2\2\2op\3\2\2\2p\13\3\2\2\2qt\5\16\b\2rt")
+        buf.write(u"\5\n\6\2sq\3\2\2\2sr\3\2\2\2t\r\3\2\2\2ux\7\61\2\2vw")
+        buf.write(u"\7\60\2\2wy\5\"\22\2xv\3\2\2\2xy\3\2\2\2y\17\3\2\2\2")
+        buf.write(u"z{\7\23\2\2{|\7\61\2\2|\u0080\7\26\2\2}\177\5\6\4\2~")
+        buf.write(u"}\3\2\2\2\177\u0082\3\2\2\2\u0080~\3\2\2\2\u0080\u0081")
+        buf.write(u"\3\2\2\2\u0081\u0083\3\2\2\2\u0082\u0080\3\2\2\2\u0083")
+        buf.write(u"\u0084\7\27\2\2\u0084\u0085\7\25\2\2\u0085\21\3\2\2\2")
+        buf.write(u"\u0086\u0087\5\24\13\2\u0087\u0088\5:\36\2\u0088\u0098")
+        buf.write(u"\7\32\2\2\u0089\u008a\5\66\34\2\u008a\u008b\5\16\b\2")
+        buf.write(u"\u008b\u008e\3\2\2\2\u008c\u008e\7\22\2\2\u008d\u0089")
+        buf.write(u"\3\2\2\2\u008d\u008c\3\2\2\2\u008e\u0095\3\2\2\2\u008f")
+        buf.write(u"\u0090\7\34\2\2\u0090\u0091\5\66\34\2\u0091\u0092\5\16")
+        buf.write(u"\b\2\u0092\u0094\3\2\2\2\u0093\u008f\3\2\2\2\u0094\u0097")
+        buf.write(u"\3\2\2\2\u0095\u0093\3\2\2\2\u0095\u0096\3\2\2\2\u0096")
+        buf.write(u"\u0099\3\2\2\2\u0097\u0095\3\2\2\2\u0098\u008d\3\2\2")
+        buf.write(u"\2\u0098\u0099\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u009b")
+        buf.write(u"\7\33\2\2\u009b\u009c\5\26\f\2\u009c\23\3\2\2\2\u009d")
+        buf.write(u"\u00a0\5\66\34\2\u009e\u00a0\7\22\2\2\u009f\u009d\3\2")
+        buf.write(u"\2\2\u009f\u009e\3\2\2\2\u00a0\25\3\2\2\2\u00a1\u00a5")
+        buf.write(u"\7\26\2\2\u00a2\u00a4\5\6\4\2\u00a3\u00a2\3\2\2\2\u00a4")
+        buf.write(u"\u00a7\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a5\u00a6\3\2\2")
+        buf.write(u"\2\u00a6\u00ab\3\2\2\2\u00a7\u00a5\3\2\2\2\u00a8\u00aa")
+        buf.write(u"\5\30\r\2\u00a9\u00a8\3\2\2\2\u00aa\u00ad\3\2\2\2\u00ab")
+        buf.write(u"\u00a9\3\2\2\2\u00ab\u00ac\3\2\2\2\u00ac\u00ae\3\2\2")
+        buf.write(u"\2\u00ad\u00ab\3\2\2\2\u00ae\u00af\7\27\2\2\u00af\27")
+        buf.write(u"\3\2\2\2\u00b0\u00b1\5\"\22\2\u00b1\u00b2\58\35\2\u00b2")
+        buf.write(u"\u00b4\5\36\20\2\u00b3\u00b5\7\25\2\2\u00b4\u00b3\3\2")
+        buf.write(u"\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00e3\3\2\2\2\u00b6\u00e3")
+        buf.write(u"\5\34\17\2\u00b7\u00b8\7\7\2\2\u00b8\u00b9\7\32\2\2\u00b9")
+        buf.write(u"\u00ba\5\36\20\2\u00ba\u00bb\7\33\2\2\u00bb\u00be\5\26")
+        buf.write(u"\f\2\u00bc\u00bd\7\b\2\2\u00bd\u00bf\5\26\f\2\u00be\u00bc")
+        buf.write(u"\3\2\2\2\u00be\u00bf\3\2\2\2\u00bf\u00e3\3\2\2\2\u00c0")
+        buf.write(u"\u00c1\7\n\2\2\u00c1\u00c2\7\32\2\2\u00c2\u00c3\5\36")
+        buf.write(u"\20\2\u00c3\u00c4\7\33\2\2\u00c4\u00c5\5\26\f\2\u00c5")
+        buf.write(u"\u00e3\3\2\2\2\u00c6\u00c7\5\"\22\2\u00c7\u00c8\7+\2")
+        buf.write(u"\2\u00c8\u00c9\5\36\20\2\u00c9\u00ca\7\25\2\2\u00ca\u00e3")
+        buf.write(u"\3\2\2\2\u00cb\u00cc\7\13\2\2\u00cc\u00cd\5\36\20\2\u00cd")
+        buf.write(u"\u00ce\7\25\2\2\u00ce\u00e3\3\2\2\2\u00cf\u00d0\7\t\2")
+        buf.write(u"\2\u00d0\u00d3\5\16\b\2\u00d1\u00d2\7+\2\2\u00d2\u00d4")
+        buf.write(u"\5&\24\2\u00d3\u00d1\3\2\2\2\u00d3\u00d4\3\2\2\2\u00d4")
+        buf.write(u"\u00d5\3\2\2\2\u00d5\u00dc\7\34\2\2\u00d6\u00d9\5\16")
+        buf.write(u"\b\2\u00d7\u00d8\7+\2\2\u00d8\u00da\5&\24\2\u00d9\u00d7")
+        buf.write(u"\3\2\2\2\u00d9\u00da\3\2\2\2\u00da\u00dd\3\2\2\2\u00db")
+        buf.write(u"\u00dd\5&\24\2\u00dc\u00d6\3\2\2\2\u00dc\u00db\3\2\2")
+        buf.write(u"\2\u00dd\u00de\3\2\2\2\u00de\u00df\5\26\f\2\u00df\u00e3")
+        buf.write(u"\3\2\2\2\u00e0\u00e1\7\f\2\2\u00e1\u00e3\7\25\2\2\u00e2")
+        buf.write(u"\u00b0\3\2\2\2\u00e2\u00b6\3\2\2\2\u00e2\u00b7\3\2\2")
+        buf.write(u"\2\u00e2\u00c0\3\2\2\2\u00e2\u00c6\3\2\2\2\u00e2\u00cb")
+        buf.write(u"\3\2\2\2\u00e2\u00cf\3\2\2\2\u00e2\u00e0\3\2\2\2\u00e3")
+        buf.write(u"\31\3\2\2\2\u00e4\u00e5\5:\36\2\u00e5\u00ee\7\32\2\2")
+        buf.write(u"\u00e6\u00eb\5\36\20\2\u00e7\u00e8\7\34\2\2\u00e8\u00ea")
+        buf.write(u"\5\36\20\2\u00e9\u00e7\3\2\2\2\u00ea\u00ed\3\2\2\2\u00eb")
+        buf.write(u"\u00e9\3\2\2\2\u00eb\u00ec\3\2\2\2\u00ec\u00ef\3\2\2")
+        buf.write(u"\2\u00ed\u00eb\3\2\2\2\u00ee\u00e6\3\2\2\2\u00ee\u00ef")
+        buf.write(u"\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0\u00f1\7\33\2\2\u00f1")
+        buf.write(u"\33\3\2\2\2\u00f2\u0107\5\32\16\2\u00f3\u00f4\5\32\16")
+        buf.write(u"\2\u00f4\u00f5\7\25\2\2\u00f5\u0107\3\2\2\2\u00f6\u00f7")
+        buf.write(u"\7\24\2\2\u00f7\u00f8\7\32\2\2\u00f8\u0102\7\65\2\2\u00f9")
+        buf.write(u"\u00fa\7\34\2\2\u00fa\u00ff\5$\23\2\u00fb\u00fc\7\34")
+        buf.write(u"\2\2\u00fc\u00fe\5$\23\2\u00fd\u00fb\3\2\2\2\u00fe\u0101")
+        buf.write(u"\3\2\2\2\u00ff\u00fd\3\2\2\2\u00ff\u0100\3\2\2\2\u0100")
+        buf.write(u"\u0103\3\2\2\2\u0101\u00ff\3\2\2\2\u0102\u00f9\3\2\2")
+        buf.write(u"\2\u0102\u0103\3\2\2\2\u0103\u0104\3\2\2\2\u0104\u0105")
+        buf.write(u"\7\33\2\2\u0105\u0107\7\25\2\2\u0106\u00f2\3\2\2\2\u0106")
+        buf.write(u"\u00f3\3\2\2\2\u0106\u00f6\3\2\2\2\u0107\35\3\2\2\2\u0108")
+        buf.write(u"\u0109\b\20\1\2\u0109\u0115\5\"\22\2\u010a\u0115\5 \21")
+        buf.write(u"\2\u010b\u010c\7 \2\2\u010c\u0115\5\36\20\6\u010d\u0115")
+        buf.write(u"\5\34\17\2\u010e\u010f\7&\2\2\u010f\u0115\5\36\20\4\u0110")
+        buf.write(u"\u0111\7\32\2\2\u0111\u0112\5\36\20\2\u0112\u0113\7\33")
+        buf.write(u"\2\2\u0113\u0115\3\2\2\2\u0114\u0108\3\2\2\2\u0114\u010a")
+        buf.write(u"\3\2\2\2\u0114\u010b\3\2\2\2\u0114\u010d\3\2\2\2\u0114")
+        buf.write(u"\u010e\3\2\2\2\u0114\u0110\3\2\2\2\u0115\u011c\3\2\2")
+        buf.write(u"\2\u0116\u0117\f\7\2\2\u0117\u0118\5\62\32\2\u0118\u0119")
+        buf.write(u"\5\36\20\b\u0119\u011b\3\2\2\2\u011a\u0116\3\2\2\2\u011b")
+        buf.write(u"\u011e\3\2\2\2\u011c\u011a\3\2\2\2\u011c\u011d\3\2\2")
+        buf.write(u"\2\u011d\37\3\2\2\2\u011e\u011c\3\2\2\2\u011f\u0123\5")
+        buf.write(u"&\24\2\u0120\u0123\5(\25\2\u0121\u0123\5*\26\2\u0122")
+        buf.write(u"\u011f\3\2\2\2\u0122\u0120\3\2\2\2\u0122\u0121\3\2\2")
+        buf.write(u"\2\u0123!\3\2\2\2\u0124\u0127\5\16\b\2\u0125\u0127\5")
+        buf.write(u"\n\6\2\u0126\u0124\3\2\2\2\u0126\u0125\3\2\2\2\u0127")
+        buf.write(u"#\3\2\2\2\u0128\u012b\5\36\20\2\u0129\u012b\7\65\2\2")
+        buf.write(u"\u012a\u0128\3\2\2\2\u012a\u0129\3\2\2\2\u012b%\3\2\2")
+        buf.write(u"\2\u012c\u012d\7\63\2\2\u012d\'\3\2\2\2\u012e\u012f\7")
+        buf.write(u"\65\2\2\u012f)\3\2\2\2\u0130\u0131\t\2\2\2\u0131+\3\2")
+        buf.write(u"\2\2\u0132\u0133\t\3\2\2\u0133-\3\2\2\2\u0134\u0135\t")
+        buf.write(u"\4\2\2\u0135/\3\2\2\2\u0136\u0137\t\5\2\2\u0137\61\3")
+        buf.write(u"\2\2\2\u0138\u013d\5\64\33\2\u0139\u013d\5,\27\2\u013a")
+        buf.write(u"\u013d\5.\30\2\u013b\u013d\5\60\31\2\u013c\u0138\3\2")
+        buf.write(u"\2\2\u013c\u0139\3\2\2\2\u013c\u013a\3\2\2\2\u013c\u013b")
+        buf.write(u"\3\2\2\2\u013d\63\3\2\2\2\u013e\u013f\t\6\2\2\u013f\65")
+        buf.write(u"\3\2\2\2\u0140\u0147\7\20\2\2\u0141\u0147\7\16\2\2\u0142")
+        buf.write(u"\u0147\7\17\2\2\u0143\u0144\7\23\2\2\u0144\u0147\7\61")
+        buf.write(u"\2\2\u0145\u0147\5\20\t\2\u0146\u0140\3\2\2\2\u0146\u0141")
+        buf.write(u"\3\2\2\2\u0146\u0142\3\2\2\2\u0146\u0143\3\2\2\2\u0146")
+        buf.write(u"\u0145\3\2\2\2\u0147\67\3\2\2\2\u0148\u0149\t\7\2\2\u0149")
+        buf.write(u"9\3\2\2\2\u014a\u014b\7\61\2\2\u014b;\3\2\2\2#BKVajo")
+        buf.write(u"sx\u0080\u008d\u0095\u0098\u009f\u00a5\u00ab\u00b4\u00be")
+        buf.write(u"\u00d3\u00d9\u00dc\u00e2\u00eb\u00ee\u00ff\u0102\u0106")
+        buf.write(u"\u0114\u011c\u0122\u0126\u012a\u013c\u0146")
         return buf.getvalue()
 
 
@@ -176,27 +175,29 @@ class DecafParser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'True'", "'False'", "'class'", "'Program'", 
-                     "'if'", "'else'", "'for'", "'while'", "'return'", "'break'", 
-                     "'continue'", "'boolean'", "'char'", "'int'", "'string'", 
-                     "'void'", "'struct'", "'callout'", "';'", "'{'", "'}'", 
-                     "'['", "']'", "'('", "')'", "','", "'\"'", "'''", "'+'", 
-                     "'-'", "'*'", "'/'", "'%'", "'&&'", "'||'", "'!'", 
-                     "'>'", "'<'", "'>='", "'<='", "'='", "'+='", "'-='", 
-                     "'=='", "'!='", "'.'" ]
+    literalNames = [ u"<INVALID>", u"'True'", u"'False'", u"'class'", u"'Program'", 
+                     u"'if'", u"'else'", u"'for'", u"'while'", u"'return'", 
+                     u"'break'", u"'continue'", u"'boolean'", u"'char'", 
+                     u"'int'", u"'string'", u"'void'", u"'struct'", u"'callout'", 
+                     u"';'", u"'{'", u"'}'", u"'['", u"']'", u"'('", u"')'", 
+                     u"','", u"'\"'", u"'''", u"'+'", u"'-'", u"'*'", u"'/'", 
+                     u"'%'", u"'&&'", u"'||'", u"'!'", u"'>'", u"'<'", u"'>='", 
+                     u"'<='", u"'='", u"'+='", u"'-='", u"'=='", u"'!='", 
+                     u"'.'" ]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "CLASS", "PROGRAM", 
-                      "IF", "ELSE", "FOR", "WHILE", "RETURN", "BREAK", "CONTINUE", 
-                      "BOOLEAN", "CHAR", "INT", "STRING", "VOID", "STRUCT", 
-                      "CALLOUT", "SEMICOLON", "LCURLY", "RCURLY", "LSQUARE", 
-                      "RSQUARE", "LROUND", "RROUND", "COMMA", "QUOTES", 
-                      "APOSTROPHE", "ADD", "SUB", "MULTIPLY", "DIVIDE", 
-                      "REMINDER", "AND", "OR", "NOT", "GREATER_OP", "LESS_OP", 
-                      "GREATER_eq_op", "LESS_eq_op", "EQUAL_OP", "ADD_eq_op", 
-                      "SUB_eq_op", "EQUALITY_OP", "UNEQUALITY_OP", "POINT", 
-                      "ID", "ALPHA", "DECIMAL_LITERAL", "DIGIT", "STRING_LITERAL", 
-                      "ALPHA_NUM", "HEX_DIGIT", "LINE_COMMENT", "COMMENT", 
-                      "NEWLINE", "WHITESPACE" ]
+    symbolicNames = [ u"<INVALID>", u"<INVALID>", u"<INVALID>", u"CLASS", 
+                      u"PROGRAM", u"IF", u"ELSE", u"FOR", u"WHILE", u"RETURN", 
+                      u"BREAK", u"CONTINUE", u"BOOLEAN", u"CHAR", u"INT", 
+                      u"STRING", u"VOID", u"STRUCT", u"CALLOUT", u"SEMICOLON", 
+                      u"LCURLY", u"RCURLY", u"LSQUARE", u"RSQUARE", u"LROUND", 
+                      u"RROUND", u"COMMA", u"QUOTES", u"APOSTROPHE", u"ADD", 
+                      u"SUB", u"MULTIPLY", u"DIVIDE", u"REMINDER", u"AND", 
+                      u"OR", u"NOT", u"GREATER_OP", u"LESS_OP", u"GREATER_eq_op", 
+                      u"LESS_eq_op", u"EQUAL_OP", u"ADD_eq_op", u"SUB_eq_op", 
+                      u"EQUALITY_OP", u"UNEQUALITY_OP", u"POINT", u"ID", 
+                      u"ALPHA", u"DECIMAL_LITERAL", u"DIGIT", u"CHAR_LITERAL", 
+                      u"ALPHA_NUM", u"HEX_DIGIT", u"LINE_COMMENT", u"COMMENT", 
+                      u"NEWLINE", u"WHITESPACE" ]
 
     RULE_program = 0
     RULE_declaration = 1
@@ -228,13 +229,13 @@ class DecafParser ( Parser ):
     RULE_assign_op = 27
     RULE_method_name = 28
 
-    ruleNames =  [ "program", "declaration", "vardeclr", "field_declr", 
-                   "array_id", "field_var", "var_id", "struct_declr", "method_declr", 
-                   "return_type", "block", "statement", "method_call_inter", 
-                   "method_call", "expr", "literal", "location", "callout_arg", 
-                   "int_literal", "string_literal", "bool_literal", "rel_op", 
-                   "eq_op", "cond_op", "bin_op", "arith_op", "var_type", 
-                   "assign_op", "method_name" ]
+    ruleNames =  [ u"program", u"declaration", u"vardeclr", u"field_declr", 
+                   u"array_id", u"field_var", u"var_id", u"struct_declr", 
+                   u"method_declr", u"return_type", u"block", u"statement", 
+                   u"method_call_inter", u"method_call", u"expr", u"literal", 
+                   u"location", u"callout_arg", u"int_literal", u"string_literal", 
+                   u"bool_literal", u"rel_op", u"eq_op", u"cond_op", u"bin_op", 
+                   u"arith_op", u"var_type", u"assign_op", u"method_name" ]
 
     EOF = Token.EOF
     T__0=1
@@ -287,7 +288,7 @@ class DecafParser ( Parser ):
     ALPHA=48
     DECIMAL_LITERAL=49
     DIGIT=50
-    STRING_LITERAL=51
+    CHAR_LITERAL=51
     ALPHA_NUM=52
     HEX_DIGIT=53
     LINE_COMMENT=54
@@ -295,9 +296,9 @@ class DecafParser ( Parser ):
     NEWLINE=56
     WHITESPACE=57
 
-    def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
-        super().__init__(input, output)
-        self.checkVersion("4.9.2")
+    def __init__(self, input, output=sys.stdout):
+        super(DecafParser, self).__init__(input, output=output)
+        self.checkVersion("4.9")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -305,10 +306,9 @@ class DecafParser ( Parser ):
 
 
     class ProgramContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.ProgramContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def CLASS(self):
@@ -323,7 +323,7 @@ class DecafParser ( Parser ):
         def RCURLY(self):
             return self.getToken(DecafParser.RCURLY, 0)
 
-        def declaration(self, i:int=None):
+        def declaration(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.DeclarationContext)
             else:
@@ -333,12 +333,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_program
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterProgram" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterProgram"):
                 listener.enterProgram(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitProgram" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitProgram"):
                 listener.exitProgram(self)
 
 
@@ -360,7 +360,7 @@ class DecafParser ( Parser ):
             self.state = 64
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.INT) | (1 << DecafParser.STRING) | (1 << DecafParser.VOID) | (1 << DecafParser.STRUCT))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.CHAR) | (1 << DecafParser.INT) | (1 << DecafParser.VOID) | (1 << DecafParser.STRUCT))) != 0):
                 self.state = 61
                 self.declaration()
                 self.state = 66
@@ -379,10 +379,9 @@ class DecafParser ( Parser ):
 
 
     class DeclarationContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.DeclarationContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def struct_declr(self):
@@ -404,12 +403,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_declaration
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterDeclaration" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterDeclaration"):
                 listener.enterDeclaration(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitDeclaration" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitDeclaration"):
                 listener.exitDeclaration(self)
 
 
@@ -458,30 +457,29 @@ class DecafParser ( Parser ):
 
 
     class VardeclrContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.VardeclrContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def SEMICOLON(self):
             return self.getToken(DecafParser.SEMICOLON, 0)
 
-        def var_type(self, i:int=None):
+        def var_type(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Var_typeContext)
             else:
                 return self.getTypedRuleContext(DecafParser.Var_typeContext,i)
 
 
-        def field_var(self, i:int=None):
+        def field_var(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Field_varContext)
             else:
                 return self.getTypedRuleContext(DecafParser.Field_varContext,i)
 
 
-        def COMMA(self, i:int=None):
+        def COMMA(self, i=None):
             if i is None:
                 return self.getTokens(DecafParser.COMMA)
             else:
@@ -490,12 +488,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_vardeclr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterVardeclr" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterVardeclr"):
                 listener.enterVardeclr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitVardeclr" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitVardeclr"):
                 listener.exitVardeclr(self)
 
 
@@ -538,17 +536,16 @@ class DecafParser ( Parser ):
 
 
     class Field_declrContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Field_declrContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def var_type(self):
             return self.getTypedRuleContext(DecafParser.Var_typeContext,0)
 
 
-        def field_var(self, i:int=None):
+        def field_var(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Field_varContext)
             else:
@@ -558,7 +555,7 @@ class DecafParser ( Parser ):
         def SEMICOLON(self):
             return self.getToken(DecafParser.SEMICOLON, 0)
 
-        def COMMA(self, i:int=None):
+        def COMMA(self, i=None):
             if i is None:
                 return self.getTokens(DecafParser.COMMA)
             else:
@@ -567,12 +564,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_field_declr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterField_declr" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterField_declr"):
                 listener.enterField_declr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitField_declr" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitField_declr"):
                 listener.exitField_declr(self)
 
 
@@ -613,10 +610,9 @@ class DecafParser ( Parser ):
 
 
     class Array_idContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Array_idContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def ID(self):
@@ -646,12 +642,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_array_id
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterArray_id" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterArray_id"):
                 listener.enterArray_id(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitArray_id" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitArray_id"):
                 listener.exitArray_id(self)
 
 
@@ -703,10 +699,9 @@ class DecafParser ( Parser ):
 
 
     class Field_varContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Field_varContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def var_id(self):
@@ -720,12 +715,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_field_var
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterField_var" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterField_var"):
                 listener.enterField_var(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitField_var" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitField_var"):
                 listener.exitField_var(self)
 
 
@@ -762,10 +757,9 @@ class DecafParser ( Parser ):
 
 
     class Var_idContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Var_idContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def ID(self):
@@ -781,12 +775,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_var_id
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterVar_id" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterVar_id"):
                 listener.enterVar_id(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitVar_id" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitVar_id"):
                 listener.exitVar_id(self)
 
 
@@ -820,10 +814,9 @@ class DecafParser ( Parser ):
 
 
     class Struct_declrContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Struct_declrContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def STRUCT(self):
@@ -841,7 +834,7 @@ class DecafParser ( Parser ):
         def SEMICOLON(self):
             return self.getToken(DecafParser.SEMICOLON, 0)
 
-        def vardeclr(self, i:int=None):
+        def vardeclr(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.VardeclrContext)
             else:
@@ -851,12 +844,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_struct_declr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterStruct_declr" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterStruct_declr"):
                 listener.enterStruct_declr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitStruct_declr" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitStruct_declr"):
                 listener.exitStruct_declr(self)
 
 
@@ -878,7 +871,7 @@ class DecafParser ( Parser ):
             self.state = 126
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.INT) | (1 << DecafParser.STRING) | (1 << DecafParser.STRUCT))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.CHAR) | (1 << DecafParser.INT) | (1 << DecafParser.STRUCT))) != 0):
                 self.state = 123
                 self.vardeclr()
                 self.state = 128
@@ -899,10 +892,9 @@ class DecafParser ( Parser ):
 
 
     class Method_declrContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Method_declrContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def return_type(self):
@@ -926,20 +918,20 @@ class DecafParser ( Parser ):
         def VOID(self):
             return self.getToken(DecafParser.VOID, 0)
 
-        def COMMA(self, i:int=None):
+        def COMMA(self, i=None):
             if i is None:
                 return self.getTokens(DecafParser.COMMA)
             else:
                 return self.getToken(DecafParser.COMMA, i)
 
-        def var_type(self, i:int=None):
+        def var_type(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Var_typeContext)
             else:
                 return self.getTypedRuleContext(DecafParser.Var_typeContext,i)
 
 
-        def var_id(self, i:int=None):
+        def var_id(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Var_idContext)
             else:
@@ -949,12 +941,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_method_declr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterMethod_declr" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterMethod_declr"):
                 listener.enterMethod_declr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitMethod_declr" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitMethod_declr"):
                 listener.exitMethod_declr(self)
 
 
@@ -976,11 +968,11 @@ class DecafParser ( Parser ):
             self.state = 150
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.INT) | (1 << DecafParser.STRING) | (1 << DecafParser.VOID) | (1 << DecafParser.STRUCT))) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.CHAR) | (1 << DecafParser.INT) | (1 << DecafParser.VOID) | (1 << DecafParser.STRUCT))) != 0):
                 self.state = 139
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
-                if token in [DecafParser.BOOLEAN, DecafParser.INT, DecafParser.STRING, DecafParser.STRUCT]:
+                if token in [DecafParser.BOOLEAN, DecafParser.CHAR, DecafParser.INT, DecafParser.STRUCT]:
                     self.state = 135
                     self.var_type()
                     self.state = 136
@@ -1023,10 +1015,9 @@ class DecafParser ( Parser ):
 
 
     class Return_typeContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Return_typeContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def var_type(self):
@@ -1039,12 +1030,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_return_type
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterReturn_type" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterReturn_type"):
                 listener.enterReturn_type(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitReturn_type" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitReturn_type"):
                 listener.exitReturn_type(self)
 
 
@@ -1059,7 +1050,7 @@ class DecafParser ( Parser ):
             self.state = 157
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [DecafParser.BOOLEAN, DecafParser.INT, DecafParser.STRING, DecafParser.STRUCT]:
+            if token in [DecafParser.BOOLEAN, DecafParser.CHAR, DecafParser.INT, DecafParser.STRUCT]:
                 self.state = 155
                 self.var_type()
                 pass
@@ -1080,10 +1071,9 @@ class DecafParser ( Parser ):
 
 
     class BlockContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.BlockContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def LCURLY(self):
@@ -1092,14 +1082,14 @@ class DecafParser ( Parser ):
         def RCURLY(self):
             return self.getToken(DecafParser.RCURLY, 0)
 
-        def vardeclr(self, i:int=None):
+        def vardeclr(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.VardeclrContext)
             else:
                 return self.getTypedRuleContext(DecafParser.VardeclrContext,i)
 
 
-        def statement(self, i:int=None):
+        def statement(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.StatementContext)
             else:
@@ -1109,12 +1099,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_block
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBlock" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterBlock"):
                 listener.enterBlock(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBlock" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitBlock"):
                 listener.exitBlock(self)
 
 
@@ -1132,7 +1122,7 @@ class DecafParser ( Parser ):
             self.state = 163
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.INT) | (1 << DecafParser.STRING) | (1 << DecafParser.STRUCT))) != 0):
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.BOOLEAN) | (1 << DecafParser.CHAR) | (1 << DecafParser.INT) | (1 << DecafParser.STRUCT))) != 0):
                 self.state = 160
                 self.vardeclr()
                 self.state = 165
@@ -1161,10 +1151,9 @@ class DecafParser ( Parser ):
 
 
     class StatementContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.StatementContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def location(self):
@@ -1195,7 +1184,7 @@ class DecafParser ( Parser ):
         def RROUND(self):
             return self.getToken(DecafParser.RROUND, 0)
 
-        def block(self, i:int=None):
+        def block(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.BlockContext)
             else:
@@ -1208,7 +1197,7 @@ class DecafParser ( Parser ):
         def WHILE(self):
             return self.getToken(DecafParser.WHILE, 0)
 
-        def EQUAL_OP(self, i:int=None):
+        def EQUAL_OP(self, i=None):
             if i is None:
                 return self.getTokens(DecafParser.EQUAL_OP)
             else:
@@ -1220,7 +1209,7 @@ class DecafParser ( Parser ):
         def FOR(self):
             return self.getToken(DecafParser.FOR, 0)
 
-        def var_id(self, i:int=None):
+        def var_id(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Var_idContext)
             else:
@@ -1230,7 +1219,7 @@ class DecafParser ( Parser ):
         def COMMA(self):
             return self.getToken(DecafParser.COMMA, 0)
 
-        def int_literal(self, i:int=None):
+        def int_literal(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Int_literalContext)
             else:
@@ -1243,12 +1232,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_statement
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterStatement" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterStatement"):
                 listener.enterStatement(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitStatement" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitStatement"):
                 listener.exitStatement(self)
 
 
@@ -1412,10 +1401,9 @@ class DecafParser ( Parser ):
 
 
     class Method_call_interContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Method_call_interContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def method_name(self):
@@ -1428,14 +1416,14 @@ class DecafParser ( Parser ):
         def RROUND(self):
             return self.getToken(DecafParser.RROUND, 0)
 
-        def expr(self, i:int=None):
+        def expr(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.ExprContext)
             else:
                 return self.getTypedRuleContext(DecafParser.ExprContext,i)
 
 
-        def COMMA(self, i:int=None):
+        def COMMA(self, i=None):
             if i is None:
                 return self.getTokens(DecafParser.COMMA)
             else:
@@ -1444,12 +1432,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_method_call_inter
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterMethod_call_inter" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterMethod_call_inter"):
                 listener.enterMethod_call_inter(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitMethod_call_inter" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitMethod_call_inter"):
                 listener.exitMethod_call_inter(self)
 
 
@@ -1469,7 +1457,7 @@ class DecafParser ( Parser ):
             self.state = 236
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.T__0) | (1 << DecafParser.T__1) | (1 << DecafParser.CALLOUT) | (1 << DecafParser.LROUND) | (1 << DecafParser.SUB) | (1 << DecafParser.NOT) | (1 << DecafParser.ID) | (1 << DecafParser.DECIMAL_LITERAL) | (1 << DecafParser.STRING_LITERAL))) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << DecafParser.T__0) | (1 << DecafParser.T__1) | (1 << DecafParser.CALLOUT) | (1 << DecafParser.LROUND) | (1 << DecafParser.SUB) | (1 << DecafParser.NOT) | (1 << DecafParser.ID) | (1 << DecafParser.DECIMAL_LITERAL) | (1 << DecafParser.CHAR_LITERAL))) != 0):
                 self.state = 228
                 self.expr(0)
                 self.state = 233
@@ -1498,10 +1486,9 @@ class DecafParser ( Parser ):
 
 
     class Method_callContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Method_callContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def method_call_inter(self):
@@ -1517,19 +1504,19 @@ class DecafParser ( Parser ):
         def LROUND(self):
             return self.getToken(DecafParser.LROUND, 0)
 
-        def STRING_LITERAL(self):
-            return self.getToken(DecafParser.STRING_LITERAL, 0)
+        def CHAR_LITERAL(self):
+            return self.getToken(DecafParser.CHAR_LITERAL, 0)
 
         def RROUND(self):
             return self.getToken(DecafParser.RROUND, 0)
 
-        def COMMA(self, i:int=None):
+        def COMMA(self, i=None):
             if i is None:
                 return self.getTokens(DecafParser.COMMA)
             else:
                 return self.getToken(DecafParser.COMMA, i)
 
-        def callout_arg(self, i:int=None):
+        def callout_arg(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.Callout_argContext)
             else:
@@ -1539,12 +1526,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_method_call
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterMethod_call" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterMethod_call"):
                 listener.enterMethod_call(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitMethod_call" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitMethod_call"):
                 listener.exitMethod_call(self)
 
 
@@ -1580,7 +1567,7 @@ class DecafParser ( Parser ):
                 self.state = 245
                 self.match(DecafParser.LROUND)
                 self.state = 246
-                self.match(DecafParser.STRING_LITERAL)
+                self.match(DecafParser.CHAR_LITERAL)
                 self.state = 256
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -1620,10 +1607,9 @@ class DecafParser ( Parser ):
 
 
     class ExprContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.ExprContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def location(self):
@@ -1637,7 +1623,7 @@ class DecafParser ( Parser ):
         def SUB(self):
             return self.getToken(DecafParser.SUB, 0)
 
-        def expr(self, i:int=None):
+        def expr(self, i=None):
             if i is None:
                 return self.getTypedRuleContexts(DecafParser.ExprContext)
             else:
@@ -1664,17 +1650,17 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_expr
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterExpr" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterExpr"):
                 listener.enterExpr(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitExpr" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitExpr"):
                 listener.exitExpr(self)
 
 
 
-    def expr(self, _p:int=0):
+    def expr(self, _p=0):
         _parentctx = self._ctx
         _parentState = self.state
         localctx = DecafParser.ExprContext(self, self._ctx, _parentState)
@@ -1758,10 +1744,9 @@ class DecafParser ( Parser ):
 
 
     class LiteralContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.LiteralContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def int_literal(self):
@@ -1779,12 +1764,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_literal
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterLiteral" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterLiteral"):
                 listener.enterLiteral(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitLiteral" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitLiteral"):
                 listener.exitLiteral(self)
 
 
@@ -1803,7 +1788,7 @@ class DecafParser ( Parser ):
                 self.state = 285
                 self.int_literal()
                 pass
-            elif token in [DecafParser.STRING_LITERAL]:
+            elif token in [DecafParser.CHAR_LITERAL]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 286
                 self.string_literal()
@@ -1826,10 +1811,9 @@ class DecafParser ( Parser ):
 
 
     class LocationContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.LocationContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def var_id(self):
@@ -1843,12 +1827,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_location
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterLocation" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterLocation"):
                 listener.enterLocation(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitLocation" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitLocation"):
                 listener.exitLocation(self)
 
 
@@ -1885,28 +1869,27 @@ class DecafParser ( Parser ):
 
 
     class Callout_argContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Callout_argContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def expr(self):
             return self.getTypedRuleContext(DecafParser.ExprContext,0)
 
 
-        def STRING_LITERAL(self):
-            return self.getToken(DecafParser.STRING_LITERAL, 0)
+        def CHAR_LITERAL(self):
+            return self.getToken(DecafParser.CHAR_LITERAL, 0)
 
         def getRuleIndex(self):
             return DecafParser.RULE_callout_arg
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCallout_arg" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterCallout_arg"):
                 listener.enterCallout_arg(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCallout_arg" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitCallout_arg"):
                 listener.exitCallout_arg(self)
 
 
@@ -1929,7 +1912,7 @@ class DecafParser ( Parser ):
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 295
-                self.match(DecafParser.STRING_LITERAL)
+                self.match(DecafParser.CHAR_LITERAL)
                 pass
 
 
@@ -1943,10 +1926,9 @@ class DecafParser ( Parser ):
 
 
     class Int_literalContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Int_literalContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def DECIMAL_LITERAL(self):
@@ -1955,12 +1937,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_int_literal
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterInt_literal" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterInt_literal"):
                 listener.enterInt_literal(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitInt_literal" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitInt_literal"):
                 listener.exitInt_literal(self)
 
 
@@ -1984,24 +1966,23 @@ class DecafParser ( Parser ):
 
 
     class String_literalContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.String_literalContext, self).__init__(parent, invokingState)
             self.parser = parser
 
-        def STRING_LITERAL(self):
-            return self.getToken(DecafParser.STRING_LITERAL, 0)
+        def CHAR_LITERAL(self):
+            return self.getToken(DecafParser.CHAR_LITERAL, 0)
 
         def getRuleIndex(self):
             return DecafParser.RULE_string_literal
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterString_literal" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterString_literal"):
                 listener.enterString_literal(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitString_literal" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitString_literal"):
                 listener.exitString_literal(self)
 
 
@@ -2014,7 +1995,7 @@ class DecafParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 300
-            self.match(DecafParser.STRING_LITERAL)
+            self.match(DecafParser.CHAR_LITERAL)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2025,22 +2006,21 @@ class DecafParser ( Parser ):
 
 
     class Bool_literalContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Bool_literalContext, self).__init__(parent, invokingState)
             self.parser = parser
 
 
         def getRuleIndex(self):
             return DecafParser.RULE_bool_literal
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBool_literal" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterBool_literal"):
                 listener.enterBool_literal(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBool_literal" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitBool_literal"):
                 listener.exitBool_literal(self)
 
 
@@ -2070,10 +2050,9 @@ class DecafParser ( Parser ):
 
 
     class Rel_opContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Rel_opContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def GREATER_OP(self):
@@ -2091,12 +2070,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_rel_op
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterRel_op" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterRel_op"):
                 listener.enterRel_op(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitRel_op" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitRel_op"):
                 listener.exitRel_op(self)
 
 
@@ -2126,10 +2105,9 @@ class DecafParser ( Parser ):
 
 
     class Eq_opContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Eq_opContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def EQUALITY_OP(self):
@@ -2141,12 +2119,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_eq_op
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterEq_op" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterEq_op"):
                 listener.enterEq_op(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitEq_op" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitEq_op"):
                 listener.exitEq_op(self)
 
 
@@ -2176,10 +2154,9 @@ class DecafParser ( Parser ):
 
 
     class Cond_opContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Cond_opContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def AND(self):
@@ -2191,12 +2168,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_cond_op
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterCond_op" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterCond_op"):
                 listener.enterCond_op(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitCond_op" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitCond_op"):
                 listener.exitCond_op(self)
 
 
@@ -2226,10 +2203,9 @@ class DecafParser ( Parser ):
 
 
     class Bin_opContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Bin_opContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def arith_op(self):
@@ -2251,12 +2227,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_bin_op
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterBin_op" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterBin_op"):
                 listener.enterBin_op(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitBin_op" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitBin_op"):
                 listener.exitBin_op(self)
 
 
@@ -2303,10 +2279,9 @@ class DecafParser ( Parser ):
 
 
     class Arith_opContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Arith_opContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def ADD(self):
@@ -2327,12 +2302,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_arith_op
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterArith_op" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterArith_op"):
                 listener.enterArith_op(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitArith_op" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitArith_op"):
                 listener.exitArith_op(self)
 
 
@@ -2362,10 +2337,9 @@ class DecafParser ( Parser ):
 
 
     class Var_typeContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Var_typeContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def INT(self):
@@ -2374,8 +2348,8 @@ class DecafParser ( Parser ):
         def BOOLEAN(self):
             return self.getToken(DecafParser.BOOLEAN, 0)
 
-        def STRING(self):
-            return self.getToken(DecafParser.STRING, 0)
+        def CHAR(self):
+            return self.getToken(DecafParser.CHAR, 0)
 
         def STRUCT(self):
             return self.getToken(DecafParser.STRUCT, 0)
@@ -2390,12 +2364,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_var_type
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterVar_type" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterVar_type"):
                 listener.enterVar_type(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitVar_type" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitVar_type"):
                 listener.exitVar_type(self)
 
 
@@ -2424,7 +2398,7 @@ class DecafParser ( Parser ):
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
                 self.state = 320
-                self.match(DecafParser.STRING)
+                self.match(DecafParser.CHAR)
                 pass
 
             elif la_ == 4:
@@ -2452,10 +2426,9 @@ class DecafParser ( Parser ):
 
 
     class Assign_opContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Assign_opContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def EQUAL_OP(self):
@@ -2470,12 +2443,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_assign_op
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAssign_op" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterAssign_op"):
                 listener.enterAssign_op(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAssign_op" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitAssign_op"):
                 listener.exitAssign_op(self)
 
 
@@ -2505,10 +2478,9 @@ class DecafParser ( Parser ):
 
 
     class Method_nameContext(ParserRuleContext):
-        __slots__ = 'parser'
 
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
+        def __init__(self, parser, parent=None, invokingState=-1):
+            super(DecafParser.Method_nameContext, self).__init__(parent, invokingState)
             self.parser = parser
 
         def ID(self):
@@ -2517,12 +2489,12 @@ class DecafParser ( Parser ):
         def getRuleIndex(self):
             return DecafParser.RULE_method_name
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterMethod_name" ):
+        def enterRule(self, listener):
+            if hasattr(listener, "enterMethod_name"):
                 listener.enterMethod_name(self)
 
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitMethod_name" ):
+        def exitRule(self, listener):
+            if hasattr(listener, "exitMethod_name"):
                 listener.exitMethod_name(self)
 
 
@@ -2546,7 +2518,7 @@ class DecafParser ( Parser ):
 
 
 
-    def sempred(self, localctx:RuleContext, ruleIndex:int, predIndex:int):
+    def sempred(self, localctx, ruleIndex, predIndex):
         if self._predicates == None:
             self._predicates = dict()
         self._predicates[14] = self.expr_sempred
@@ -2556,7 +2528,7 @@ class DecafParser ( Parser ):
         else:
             return pred(localctx, predIndex)
 
-    def expr_sempred(self, localctx:ExprContext, predIndex:int):
+    def expr_sempred(self, localctx, predIndex):
             if predIndex == 0:
                 return self.precpred(self._ctx, 5)
          
