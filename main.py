@@ -17,6 +17,7 @@ class KeyPrinter(DecafListener):
         self.contStatements = 0
         self.scopes = ["global"]
         self.scopeActual = "global"
+        self.offsetDicc = {}
 
     def getErrors(self):
         return self.error
@@ -1329,8 +1330,15 @@ class KeyPrinter(DecafListener):
                 if ctx.field_var()[i].var_id():
                     name = ctx.field_var()[i].var_id().getText()
                     if not self.tablas.varExistsOnce(name, self.scopeActual):
+                        if self.scopeActual in self.offsetDicc:
+                            off = self.offsetDicc[self.scopeActual]
+                        else:
+                            self.offsetDicc[self.scopeActual] = 0
+                            off = self.offsetDicc[self.scopeActual]
                         self.contVariables += 1
-                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual, 0, 0, True)
+                        sizeVar = self.tablas.getSizeStruct(type)
+                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual, 0, sizeVar, True, off)
+                        self.offsetDicc[self.scopeActual] += sizeVar
                     else:
                         self.error.append(f'1232ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
                 elif ctx.field_var()[i].array_id():
@@ -1341,8 +1349,15 @@ class KeyPrinter(DecafListener):
                             self.error.append(f'1238ERROR: El tamaño del array "{name}" debe de ser un número mayor a 0, linea: {ctx.start.line}')
                         else:
                             if not self.tablas.varExistsOnce(name, self.scopeActual):
+                                if self.scopeActual in self.offsetDicc:
+                                    off = self.offsetDicc[self.scopeActual]
+                                else:
+                                    self.offsetDicc[self.scopeActual] = 0
+                                    off = self.offsetDicc[self.scopeActual]
                                 self.contEstructuras += 1
-                                self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam, True)
+                                sizeVar = self.tablas.getSizeStruct(type)
+                                self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam, True, sizeVar, off)
+                                self.offsetDicc[self.scopeActual] += sizeVar
                             else:
                                 self.error.append(f'1244ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
                     else:
@@ -1350,11 +1365,24 @@ class KeyPrinter(DecafListener):
             else:
                 fieldVar = ctx.field_var()[i]
                 type = ctx.var_type()[i].getText()
+                size = 0
+                if ctx.var_type()[i].INT():
+                    size = 4
+                elif ctx.var_type()[i].CHAR():
+                    size = 2
+                elif ctx.var_type()[i].BOOLEAN():
+                    size = 1
                 if fieldVar.var_id():
                     name = fieldVar.var_id().getText()
                     if not self.tablas.varExistsOnce(name, self.scopeActual):
+                        if self.scopeActual in self.offsetDicc:
+                            off = self.offsetDicc[self.scopeActual]
+                        else:
+                            self.offsetDicc[self.scopeActual] = 0
+                            off = self.offsetDicc[self.scopeActual]
                         self.contVariables += 1
-                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual)
+                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual, 0, size, False, off)
+                        self.offsetDicc[self.scopeActual] += size
                     else:
                         self.error.append(f'1256ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
                 elif fieldVar.array_id():
@@ -1365,8 +1393,15 @@ class KeyPrinter(DecafListener):
                             self.error.append(f'1262ERROR: El tamaño del array "{name}" debe de ser un número mayor a 0, linea: {ctx.start.line}')
                         else:
                             if not self.tablas.varExistsOnce(name, self.scopeActual):
+                                if self.scopeActual in self.offsetDicc:
+                                    off = self.offsetDicc[self.scopeActual]
+                                else:
+                                    self.offsetDicc[self.scopeActual] = 0
+                                    off = self.offsetDicc[self.scopeActual]
                                 self.contEstructuras += 1
-                                self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam)
+                                size = size * tam
+                                self.tablas.setEstructura(self.contEstructuras, name, type, 'array', self.scopeActual, tam, False, size, off)
+                                self.offsetDicc[self.scopeActual] += size
                             else:
                                 self.error.append(f'1268ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
                     else:
@@ -1390,16 +1425,29 @@ class KeyPrinter(DecafListener):
             if name == "main":
                 self.notMainFunction = False
             arrayParams = []
+            # Si viene 'void' como parametro
             if ctx.VOID():
                 pass
             else:
                 for i in range(len(ctx.var_id())):
                     param1 = ctx.var_type()[i].getText()
                     param2 = ctx.var_id()[i].getText()
-                    if not self.tablas.varExistsOnce(name, self.scopeActual):
+                    if not self.tablas.varExistsOnce(param2, self.scopeActual):
+                        if ctx.var_type()[i].INT():
+                            size = 4
+                        elif ctx.var_type()[i].CHAR():
+                            size = 2
+                        elif ctx.var_type()[i].BOOLEAN():
+                            size = 1
+                        if self.scopeActual in self.offsetDicc:
+                            off = self.offsetDicc[self.scopeActual]
+                        else:
+                            self.offsetDicc[self.scopeActual] = 0
+                            off = self.offsetDicc[self.scopeActual]
                         self.contVariables += 1
-                        self.tablas.setVariable(self.contVariables, param2, param1, self.scopeActual)
+                        self.tablas.setVariable(self.contVariables, param2, param1, self.scopeActual, 0, size, False, off)
                         arrayParams.append([param1, param2])
+                        self.offsetDicc[self.scopeActual] += size
                     else:
                         self.error.append(f'1297ERROR: La variable "{param2}" ya existe en el método "{self.scopeActual}", linea: {ctx.start.line}')
 
@@ -1420,6 +1468,7 @@ class KeyPrinter(DecafListener):
             self.tablas.setEstructura(self.contEstructuras, name, '', 'struct', 'global')
 
     def exitStruct_declr(self, ctx: DecafParser.Struct_declrContext):
+        self.tablas.setSizeEstruct(self.scopeActual)
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
 

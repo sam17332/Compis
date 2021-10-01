@@ -32,8 +32,8 @@ class Tablas:
                     return True
         return False
 
-    def setVariable(self, key, name, type, scope, value = 0, size = 0, struct = False):
-        self.variables[key] = [name, type, value, scope, size, struct]
+    def setVariable(self, key, name, type, scope, value = 0, size = 0, struct = False, offset = 0):
+        self.variables[key] = [name, type, value, scope, size, struct, offset]
 
     def getVariable(self, nombre, scope, existe = False, var = ''):
         if existe:
@@ -118,8 +118,34 @@ class Tablas:
                     return self.structVarExists(nombre, nuevoScope)
         return existe
 
-    def setEstructura(self, key, name, tipo, defi, scope = '', tam = 0, struct = False):
-        self.estructuras[key] = [name, tipo, defi, scope, tam, struct]
+    def setSizeEstruct(self, nombre):
+        size = 0
+        for i in range(len(self.variables)):
+            valor = self.variables[i+1]
+            if valor[3] == nombre:
+                size += valor[4]
+
+        struct = ''
+        for i in range(len(self.estructuras)):
+            valor = self.estructuras[i+1]
+            if valor[2] == 'array' and valor[3] == nombre:
+                size += valor[6]
+            if valor[0] == nombre:
+                struct = valor
+
+        struct[6] = size
+
+    def getSizeStruct(self, nombre):
+        for i in range(len(self.estructuras)):
+            valor = self.estructuras[i+1]
+            if valor[0] == nombre:
+                return valor[6]
+
+        return 0
+
+
+    def setEstructura(self, key, name, tipo, defi, scope = '', tam = 0, struct = False, size = 0, offset = 0):
+        self.estructuras[key] = [name, tipo, defi, scope, tam, struct, size, offset]
 
     def getArray(self, nombre, scope, existe = False, var = ''):
         if existe:
