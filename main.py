@@ -4,9 +4,10 @@ from DecafLexer import DecafLexer
 from DecafListener import DecafListener
 from DecafParser import DecafParser
 from tablas import *
+import pickle5 as pickle
 import sys
 
-class KeyPrinter(DecafListener):
+class Proyecto1(DecafListener):
     def __init__(self):
         self.notMainFunction = True
         self.error = []
@@ -1472,7 +1473,7 @@ class KeyPrinter(DecafListener):
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
-def main():
+def mainProy1():
     data = open('./pruebas/simpleTest.txt').read()
     # data = open('./pruebas/multiple_tests.txt').read()
     lexer = DecafLexer(InputStream(data))
@@ -1480,23 +1481,36 @@ def main():
     parser = DecafParser(stream)
     tree = parser.program()
 
-    printer = KeyPrinter()
+    proy1 = Proyecto1()
     walker = ParseTreeWalker()
-    walker.walk(printer, tree)
+    walker.walk(proy1, tree)
 
     print()
-    printer.tablas.showFullDicc()
+    proy1.tablas.showFullDicc()
 
-    if printer.notMainFunction:
-        printer.error.append("ERROR: El metodo main no esta defindo")
+    if proy1.notMainFunction:
+        proy1.error.append("ERROR: El metodo main no esta defindo")
     f = open("errores.txt", "w", encoding="utf8")
-    f.write(f'Han ocurrido {str(len(printer.getErrors()))} errores!')
-    if len(printer.getErrors()) > 0:
+    f.write(f'Han ocurrido {str(len(proy1.getErrors()))} errores!')
+    if len(proy1.getErrors()) > 0:
         f.write('\n')
         f.write('\n')
-        for i in printer.getErrors():
+        for i in proy1.getErrors():
             print(i)
             f.write(i)
             f.write('\n')
+    else:
+        print('Guardando tablas....')
+        file = open("estructuras", "wb")
+        pickle.dump(proy1.tablas.estructuras, file, protocol=pickle.HIGHEST_PROTOCOL)
+        file.close()
 
-main()
+        file = open("variables", "wb")
+        pickle.dump(proy1.tablas.variables, file, protocol=pickle.HIGHEST_PROTOCOL)
+        file.close()
+
+        file = open("metodos", "wb")
+        pickle.dump(proy1.tablas.metodos, file, protocol=pickle.HIGHEST_PROTOCOL)
+        file.close()
+
+mainProy1()

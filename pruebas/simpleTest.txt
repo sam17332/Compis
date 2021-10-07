@@ -1,35 +1,8 @@
-class Program
-{
-	boolean f[10];
-	struct A
-	{
-		int a;
-		int b[5];
-		char c[2];
-	};
-
-	struct B
-	{
-		struct A y;
-		int c;
-	};
-
-	struct B x;
-
+class Program{
 	void main(void)
 	{
-		int o;
-		char d;
-		int k[10];
-		boolean x;
-		int n;
-		if (n == 0)
-		{
-			int rror;
-			int rrsssr[5];
-			char qqq;
-			struct B x;
-			char tl;
-		}
+		int a;
+		int b;
+		b = (-a);
 	}
 }

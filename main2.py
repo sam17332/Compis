@@ -85,18 +85,17 @@ class Proyecto2(DecafGramListener):
         for prod in self.arrayProd:
             print(prod.getCodigo())
 
-    def enterVardeclr(self, ctx: DecafGramParser.VardeclrContext):
-        self.diccContext[ctx] = ctx
+    # def enterVardeclr(self, ctx: DecafGramParser.VardeclrContext):
+    #     self.diccContext[ctx] = ctx
 
-    def exitVardeclr(self, ctx: DecafGramParser.VardeclrContext):
-        self.diccContext[ctx] = ctx.getChild(0)
+    # def exitVardeclr(self, ctx: DecafGramParser.VardeclrContext):
+    #     self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
 
-    def enterField_var(self, ctx: DecafGramParser.Field_varContext):
-        self.diccContext[ctx] = ctx
+    # def enterField_var(self, ctx: DecafGramParser.Field_varContext):
+    #     self.diccContext[ctx] = ctx
 
-    def exitField_var(self, ctx: DecafGramParser.Field_varContext):
-        self.diccContext[ctx] = ctx.getChild(0)
-
+    # def exitField_var(self, ctx: DecafGramParser.Field_varContext):
+    #     self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
 
     def enterLocation(self, ctx: DecafGramParser.LocationContext):
         if ctx not in self.diccContext:
@@ -105,10 +104,10 @@ class Proyecto2(DecafGramListener):
     def exitLocation(self, ctx: DecafGramParser.LocationContext):
         self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
 
-    def enterVar_id(self, ctx: DecafGramParser.Var_idContext):
-        parent = ctx.parentCtx
-        if parent not in self.diccContext:
-            self.diccContext[ctx] = self.diccContext[parent]
+    # def enterVar_id(self, ctx: DecafGramParser.Var_idContext):
+    #     parent = ctx.parentCtx
+    #     if parent not in self.diccContext:
+    #         self.diccContext[ctx] = self.diccContext[parent]
 
     def exitVar_id(self, ctx: DecafGramParser.Var_idContext):
         nombre = ctx.getText()
@@ -119,62 +118,137 @@ class Proyecto2(DecafGramListener):
         nodo.setCodigo("")
         nodo.setDir(self.generateDir(variable))
 
-
         self.diccContext[ctx] = nodo
 
+    def exitExpr_presedencia1(self, ctx: DecafGramParser.Expr_presedencia1Context):
+        nodo1 = self.diccContext[ctx.getChild(0)]
+        nodo2 = self.diccContext[ctx.getChild(2)]
 
-    def exitExpr(self, ctx: DecafGramParser.ExprContext):
-        if len(ctx.children) == 1:
-            self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
-        else:
-            if ctx.arith_op() is not None or ctx.rel_op() is not None:
-                nodo1 = self.diccContext[ctx.getChild(0)]
-                nodo2 = self.diccContext[ctx.getChild(2)]
+        if ctx.MULTIPLY():
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
+            temp = self.genTemp()
+            nodo.setDir(temp)
+            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + " * " + nodo2.getDir() + '\n'
+            nodo.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodo
 
-                if ctx.ADD():
-                    nodo = Nodo(self.contNodos)
-                    self.contNodos += 1
-                    temp = self.genTemp()
-                    nodo.setDir(temp)
-                    codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "+" + nodo2.getDir() + '\n'
-                    nodo.setCodigo(codigoConcat)
-                    self.diccContext[ctx] = nodo
+        elif ctx.DIVIDE():
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
+            temp = self.genTemp()
+            nodo.setDir(temp)
+            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' / ' + nodo2.getDir() + '\n'
+            nodo.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodo
 
-                elif ctx.SUB():
-                    nodo = Nodo(self.contNodos)
-                    self.contNodos += 1
-                    temp = self.genTemp()
-                    nodo.setDir(temp)
-                    codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "-" + nodo2.getDir() + '\n'
-                    nodo.setCodigo(codigoConcat)
-                    self.diccContext[ctx] = nodo
+        elif ctx.REMINDER():
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
+            temp = self.genTemp()
+            nodo.setDir(temp)
+            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' % ' + nodo2.getDir() + '\n'
+            nodo.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodo
 
-                elif ctx.MULTIPLY():
-                    nodo = Nodo(self.contNodos)
-                    self.contNodos += 1
-                    temp = self.genTemp()
-                    nodo.setDir(temp)
-                    codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "*" + nodo2.getDir() + '\n'
-                    nodo.setCodigo(codigoConcat)
-                    self.diccContext[ctx] = nodo
+    def exitExpr_presedencia2(self, ctx: DecafGramParser.Expr_presedencia2Context):
+        nodo1 = self.diccContext[ctx.getChild(0)]
+        nodo2 = self.diccContext[ctx.getChild(2)]
 
-                elif ctx.DIVIDE():
-                    nodo = Nodo(self.contNodos)
-                    self.contNodos += 1
-                    temp = self.genTemp()
-                    nodo.setDir(temp)
-                    codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "/" + nodo2.getDir() + '\n'
-                    nodo.setCodigo(codigoConcat)
-                    self.diccContext[ctx] = nodo
+        if ctx.ADD():
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
+            temp = self.genTemp()
+            nodo.setDir(temp)
+            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' + ' + nodo2.getDir() + '\n'
+            nodo.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodo
 
-                elif ctx.REMINDER():
-                    nodo = Nodo(self.contNodos)
-                    self.contNodos += 1
-                    temp = self.genTemp()
-                    nodo.setDir(temp)
-                    codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "%" + nodo2.getDir() + '\n'
-                    nodo.setCodigo(codigoConcat)
-                    self.diccContext[ctx] = nodo
+        elif ctx.SUB():
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
+            temp = self.genTemp()
+            nodo.setDir(temp)
+            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' - ' + nodo2.getDir() + '\n'
+            nodo.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodo
+
+    def exitExpr_location(self, ctx: DecafGramParser.Expr_locationContext):
+        self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
+
+    def exitExpr_menos(self, ctx: DecafGramParser.Expr_menosContext):
+        nodo1 = self.diccContext[ctx.getChild(1)]
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        temp = self.genTemp()
+        nodo.setDir(temp)
+        codigoConcat = '\n' + nodo1.getCodigo() + (nodo.getDir() + ' = MENOS ' + nodo1.getDir()) + '\n'
+        nodo.setCodigo(codigoConcat)
+        self.diccContext[ctx] = nodo
+
+    def exitExpr_parentesis(self, ctx: DecafGramParser.Expr_parentesisContext):
+        nodo1 = self.diccContext[ctx.getChild(1)]
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        nodo.setDir(nodo1.getDir())
+        nodo.setCodigo(nodo1.getCodigo())
+        self.diccContext[ctx] = nodo
+
+    # def exitExpr_literal(self, ctx: DecafGramParser.Expr_literalContext):
+    #     return super().exitExpr_literal(ctx)
+
+    # def exitExpr(self, ctx: DecafGramParser.ExprContext):
+    #     if len(ctx.children) == 1:
+    #         self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
+    #     else:
+    #         if ctx.arith_op() is not None or ctx.rel_op() is not None:
+    #             nodo1 = self.diccContext[ctx.getChild(0)]
+    #             nodo2 = self.diccContext[ctx.getChild(2)]
+
+    #             if ctx.ADD():
+    #                 nodo = Nodo(self.contNodos)
+    #                 self.contNodos += 1
+    #                 temp = self.genTemp()
+    #                 nodo.setDir(temp)
+    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "+" + nodo2.getDir() + '\n'
+    #                 nodo.setCodigo(codigoConcat)
+    #                 self.diccContext[ctx] = nodo
+
+    #             elif ctx.SUB():
+    #                 nodo = Nodo(self.contNodos)
+    #                 self.contNodos += 1
+    #                 temp = self.genTemp()
+    #                 nodo.setDir(temp)
+    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "-" + nodo2.getDir() + '\n'
+    #                 nodo.setCodigo(codigoConcat)
+    #                 self.diccContext[ctx] = nodo
+
+    #             elif ctx.MULTIPLY():
+    #                 nodo = Nodo(self.contNodos)
+    #                 self.contNodos += 1
+    #                 temp = self.genTemp()
+    #                 nodo.setDir(temp)
+    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "*" + nodo2.getDir() + '\n'
+    #                 nodo.setCodigo(codigoConcat)
+    #                 self.diccContext[ctx] = nodo
+
+    #             elif ctx.DIVIDE():
+    #                 nodo = Nodo(self.contNodos)
+    #                 self.contNodos += 1
+    #                 temp = self.genTemp()
+    #                 nodo.setDir(temp)
+    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "/" + nodo2.getDir() + '\n'
+    #                 nodo.setCodigo(codigoConcat)
+    #                 self.diccContext[ctx] = nodo
+
+    #             elif ctx.REMINDER():
+    #                 nodo = Nodo(self.contNodos)
+    #                 self.contNodos += 1
+    #                 temp = self.genTemp()
+    #                 nodo.setDir(temp)
+    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "%" + nodo2.getDir() + '\n'
+    #                 nodo.setCodigo(codigoConcat)
+    #                 self.diccContext[ctx] = nodo
 
     def exitStatement_assign(self, ctx: DecafGramParser.Statement_assignContext):
         nodoL = self.diccContext[ctx.location()]
