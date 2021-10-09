@@ -1,5 +1,5 @@
 class Program{
-	int suma(int z, int a) {
+	int patito(int z, int h) {
 		int x;
 		int y;
 		x = z + y;
@@ -7,9 +7,11 @@ class Program{
 		return x;
 	}
 
-	void main() {
+	void main(void) {
 		int a;
 		int b;
-		a = suma(10, b);
+		if(a==2 ){
+			b = 3;
+		}
 	}
 }
