@@ -65,25 +65,47 @@ class Proyecto2(DecafGramListener):
 
     def generateDir(self, var):
         value = ''
-        if var[3] == 'global':
-            value = f'gp[{(var[6])}]'
-        else:
-            value = f'fp[{(var[6])}]'
+        if len(var) > 0:
+            if var[3] == 'global':
+                value = f'gp[{(var[6])}]'
+            else:
+                value = f'fp[{(var[6])}]'
         return value
 
     def generateTopeGet(self, var):
         value = ''
-        if var[3] == 'global':
-            value = f'gp[{(var[6])}]'
-        else:
-            value = f'fp[{(var[6])}]'
+        if len(var) > 0:
+            if var[3] == 'global':
+                value = f'gp[{(var[6])}]'
+            else:
+                value = f'fp[{(var[6])}]'
         return value
+
+    def visitar(self, params):
+        arrayNodos = []
+        for param in params:
+            nodoParam = Nodo(self.contNodos)
+            self.contNodos += 1
+            nodoParam.setCodigo('')
+            if self.tablas.varExists(param.getText(), self.scopeActual):
+                variable = self.tablas.getVariable(param.getText(), self.scopeActual)
+                nodoParam.setDir(self.generateDir(variable))
+            else:
+                nodoParam.setDir(param.getText())
+            arrayNodos.append(nodoParam)
+
+        return arrayNodos
 
     def iterateArrayProd(self):
         print()
-        print("CODIGO INTERMEDIO")
+        print("----CODIGO INTERMEDIO----")
+        print()
+        print()
         for prod in self.arrayProd:
-            print(prod.getCodigo())
+            if isinstance(prod, Nodo):
+                print(prod.getCodigo())
+            else:
+                print(prod)
 
     # def enterVardeclr(self, ctx: DecafGramParser.VardeclrContext):
     #     self.diccContext[ctx] = ctx
@@ -129,7 +151,7 @@ class Proyecto2(DecafGramListener):
             self.contNodos += 1
             temp = self.genTemp()
             nodo.setDir(temp)
-            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + " * " + nodo2.getDir() + '\n'
+            codigoConcat = ' ' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + " * " + nodo2.getDir() + '\n'
             nodo.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodo
 
@@ -138,7 +160,7 @@ class Proyecto2(DecafGramListener):
             self.contNodos += 1
             temp = self.genTemp()
             nodo.setDir(temp)
-            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' / ' + nodo2.getDir() + '\n'
+            codigoConcat = ' ' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' / ' + nodo2.getDir() + '\n'
             nodo.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodo
 
@@ -147,7 +169,7 @@ class Proyecto2(DecafGramListener):
             self.contNodos += 1
             temp = self.genTemp()
             nodo.setDir(temp)
-            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' % ' + nodo2.getDir() + '\n'
+            codigoConcat = ' ' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' % ' + nodo2.getDir() + '\n'
             nodo.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodo
 
@@ -160,7 +182,7 @@ class Proyecto2(DecafGramListener):
             self.contNodos += 1
             temp = self.genTemp()
             nodo.setDir(temp)
-            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' + ' + nodo2.getDir() + '\n'
+            codigoConcat = ' ' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' + ' + nodo2.getDir() + '\n'
             nodo.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodo
 
@@ -169,9 +191,12 @@ class Proyecto2(DecafGramListener):
             self.contNodos += 1
             temp = self.genTemp()
             nodo.setDir(temp)
-            codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' - ' + nodo2.getDir() + '\n'
+            codigoConcat = ' ' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + ' = ' + nodo1.getDir() + ' - ' + nodo2.getDir() + '\n'
             nodo.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodo
+
+    def exitExpr_methodCall(self, ctx: DecafGramParser.Expr_methodCallContext):
+        self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
 
     def exitExpr_location(self, ctx: DecafGramParser.Expr_locationContext):
         self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
@@ -182,7 +207,7 @@ class Proyecto2(DecafGramListener):
         self.contNodos += 1
         temp = self.genTemp()
         nodo.setDir(temp)
-        codigoConcat = '\n' + nodo1.getCodigo() + (nodo.getDir() + ' = MENOS ' + nodo1.getDir()) + '\n'
+        codigoConcat = ' ' + nodo1.getCodigo() + (nodo.getDir() + ' = MENOS ' + nodo1.getDir()) + '\n'
         nodo.setCodigo(codigoConcat)
         self.diccContext[ctx] = nodo
 
@@ -197,59 +222,6 @@ class Proyecto2(DecafGramListener):
     # def exitExpr_literal(self, ctx: DecafGramParser.Expr_literalContext):
     #     return super().exitExpr_literal(ctx)
 
-    # def exitExpr(self, ctx: DecafGramParser.ExprContext):
-    #     if len(ctx.children) == 1:
-    #         self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
-    #     else:
-    #         if ctx.arith_op() is not None or ctx.rel_op() is not None:
-    #             nodo1 = self.diccContext[ctx.getChild(0)]
-    #             nodo2 = self.diccContext[ctx.getChild(2)]
-
-    #             if ctx.ADD():
-    #                 nodo = Nodo(self.contNodos)
-    #                 self.contNodos += 1
-    #                 temp = self.genTemp()
-    #                 nodo.setDir(temp)
-    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "+" + nodo2.getDir() + '\n'
-    #                 nodo.setCodigo(codigoConcat)
-    #                 self.diccContext[ctx] = nodo
-
-    #             elif ctx.SUB():
-    #                 nodo = Nodo(self.contNodos)
-    #                 self.contNodos += 1
-    #                 temp = self.genTemp()
-    #                 nodo.setDir(temp)
-    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "-" + nodo2.getDir() + '\n'
-    #                 nodo.setCodigo(codigoConcat)
-    #                 self.diccContext[ctx] = nodo
-
-    #             elif ctx.MULTIPLY():
-    #                 nodo = Nodo(self.contNodos)
-    #                 self.contNodos += 1
-    #                 temp = self.genTemp()
-    #                 nodo.setDir(temp)
-    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "*" + nodo2.getDir() + '\n'
-    #                 nodo.setCodigo(codigoConcat)
-    #                 self.diccContext[ctx] = nodo
-
-    #             elif ctx.DIVIDE():
-    #                 nodo = Nodo(self.contNodos)
-    #                 self.contNodos += 1
-    #                 temp = self.genTemp()
-    #                 nodo.setDir(temp)
-    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "/" + nodo2.getDir() + '\n'
-    #                 nodo.setCodigo(codigoConcat)
-    #                 self.diccContext[ctx] = nodo
-
-    #             elif ctx.REMINDER():
-    #                 nodo = Nodo(self.contNodos)
-    #                 self.contNodos += 1
-    #                 temp = self.genTemp()
-    #                 nodo.setDir(temp)
-    #                 codigoConcat = '\n' + nodo1.getCodigo() + nodo2.getCodigo() + nodo.getDir() + '=' + nodo1.getDir() + "%" + nodo2.getDir() + '\n'
-    #                 nodo.setCodigo(codigoConcat)
-    #                 self.diccContext[ctx] = nodo
-
     def exitStatement_assign(self, ctx: DecafGramParser.Statement_assignContext):
         nodoL = self.diccContext[ctx.location()]
         nodoE = self.diccContext[ctx.expr()]
@@ -260,19 +232,31 @@ class Proyecto2(DecafGramListener):
         nombre = ctx.location().var_id().getText()
         variable = self.tablas.getVariable(nombre, self.scopeActual)
 
-        codigoConcat = nodoE.getCodigo() + (self.generateTopeGet(variable) + "=" + nodoE.getDir())
-
+        codigoConcat = nodoE.getCodigo() + (' ' + self.generateTopeGet(variable) + " = " + nodoE.getDir())
         nodo.setCodigo(codigoConcat)
 
         self.diccContext[ctx] = nodo
         self.arrayProd.append(nodo)
 
+    def exitStatement_return(self, ctx: DecafGramParser.Statement_returnContext):
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        nodoE = self.diccContext[ctx.expr()]
+        codigoConcat = nodoE.getCodigo() + (' RETURN ' + nodoE.getDir())
+        nodo.setCodigo(codigoConcat)
+        self.arrayProd.append(codigoConcat)
+
+        self.diccContext[ctx] = nodo
+
     def enterMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
         name = ctx.method_name().getText()
+        self.arrayProd.append('DEF ' + name.upper() + ':')
         self.scopes.append(name)
         self.scopeActual = name
 
     def exitMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
+        name = ctx.method_name().getText()
+        self.arrayProd.append('END DEF ' + name.upper() + '\n')
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
@@ -284,6 +268,26 @@ class Proyecto2(DecafGramListener):
     def exitStruct_declr(self, ctx: DecafGramParser.Struct_declrContext):
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
+
+    # def enterMethod_call(self, ctx: DecafGramParser.Method_callContext):
+    #     return super().enterMethod_call(ctx)
+
+    def exitMethod_call(self, ctx: DecafGramParser.Method_callContext):
+        nombre = ctx.method_name().getText()
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        # print(ctx.expr())
+        args = self.visitar(ctx.expr())
+
+        for arg in args:
+            codigo = nodo.getCodigo()
+            codigo += arg.getCodigo() + (' PARAM ' + arg.getDir() + '\n')
+            nodo.setCodigo(codigo)
+
+        codigo = nodo.getCodigo()
+        codigo += ' CALL ' + nombre + ', ' + str(len(args))
+        nodo.setCodigo(codigo)
+        self.diccContext[ctx] = nodo
 
 def mainProy2():
     data = open('./pruebas/simpleTest.txt').read()

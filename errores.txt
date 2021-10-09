@@ -1,3 +1,1 @@
-Han ocurrido 1 errores!
-
-751ERROR: El parametro "" no es un tipo valido, linea: 6
+Han ocurrido 0 errores!

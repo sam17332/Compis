@@ -662,6 +662,7 @@ class Proyecto1(DecafListener):
                                                         tipo = 'char'
                                                 elif i.location():
                                                     var = i.location().getText()
+                                                    entro = False
                                                     if i.location().array_id():
                                                         var = i.location().array_id().ID()
                                                         if i.location().array_id().POINT():
@@ -1499,18 +1500,18 @@ def mainProy1():
             print(i)
             f.write(i)
             f.write('\n')
-    else:
-        print('Guardando tablas....')
-        file = open("estructuras", "wb")
-        pickle.dump(proy1.tablas.estructuras, file, protocol=pickle.HIGHEST_PROTOCOL)
-        file.close()
+    # else:
+    print('Guardando tablas....')
+    file = open("estructuras", "wb")
+    pickle.dump(proy1.tablas.estructuras, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
 
-        file = open("variables", "wb")
-        pickle.dump(proy1.tablas.variables, file, protocol=pickle.HIGHEST_PROTOCOL)
-        file.close()
+    file = open("variables", "wb")
+    pickle.dump(proy1.tablas.variables, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
 
-        file = open("metodos", "wb")
-        pickle.dump(proy1.tablas.metodos, file, protocol=pickle.HIGHEST_PROTOCOL)
-        file.close()
+    file = open("metodos", "wb")
+    pickle.dump(proy1.tablas.metodos, file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
 
 mainProy1()
