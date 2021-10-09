@@ -285,8 +285,9 @@ class Proyecto2(DecafGramListener):
             nodo.setCodigo(codigo)
 
         codigo = nodo.getCodigo()
-        codigo += ' CALL ' + nombre + ', ' + str(len(args))
+        codigo += ' CALL ' + nombre + ', ' + str(len(args)) + '\n'
         nodo.setCodigo(codigo)
+        nodo.setDir('R')
         self.diccContext[ctx] = nodo
 
 def mainProy2():
