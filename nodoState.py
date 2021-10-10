@@ -24,7 +24,7 @@ class NodoState:
         self.valorTrue = valorTrue
 
     def getValorFalse(self):
-        return self.codigo
+        return self.valorFalse
 
     def setValorFalse(self, valorFalse):
         self.valorFalse = valorFalse

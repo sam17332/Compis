@@ -20,8 +20,8 @@ class Proyecto2(DecafGramListener):
     def __init__(self):
         self.contNodos = 0
         self.contTemps = 0
-        self.contTrue = 0
-        self.contFalse = 0
+        self.contCond = 0
+        self.contWhile = 0
         self.diccVariables = {}
         self.diccEstructuras = {}
         self.diccMetodos = {}
@@ -99,18 +99,36 @@ class Proyecto2(DecafGramListener):
 
         return arrayNodos
 
-    def nuevaEtiqueta(self, cond):
-        value = ''
-        if cond == 'true':
-            value = f'IF_TRUE_{self.contTrue}'
-            self.contTrue += 1
-        elif cond == 'false':
-            value = f'IF_FALSE_{self.contFalse}'
-            self.contFalse += 1
+    def nuevaEtiquetaIf(self, value):
+        etiqueta = ''
+        if value == 'true':
+            etiqueta = f'IF_TRUE_{self.contCond}'
+        elif value == 'false':
+            etiqueta = f'IF_FALSE_{self.contCond}'
+            self.contCond += 1
+        elif value == 'endIf':
+            etiqueta = f'END_IF_{self.contCond}'
         else:
-            value = f'{cond}:'
+            etiqueta = f'{value}:'
 
-        return value
+        return etiqueta
+
+    def nuevaEtiquetaWhile(self, value):
+        etiqueta = ''
+        if value == 'startwhile':
+            etiqueta = f'WHILE_LOOP_{self.contWhile}'
+        elif value == 'endwhile':
+            etiqueta = f'END_WHILE_{self.contWhile}'
+            self.contWhile += 1
+        elif value == 'true':
+            etiqueta = f'IF_TRUE_{self.contCond}'
+        elif value == 'false':
+            etiqueta = f'IF_FALSE_{self.contCond}'
+            self.contCond += 1
+        else:
+            etiqueta = f'{value}:'
+
+        return etiqueta
 
     def iterateArrayProd(self):
         print()
@@ -238,20 +256,53 @@ class Proyecto2(DecafGramListener):
         self.diccContext[ctx] = nodo
 
     def exitStatement_if(self, ctx: DecafGramParser.Statement_ifContext):
+        if len(ctx.block()) == 1:
+            nodoState = NodoState()
+            nodoB = self.diccContext[ctx.expr()]
+            nodoS1 = self.diccContext[ctx.getChild(4)]
+
+            nodoB.setValorTrue(self.nuevaEtiquetaIf('true'))
+            endIf = self.nuevaEtiquetaIf('false')
+
+            codigConcat = nodoB.getCodigo() + (' IF ' + f't{self.contTemps-1} > 0 '  f' GOTO {nodoB.getValorTrue()}') + '\n' +\
+                (' GOTO ' + endIf) + '\n' + ' ' + self.nuevaEtiquetaIf(nodoB.getValorTrue()) + '\n' + ' ' + nodoS1.getCodigo() + '\n' + ' ' + self.nuevaEtiquetaIf(endIf)
+        else:
+            nodoState = NodoState()
+            nodoB = self.diccContext[ctx.expr()]
+            S1 = self.diccContext[ctx.block()[0]]
+            S2 = self.diccContext[ctx.block()[1]]
+
+            endIf = self.nuevaEtiquetaIf('endIf')
+            nodoB.setValorTrue(self.nuevaEtiquetaIf('true'))
+            nodoB.setValorFalse(self.nuevaEtiquetaIf('false'))
+
+            codigConcat = nodoB.getCodigo() + (' IF ' + f't{self.contTemps-1} > 0 GOTO {nodoB.getValorTrue()} \n ') + \
+                (f'GOTO {nodoB.getValorFalse()} \n ') + self.nuevaEtiquetaIf(nodoB.getValorTrue()) + '\n ' + S1.getCodigo() + '\n ' + \
+                (f' GOTO {endIf}') + '\n ' + self.nuevaEtiquetaIf(nodoB.getValorFalse()) + '\n ' + S2.getCodigo() + '\n ' + self.nuevaEtiquetaIf(endIf)
+
+        nodoState.setCodigo(codigConcat)
+        self.diccContext[ctx] = nodoState
+        self.arrayProd.append(nodoState)
+
+
+    def exitStatement_while(self, ctx: DecafGramParser.Statement_whileContext):
         nodoState = NodoState()
         nodoB = self.diccContext[ctx.expr()]
         nodoS1 = self.diccContext[ctx.getChild(4)]
 
-        nodoB.setValorTrue(self.nuevaEtiqueta('true'))
-        endIf = self.nuevaEtiqueta('false')
+        inicio = self.nuevaEtiquetaWhile('startwhile')
+        nodoB.setValorTrue(self.nuevaEtiquetaWhile('true'))
+        nodoB.setValorFalse(self.nuevaEtiquetaWhile('endwhile'))
 
-        codigConcat = nodoB.getCodigo() + (' IF ' + f't{self.contTemps-1} > 0 '  f' GOTO {nodoB.getValorTrue()}') + '\n' +\
-            (' GOTO ' + endIf) + '\n' + ' ' + self.nuevaEtiqueta(nodoB.getValorTrue()) + '\n' + ' ' + nodoS1.getCodigo() + '\n' + ' ' + self.nuevaEtiqueta(endIf)
+        codigConcat = ' ' + inicio + '\n ' + nodoB.getCodigo() + \
+            ('  IF ' + f't{self.contTemps-1} > 0 ' + f'GOTO {nodoB.getValorTrue()}') + '\n ' + \
+            (f' GOTO {nodoB.getValorFalse()}') + '\n  ' + self.nuevaEtiquetaWhile(nodoB.getValorTrue()) + '\n' + '  ' + nodoS1.getCodigo() + '\n  ' +\
+            (f' GOTO {inicio}') + '\n ' + self.nuevaEtiquetaWhile(nodoB.getValorFalse())
+
         nodoState.setCodigo(codigConcat)
 
         self.diccContext[ctx] = nodoState
         self.arrayProd.append(nodoState)
-
 
     def exitExpr_normal(self, ctx: DecafGramParser.Expr_normalContext):
         if ctx.eq_op is not None:
@@ -273,16 +324,19 @@ class Proyecto2(DecafGramListener):
 
     def exitInt_literal(self, ctx: DecafGramParser.Int_literalContext):
         nodo = Nodo(self.contNodos)
+        nodo.setDir(ctx.getText())
         self.contNodos += 1
         self.diccContext[ctx] = nodo
 
     def exitChar_literal(self, ctx: DecafGramParser.Char_literalContext):
         nodo = Nodo(self.contNodos)
+        nodo.setDir(ctx.getText())
         self.contNodos += 1
         self.diccContext[ctx] = nodo
 
     def exitBool_literal(self, ctx: DecafGramParser.Bool_literalContext):
         nodo = Nodo(self.contNodos)
+        nodo.setDir(ctx.getText())
         self.contNodos += 1
         self.diccContext[ctx] = nodo
 
@@ -300,7 +354,8 @@ class Proyecto2(DecafGramListener):
         nodo.setCodigo(codigoConcat)
 
         self.diccContext[ctx] = nodo
-        # TODO verificar cuando hay que hacer append y cuando no
+        # print(nodo.getNode())
+        # # TODO verificar cuando hay que hacer append y cuando no
         self.arrayProd.append(nodo)
 
     def exitStatement_return(self, ctx: DecafGramParser.Statement_returnContext):
@@ -321,6 +376,7 @@ class Proyecto2(DecafGramListener):
 
     def exitMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
         name = ctx.method_name().getText()
+        # self.contTemps = 0
         self.arrayProd.append('END DEF ' + name.upper() + '\n')
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
