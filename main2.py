@@ -171,7 +171,6 @@ class Proyecto2(DecafGramListener):
     def exitArray_id(self, ctx: DecafGramParser.Array_idContext):
         nombre = ctx.ID().getText()
         variable = self.tablas.getArray(nombre, self.scopeActual)
-        print(variable)
 
         nodo = Nodo(self.contNodos)
         self.contNodos += 1
@@ -398,16 +397,26 @@ class Proyecto2(DecafGramListener):
         nodo = Nodo(self.contNodos)
         self.contNodos += 1
 
-        nombre = ctx.location().var_id().getText()
-        variable = self.tablas.getVariable(nombre, self.scopeActual)
+        nombre = ''
+        if ctx.location().var_id():
+            nombre = ctx.location().var_id().getText()
+            variable = self.tablas.getVariable(nombre, self.scopeActual)
+        elif ctx.location().array_id():
+            nombre = ctx.location().array_id().ID()
+            variable = self.tablas.getArray(nombre, self.scopeActual)
 
-        codigoConcat = nodoE.getCodigo() + (' ' + self.generateTopeGet(variable) + " = " + nodoE.getDir())
+        if nodoL.getCodigo() != '' and nodoE.getCodigo() == '':
+            codigoConcat = nodoL.getCodigo() + (' ' + nodoL.getDir() + ' = ' + nodoE.getDir())
+        elif nodoL.getCodigo() != '' and nodoE.getCodigo() != '':
+            codigoConcat = nodoL.getCodigo() + nodoE.getCodigo() + (' ' + nodoL.getDir() + ' = ' + nodoE.getDir())
+        else:
+            codigoConcat = nodoE.getCodigo() + (' ' + self.generateTopeGet(variable) + " = " + nodoE.getDir())
         nodo.setCodigo(codigoConcat)
 
         self.diccContext[ctx] = nodo
         # print(nodo.getNode())
         # # TODO verificar cuando hay que hacer append y cuando no
-        self.arrayProd.append(nodo)
+        # self.arrayProd.append(nodo)
 
     def exitStatement_return(self, ctx: DecafGramParser.Statement_returnContext):
         nodo = Nodo(self.contNodos)
