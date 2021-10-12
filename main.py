@@ -1079,18 +1079,23 @@ class Proyecto1(DecafListener):
                             self.error.append(f'974ERROR: La variable "{var[0]}" se debe igualar a algo del mismo tipo, linea: {ctx.start.line}')
                 else:
                     varName = ctx.location().array_id().ID().getText()
+                    print(varName)
                     if self.tablas.arrayExists(varName, self.scopeActual):
                         variable = self.tablas.getArray(varName, self.scopeActual)
+                        print(variable)
                         tipo = variable[1]
                         if ctx.location().array_id().int_literal():
                             posi = ctx.location().array_id().int_literal().getText()
                             if int(posi) <= int(variable[4]):
+                                print(posi)
                                 if ctx.expr().location():
-                                    varDerName = ctx.expr().location().var_id().getText()
-                                    if self.tablas.varExists(varDerName, self.scopeActual):
-                                        variableDer = self.tablas.getVariable(varDerName, self.scopeActual)
-                                        if variableDer[1] != tipo:
-                                            self.error.append(f'988ERROR: El tipo de la variable "{variable[0]}" no es igual que al de "{variableDer[0]}", linea: {ctx.start.line}')
+                                    if ctx.expr().location().var_id():
+                                        varDerName = ctx.expr().location().var_id().getText()
+                                        print(varDerName)
+                                        if self.tablas.varExists(varDerName, self.scopeActual):
+                                            variableDer = self.tablas.getVariable(varDerName, self.scopeActual)
+                                            if variableDer[1] != tipo:
+                                                self.error.append(f'988ERROR: El tipo de la variable "{variable[0]}" no es igual que al de "{variableDer[0]}", linea: {ctx.start.line}')
                                 # Validar caso por si se iguala a una literal
                                 elif ctx.expr().literal():
                                     tipoDer = ''

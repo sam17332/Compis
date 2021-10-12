@@ -1,17 +1,7 @@
 class Program{
-	int patito(int z, int h) {
-		int x;
-		int y;
-		x = z + y;
-
-		return x;
-	}
-
 	void main(void) {
-		int a;
+		int a[1];
 		int b;
-		if(a==2 ){
-			b = 3;
-		}
+		a[1] = b;
 	}
 }

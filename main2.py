@@ -75,6 +75,15 @@ class Proyecto2(DecafGramListener):
                 value = f'fp[{(var[6])}]'
         return value
 
+    def generateDirArray(self, var, temp):
+        value = ''
+        if len(var) > 0:
+            if var[3] == 'global':
+                value = f'gp[{(temp)}]'
+            else:
+                value = f'fp[{(temp)}]'
+        return value
+
     def generateTopeGet(self, var):
         value = ''
         if len(var) > 0:
@@ -156,6 +165,38 @@ class Proyecto2(DecafGramListener):
         self.contNodos += 1
         nodo.setCodigo("")
         nodo.setDir(self.generateDir(variable))
+
+        self.diccContext[ctx] = nodo
+
+    def exitArray_id(self, ctx: DecafGramParser.Array_idContext):
+        nombre = ctx.ID().getText()
+        variable = self.tablas.getArray(nombre, self.scopeActual)
+        print(variable)
+
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        exp = 0
+        if ctx.int_literal():
+            exp = self.diccContext[ctx.int_literal()]
+        elif ctx.var_id():
+            exp = self.diccContext[ctx.var_id()]
+        cantTipo = 0
+        if variable[1] == 'int':
+            cantTipo = 4
+        elif variable[1] == 'char':
+            cantTipo = 2
+        elif variable[1] == 'boolean':
+            cantTipo = 1
+        temp1 = self.genTemp()
+        temp2 = self.genTemp()
+        offset = variable[7]
+        nodo.setDir(self.generateDirArray(variable, temp2))
+
+        codigoConcat = ' ' +exp.getCodigo() + \
+            (str(temp1) + ' = ' + str(cantTipo) + ' * ' + exp.getDir()) + '\n ' + \
+            (str(temp2) + ' = ' + str(offset) + ' + ' + str(temp1)) + '\n'
+
+        nodo.setCodigo(codigoConcat)
 
         self.diccContext[ctx] = nodo
 
@@ -310,7 +351,17 @@ class Proyecto2(DecafGramListener):
             nodoState = NodoState()
             self.contNodos += 1
             nodo = self.diccContext[ctx.getChild(0)]
-            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.eq_op().getText() + ' ' + ctx.getChild(2).getText() + '\n'
+            nodo2 = self.diccContext[ctx.getChild(2)]
+            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.eq_op().getText() + ' ' + nodo2.getDir() + '\n'
+            nodoState.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodoState
+        elif ctx.rel_op is not None:
+            temp = self.genTemp()
+            nodoState = NodoState()
+            self.contNodos += 1
+            nodo = self.diccContext[ctx.getChild(0)]
+            nodo2 = self.diccContext[ctx.getChild(2)]
+            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.rel_op().getText() + ' ' + nodo2.getDir() + '\n'
             nodoState.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodoState
         else:
