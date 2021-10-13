@@ -169,33 +169,38 @@ class Proyecto2(DecafGramListener):
         self.diccContext[ctx] = nodo
 
     def exitArray_id(self, ctx: DecafGramParser.Array_idContext):
-        nombre = ctx.ID().getText()
-        variable = self.tablas.getArray(nombre, self.scopeActual)
+        parent = ctx.parentCtx
+        if not isinstance(parent, DecafGramParser.Field_varContext):
+            nombre = ctx.ID().getText()
+            variable = self.tablas.getArray(nombre, self.scopeActual)
 
-        nodo = Nodo(self.contNodos)
-        self.contNodos += 1
-        exp = 0
-        if ctx.int_literal():
-            exp = self.diccContext[ctx.int_literal()]
-        elif ctx.var_id():
-            exp = self.diccContext[ctx.var_id()]
-        cantTipo = 0
-        if variable[1] == 'int':
-            cantTipo = 4
-        elif variable[1] == 'char':
-            cantTipo = 2
-        elif variable[1] == 'boolean':
-            cantTipo = 1
-        temp1 = self.genTemp()
-        temp2 = self.genTemp()
-        offset = variable[7]
-        nodo.setDir(self.generateDirArray(variable, temp2))
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
+            exp = 0
+            if ctx.int_literal():
+                exp = self.diccContext[ctx.int_literal()]
+            elif ctx.var_id():
+                exp = self.diccContext[ctx.var_id()]
+            cantTipo = 0
+            if variable[1] == 'int':
+                cantTipo = 4
+            elif variable[1] == 'char':
+                cantTipo = 2
+            elif variable[1] == 'boolean':
+                cantTipo = 1
+            temp1 = self.genTemp()
+            temp2 = self.genTemp()
+            offset = variable[7]
+            nodo.setDir(self.generateDirArray(variable, temp2))
 
-        codigoConcat = ' ' +exp.getCodigo() + \
-            (str(temp1) + ' = ' + str(cantTipo) + ' * ' + exp.getDir()) + '\n ' + \
-            (str(temp2) + ' = ' + str(offset) + ' + ' + str(temp1)) + '\n'
+            codigoConcat = ' ' +exp.getCodigo() + \
+                (str(temp1) + ' = ' + str(cantTipo) + ' * ' + exp.getDir()) + '\n ' + \
+                (str(temp2) + ' = ' + str(offset) + ' + ' + str(temp1)) + '\n'
 
-        nodo.setCodigo(codigoConcat)
+            nodo.setCodigo(codigoConcat)
+        else:
+            nodo = Nodo(self.contNodos)
+            self.contNodos += 1
 
         self.diccContext[ctx] = nodo
 
@@ -206,7 +211,14 @@ class Proyecto2(DecafGramListener):
         self.diccContext[ctx] = self.diccContext[ctx.getChild(0)]
 
     def exitBlock(self, ctx: DecafGramParser.BlockContext):
-        self.diccContext[ctx] = self.diccContext[ctx.getChild(1)]
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        codigoConcat = ''
+        for i in ctx.statement():
+            codigoConcat += self.diccContext[i].getCodigo() + "\n "
+        nodo.setCodigo(codigoConcat)
+
+        self.diccContext[ctx] = nodo
 
     def exitExpr_presedencia1(self, ctx: DecafGramParser.Expr_presedencia1Context):
         nodo1 = self.diccContext[ctx.getChild(0)]
@@ -304,7 +316,16 @@ class Proyecto2(DecafGramListener):
             nodoB.setValorTrue(self.nuevaEtiquetaIf('true'))
             endIf = self.nuevaEtiquetaIf('false')
 
-            codigConcat = nodoB.getCodigo() + (' IF ' + f't{self.contTemps-1} > 0 '  f' GOTO {nodoB.getValorTrue()}') + '\n' +\
+            if(len(nodoB.getCodigo().split("\n")) >= 2):
+                temp = nodoB.getCodigo().split(
+                    "\n")[2].split("=")[0].strip()
+            else:
+                if(len(nodoB.getCodigo().split("=")) != 0):
+                    temp = nodoB.getCodigo().split("=")[0].strip()
+                else:
+                    temp = f't{self.contadorTemporales-1}'
+
+            codigConcat = nodoB.getCodigo() + (' IF ' + f'{temp} > 0 '  f' GOTO {nodoB.getValorTrue()}') + '\n' +\
                 (' GOTO ' + endIf) + '\n' + ' ' + self.nuevaEtiquetaIf(nodoB.getValorTrue()) + '\n' + ' ' + nodoS1.getCodigo() + '\n' + ' ' + self.nuevaEtiquetaIf(endIf)
         else:
             nodoState = NodoState()
@@ -316,7 +337,16 @@ class Proyecto2(DecafGramListener):
             nodoB.setValorTrue(self.nuevaEtiquetaIf('true'))
             nodoB.setValorFalse(self.nuevaEtiquetaIf('false'))
 
-            codigConcat = nodoB.getCodigo() + (' IF ' + f't{self.contTemps-1} > 0 GOTO {nodoB.getValorTrue()} \n ') + \
+            if(len(nodoB.getCodigo().split("\n")) >= 2):
+                temp = nodoB.getCodigo().split(
+                    "\n")[2].split("=")[0].strip()
+            else:
+                if(len(nodoB.getCodigo().split("=")) != 0):
+                    temp = nodoB.getCodigo().split("=")[0].strip()
+                else:
+                    temp = f't{self.contadorTemporales-1}'
+
+            codigConcat = nodoB.getCodigo() + (' IF ' + f'{temp} > 0 GOTO {nodoB.getValorTrue()} \n ') + \
                 (f'GOTO {nodoB.getValorFalse()} \n ') + self.nuevaEtiquetaIf(nodoB.getValorTrue()) + '\n ' + S1.getCodigo() + '\n ' + \
                 (f' GOTO {endIf}') + '\n ' + self.nuevaEtiquetaIf(nodoB.getValorFalse()) + '\n ' + S2.getCodigo() + '\n ' + self.nuevaEtiquetaIf(endIf)
 
@@ -336,31 +366,47 @@ class Proyecto2(DecafGramListener):
 
         codigConcat = ' ' + inicio + '\n ' + nodoB.getCodigo() + \
             ('  IF ' + f't{self.contTemps-1} > 0 ' + f'GOTO {nodoB.getValorTrue()}') + '\n ' + \
-            (f' GOTO {nodoB.getValorFalse()}') + '\n  ' + self.nuevaEtiquetaWhile(nodoB.getValorTrue()) + '\n' + '  ' + nodoS1.getCodigo() + '\n  ' +\
+            (f' GOTO {nodoB.getValorFalse()}') + '\n  ' + self.nuevaEtiquetaWhile(nodoB.getValorTrue()) + '\n' + '  ' + nodoS1.getCodigo() + ' ' +\
             (f' GOTO {inicio}') + '\n ' + self.nuevaEtiquetaWhile(nodoB.getValorFalse())
 
         nodoState.setCodigo(codigConcat)
 
         self.diccContext[ctx] = nodoState
-        self.arrayProd.append(nodoState)
+        abuelo = ctx.parentCtx.parentCtx
+        if not isinstance(abuelo, DecafGramParser.Statement_ifContext):
+            self.arrayProd.append(nodoState)
 
     def exitExpr_normal(self, ctx: DecafGramParser.Expr_normalContext):
-        if ctx.eq_op is not None:
+        if ctx.eq_op() is not None:
             temp = self.genTemp()
             nodoState = NodoState()
-            self.contNodos += 1
             nodo = self.diccContext[ctx.getChild(0)]
             nodo2 = self.diccContext[ctx.getChild(2)]
-            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.eq_op().getText() + ' ' + nodo2.getDir() + '\n'
+            print(ctx.getText())
+            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.eq_op().getText() + ' ' + nodo2.getDir()
             nodoState.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodoState
-        elif ctx.rel_op is not None:
+        elif ctx.rel_op() is not None:
             temp = self.genTemp()
             nodoState = NodoState()
-            self.contNodos += 1
             nodo = self.diccContext[ctx.getChild(0)]
             nodo2 = self.diccContext[ctx.getChild(2)]
-            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.rel_op().getText() + ' ' + nodo2.getDir() + '\n'
+            codigoConcat = ' ' + temp + ' = ' + nodo.getDir() + ' ' + ctx.rel_op().getText() + ' ' + nodo2.getDir()
+            nodoState.setCodigo(codigoConcat)
+            self.diccContext[ctx] = nodoState
+        elif ctx.cond_op() is not None:
+            temp = self.genTemp()
+            nodoState = NodoState()
+            nodo1 = self.diccContext[ctx.getChild(0)]
+            nodo2 = self.diccContext[ctx.getChild(2)]
+            if(ctx.cond_op().getText() == "&&" or ctx.cond_op().getText() == "||"):
+                codigoConcat = nodo1.getCodigo() + '\n' + nodo2.getCodigo() + '\n ' + temp + " = " + \
+                    f'{nodo1.getCodigo().split("=")[0]}' + " " + \
+                    ctx.cond_op().getText() + \
+                    f' {nodo2.getCodigo().split("=")[0] }'
+            else:
+                codigoConcat = temp + " = " + nodo1.getDir() + " " + ctx.cond_op().getText() + " " + \
+                    nodo2.getDir()
             nodoState.setCodigo(codigoConcat)
             self.diccContext[ctx] = nodoState
         else:
@@ -402,7 +448,7 @@ class Proyecto2(DecafGramListener):
             nombre = ctx.location().var_id().getText()
             variable = self.tablas.getVariable(nombre, self.scopeActual)
         elif ctx.location().array_id():
-            nombre = ctx.location().array_id().ID()
+            nombre = ctx.location().array_id().ID().getText()
             variable = self.tablas.getArray(nombre, self.scopeActual)
 
         if nodoL.getCodigo() != '' and nodoE.getCodigo() == '':
@@ -414,9 +460,9 @@ class Proyecto2(DecafGramListener):
         nodo.setCodigo(codigoConcat)
 
         self.diccContext[ctx] = nodo
-        # print(nodo.getNode())
-        # # TODO verificar cuando hay que hacer append y cuando no
-        # self.arrayProd.append(nodo)
+        abuelo = ctx.parentCtx.parentCtx
+        if not isinstance(abuelo, DecafGramParser.Statement_ifContext):
+            self.arrayProd.append(nodo)
 
     def exitStatement_return(self, ctx: DecafGramParser.Statement_returnContext):
         nodo = Nodo(self.contNodos)
