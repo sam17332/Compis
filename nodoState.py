@@ -2,6 +2,7 @@ class NodoState:
     def __init__(self):
         self.siguiente = ""
         self.codigo = ""
+        self.direccion = ""
         self.valorTrue = ""
         self.valorFalse = ""
 
@@ -16,6 +17,12 @@ class NodoState:
 
     def setCodigo(self, codigo):
         self.codigo = codigo
+
+    def getDir(self):
+        return self.direccion
+
+    def setDir(self, direccion):
+        self.direccion = direccion
 
     def getValorTrue(self):
         return self.valorTrue
