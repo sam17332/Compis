@@ -99,18 +99,52 @@ class Proyecto2(DecafGramListener):
         for param in params:
             nodoParam = Nodo(self.contNodos)
             self.contNodos += 1
-            nodoParam.setCodigo('')
+            paramName = param.getText()
+            if isinstance(param, DecafGramParser.Expr_methodCallContext):
+                paramName = param.method_call().method_name().getText()
+            elif isinstance(param, DecafGramParser.Expr_locationContext):
+                if param.location().array_id() is not None:
+                    paramName = param.location().array_id().ID().getText()
+
             if isinstance(param, DecafGramParser.Expr_presedencia1Context) or isinstance(param, DecafGramParser.Expr_presedencia2Context):
                 hijo = self.diccContext[param]
                 nodoParam.setCodigo(hijo.getCodigo())
                 nodoParam.setDir(hijo.getDir())
             else:
-                if self.tablas.getVariable(param.getText(), self.scopeActual) == '':
-                    nodoParam.setDir(param.getText())
+                if self.tablas.varExists(paramName, self.scopeActual):
+                    variable = self.tablas.getVariable(paramName, self.scopeActual)
+                    nodoParam.setDir(self.generateTopeGet(variable))
+                elif self.tablas.metodoExists(paramName):
+                    funcion = self.tablas.getMetodo(paramName)
+                    codigoConcat = ' CALL ' + paramName + ', ' + str(len(funcion[2])) + '\n'
+                    nodoParam.setCodigo(codigoConcat)
+                    nodoParam.setDir("R")
+                elif self.tablas.arrayExists(paramName, self.scopeActual):
+                    array = self.tablas.getArray(paramName, self.scopeActual)
+                    if param.location().array_id().int_literal():
+                        exp = self.diccContext[param.location().array_id().int_literal()]
+                    elif param.location().array_id().var_id():
+                        exp = self.diccContext[param.location().array_id().var_id()]
+                    cantTipo = 0
+                    if array[1] == 'int':
+                        cantTipo = 4
+                    elif array[1] == 'char':
+                        cantTipo = 2
+                    elif array[1] == 'boolean':
+                        cantTipo = 1
+                    temp1 = self.genTemp()
+                    temp2 = self.genTemp()
+                    offset = array[7]
+                    nodoParam.setDir(self.generateDirArray(array, temp2))
+
+                    codigoConcat = ' ' + exp.getCodigo() + \
+                        (str(temp1) + ' = ' + str(cantTipo) + ' * ' + exp.getDir()) + '\n ' + \
+                        (str(temp2) + ' = ' + str(offset) + ' + ' + str(temp1)) + '\n'
+
+                    nodoParam.setCodigo(codigoConcat)
+
                 else:
-                    variable = self.tablas.getVariable(param.getText(), self.scopeActual)
-                    print(variable)
-                    nodoParam.setDir(self.generateTopeGet(variable[0]))
+                    nodoParam.setDir(paramName)
 
             arrayNodos.append(nodoParam)
 
@@ -179,10 +213,10 @@ class Proyecto2(DecafGramListener):
         self.contNodos += 1
         nodo.setCodigo("")
         var = self.tablas.getVariable(ctx.ID(), self.scopeActual)
-        if ctx.location().var_id():
+        if ctx.location()[0].var_id():
             var2 = self.tablas.getVariable(ctx.location()[0].getText(), var[1])
-        elif ctx.location().array_id():
-            var2 = self.tablas.getArray(ctx.location().array_id().ID()[0].getText(), var[1])
+        # elif ctx.location()[0].array_id():
+        #     var2 = self.tablas.getArray(ctx.location().array_id().ID()[0].getText(), var[1])
         temp1 = self.genTemp()
 
         codigoConcat = ' ' + temp1 + ' = ' + str(var[6]) + ' + ' + str(var2[6]) + ' \n'
