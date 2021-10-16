@@ -85,6 +85,8 @@ class Proyecto1(DecafListener):
                                 contNuevo += 1
                             # if tipo != returnType:
                             #     self.error.append(f'ERROR: El tipo de la variable "{var[0]}" no es del tipo del metodo "{metodo[0]}", linea: {ctx.start.line}')
+                        elif '[' in i and ']' in i:
+                            pass
                         elif i == 'True' or i == 'False':
                             arrayTypes.append('boolean')
                         elif "'" in i:
@@ -778,26 +780,28 @@ class Proyecto1(DecafListener):
                                 arraySplit = varDer.split(" ")
                                 arrayTypes = []
                                 for i in arraySplit:
-                                    if self.tablas.varExists(i, self.scopeActual):
-                                        varInfo = self.tablas.getVariable(i, self.scopeActual)
-                                        arrayTypes.append(varInfo[1])
-                                    elif i == 'True' or i == 'False':
-                                        arrayTypes.append('boolean')
-                                    elif "'" in i:
-                                        arrayTypes.append('char')
-                                    else:
-                                        try:
-                                            int(i)
-                                            arrayTypes.append('int')
-                                        except:
-                                            self.error.append(f'751ERROR: El parametro "{i}" no es un tipo valido, linea: {ctx.start.line}')
+                                    if len(i) > 0 and '!' not in i:
+                                        if self.tablas.varExists(i, self.scopeActual):
+                                            varInfo = self.tablas.getVariable(i, self.scopeActual)
+                                            arrayTypes.append(varInfo[1])
+                                        elif i == 'True' or i == 'False':
+                                            arrayTypes.append('boolean')
+                                        elif "'" in i:
+                                            arrayTypes.append('char')
+                                        else:
+                                            try:
+                                                int(i)
+                                                arrayTypes.append('int')
+                                            except:
+                                                self.error.append(f'751ERROR: El parametro "{i}" no es un tipo valido, linea: {ctx.start.line}')
                                 setArrayTypes = set(arrayTypes)
                                 if len(setArrayTypes) > 1:
                                     self.error.append(f'754ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
                                 else:
                                     arrayTypes2 = list(arrayTypes)
-                                    if arrayTypes2[0] != tipo:
-                                        self.error.append(f'758ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
+                                    if len(arrayTypes2) != 0:
+                                        if arrayTypes2[0] != tipo:
+                                            self.error.append(f'758ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
                     else:
                         self.error.append(f'760ERROR: La variable "{name}" no esta definida, linea: {ctx.start.line}')
             elif ctx.location().array_id():
@@ -1186,6 +1190,8 @@ class Proyecto1(DecafListener):
                                                 self.error.append(f'1080ERROR: La variable "{variable[0]}" debe ser igual a algo del mismo tipo ({tipo}), linea: {ctx.start.line}')
                             else:
                                 self.error.append(f'1082ERROR: La posición del array no es valida, linea: {ctx.start.line}')
+                        elif ctx.location().array_id().var_id():
+                            pass
                         else:
                             self.error.append(f'1084ERROR: La posición del array no es valida, linea: {ctx.start.line}')
         elif ctx.method_call():

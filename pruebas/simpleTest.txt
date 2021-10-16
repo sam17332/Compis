@@ -1,7 +1,15 @@
-class Program{
-	void main(void) {
-		int a[1];
-		int b;
-		b = 1 + a[1] + b;
+class Program {
+
+	struct A{
+		int d;
+		int k;
+	};
+
+	void main()
+	{
+	    int c;
+		struct A h[2];
+		h[3].k = h[3].d;
+
 	}
 }

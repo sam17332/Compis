@@ -44,12 +44,21 @@ class DecafGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by DecafGramParser#array_id.
-    def enterArray_id(self, ctx:DecafGramParser.Array_idContext):
+    # Enter a parse tree produced by DecafGramParser#array_id_struct.
+    def enterArray_id_struct(self, ctx:DecafGramParser.Array_id_structContext):
         pass
 
-    # Exit a parse tree produced by DecafGramParser#array_id.
-    def exitArray_id(self, ctx:DecafGramParser.Array_idContext):
+    # Exit a parse tree produced by DecafGramParser#array_id_struct.
+    def exitArray_id_struct(self, ctx:DecafGramParser.Array_id_structContext):
+        pass
+
+
+    # Enter a parse tree produced by DecafGramParser#array_id_var.
+    def enterArray_id_var(self, ctx:DecafGramParser.Array_id_varContext):
+        pass
+
+    # Exit a parse tree produced by DecafGramParser#array_id_var.
+    def exitArray_id_var(self, ctx:DecafGramParser.Array_id_varContext):
         pass
 
 
@@ -62,12 +71,21 @@ class DecafGramListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by DecafGramParser#var_id.
-    def enterVar_id(self, ctx:DecafGramParser.Var_idContext):
+    # Enter a parse tree produced by DecafGramParser#var_id_struct.
+    def enterVar_id_struct(self, ctx:DecafGramParser.Var_id_structContext):
         pass
 
-    # Exit a parse tree produced by DecafGramParser#var_id.
-    def exitVar_id(self, ctx:DecafGramParser.Var_idContext):
+    # Exit a parse tree produced by DecafGramParser#var_id_struct.
+    def exitVar_id_struct(self, ctx:DecafGramParser.Var_id_structContext):
+        pass
+
+
+    # Enter a parse tree produced by DecafGramParser#var_id_var.
+    def enterVar_id_var(self, ctx:DecafGramParser.Var_id_varContext):
+        pass
+
+    # Exit a parse tree produced by DecafGramParser#var_id_var.
+    def exitVar_id_var(self, ctx:DecafGramParser.Var_id_varContext):
         pass
 
 

@@ -139,11 +139,15 @@ vardeclr            : (var_type field_var) (COMMA var_type field_var)* SEMICOLON
 
 field_declr         : var_type field_var (COMMA field_var)* SEMICOLON;
 
-array_id            : ID LSQUARE (int_literal | var_id) RSQUARE (POINT location)?;
+array_id            : ID LSQUARE (int_literal | var_id) RSQUARE POINT location (POINT location)? #array_id_struct
+		            | ID LSQUARE (int_literal | var_id) RSQUARE #array_id_var
+                    ;
 
 field_var           : var_id | array_id;
 
-var_id              : ID (POINT location)?;
+var_id              : ID POINT location (POINT location)? #var_id_struct
+                    | ID #var_id_var
+                    ;
 
 struct_declr        : STRUCT ID LCURLY (vardeclr)* RCURLY SEMICOLON;
 

@@ -1,0 +1,11 @@
+----CODIGO INTERMEDIO----
+
+DEF MAIN:
+ t0 = 8 * 3 
+ t1 = 4 + t0
+ t2 = t1 + 4
+ t3 = 8 * 3 
+ t4 = 4 + t3
+ t5 = t4 + 0
+ fp[t2] = fp[t5]
+END DEF MAIN
