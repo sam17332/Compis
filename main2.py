@@ -247,6 +247,33 @@ class Proyecto2(DecafGramListener):
 
         # self.diccContext[ctx] = nodo
 
+    def exitArray_id_struct(self, ctx: DecafGramParser.Array_id_structContext):
+        nodo = Nodo(self.contNodos)
+        self.contNodos += 1
+        var = self.tablas.getArray(ctx.ID(), self.scopeActual)
+        if ctx.location()[0].var_id():
+            var2 = self.tablas.getVariable(ctx.location()[0].getText(), var[1])
+        print('array', var)
+        print('var', var2)
+        if ctx.int_literal():
+            posi = ctx.int_literal().getText()
+        elif ctx.var_id():
+            posi = 'a'
+        # elif ctx.location()[0].array_id():
+        #     var2 = self.tablas.getArray(ctx.location().array_id().ID()[0].getText(), var[1])
+        temp1 = self.genTemp()
+        temp2 = self.genTemp()
+        temp3 = self.genTemp()
+
+        codigoConcat = ' ' + temp1 + ' = ' + str(var[6]) + ' * ' + str(posi) + ' \n' +\
+            ' ' + temp2 + ' = ' + str(var[7]) + ' + ' + temp1 + '\n ' + temp3 + ' = ' + temp2 + ' + ' + str(var2[6]) + '\n'
+
+        print(codigoConcat)
+        nodo.setCodigo(codigoConcat)
+        nodo.setDir(self.generateDir(var2, temp3))
+
+        self.diccContext[ctx] = nodo
+
     def exitArray_id_var(self, ctx: DecafGramParser.Array_id_varContext):
         parent = ctx.parentCtx
         if not isinstance(parent, DecafGramParser.Field_varContext):
