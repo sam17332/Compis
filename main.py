@@ -109,7 +109,10 @@ class Proyecto1(DecafListener):
                 if binOp == ">=" or binOp == "<=" or binOp == ">" or binOp == "<":
                     arraySplit = ctx.expr().getText().split(binOp)
                     for i in arraySplit:
-                        var = self.tablas.getVariable(i, self.scopes[len(self.scopes)-2])
+                        if '[' in i and ']' in i:
+                            var = self.tablas.getArray(i[0:i.find('[')], self.scopes[len(self.scopes)-2])
+                        else:
+                            var = self.tablas.getVariable(i, self.scopes[len(self.scopes)-2])
                         if isinstance(var, list):
                             if var[1] == 'int':
                                 arrayTypes.append(var[1])
@@ -622,6 +625,8 @@ class Proyecto1(DecafListener):
                                 posi = 0
                                 if  ctx.expr().location().array_id().int_literal():
                                     posi = ctx.expr().location().array_id().int_literal().getText()
+                                elif ctx.expr().location().array_id().var_id():
+                                   pass
                                 else:
                                     self.error.append(f'583ERROR: La posición del array no es valida, linea: {ctx.start.line}')
 
@@ -1498,6 +1503,7 @@ def mainProy1():
 
     if proy1.notMainFunction:
         proy1.error.append("ERROR: El metodo main no esta defindo")
+    file = open("errores", "wb")
     f = open("errores.txt", "w", encoding="utf8")
     f.write(f'Han ocurrido {str(len(proy1.getErrors()))} errores!')
     if len(proy1.getErrors()) > 0:
@@ -1507,6 +1513,11 @@ def mainProy1():
             print(i)
             f.write(i)
             f.write('\n')
+        pickle.dump(proy1.error, file, protocol=pickle.HIGHEST_PROTOCOL)
+    else:
+        pickle.dump([], file, protocol=pickle.HIGHEST_PROTOCOL)
+    file.close()
+
     # else:
     print('Guardando tablas....')
     file = open("estructuras", "wb")

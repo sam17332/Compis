@@ -16,6 +16,7 @@ class Proyecto2(DecafGramListener):
         self.contTemps = 0
         self.contCond = 0
         self.contWhile = 0
+        self.contStatements = 0
         self.diccVariables = {}
         self.diccEstructuras = {}
         self.diccMetodos = {}
@@ -186,20 +187,17 @@ class Proyecto2(DecafGramListener):
         print("----CODIGO INTERMEDIO----")
         print()
         print()
+        file = open("codigo", "wb")
+        pickle.dump(self.arrayProd, file, protocol=pickle.HIGHEST_PROTOCOL)
+        file.close()
+
         f = open("codigoIntermedio.txt", "w", encoding="utf8")
         f.write('----CODIGO INTERMEDIO----')
         f.write('\n')
         f.write('\n')
-            # print(i)
-            # f.write(i)
-            # f.write('\n')
         for prod in self.arrayProd:
-            if isinstance(prod, Nodo) or isinstance(prod, NodoState):
-                f.write(prod.getCodigo())
-                print(prod.getCodigo())
-            else:
-                f.write(prod)
-                print(prod)
+            f.write(prod)
+            print(prod)
 
     def enterLocation(self, ctx: DecafGramParser.LocationContext):
         if ctx not in self.diccContext:
@@ -253,8 +251,6 @@ class Proyecto2(DecafGramListener):
         var = self.tablas.getArray(ctx.ID(), self.scopeActual)
         if ctx.location()[0].var_id():
             var2 = self.tablas.getVariable(ctx.location()[0].getText(), var[1])
-        print('array', var)
-        print('var', var2)
         if ctx.int_literal():
             posi = ctx.int_literal().getText()
         elif ctx.var_id():
@@ -268,7 +264,6 @@ class Proyecto2(DecafGramListener):
         codigoConcat = ' ' + temp1 + ' = ' + str(var[6]) + ' * ' + str(posi) + ' \n' +\
             ' ' + temp2 + ' = ' + str(var[7]) + ' + ' + temp1 + '\n ' + temp3 + ' = ' + temp2 + ' + ' + str(var2[6]) + '\n'
 
-        print(codigoConcat)
         nodo.setCodigo(codigoConcat)
         nodo.setDir(self.generateDir(var2, temp3))
 
@@ -358,12 +353,12 @@ class Proyecto2(DecafGramListener):
     def exitStatement_methodcall(self, ctx: DecafGramParser.Statement_methodcallContext):
         hijo = self.diccContext[ctx.getChild(0)]
         if hijo.getCodigo() != "":
-            self.arrayProd.append(hijo)
+            self.arrayProd.append(hijo.getCodigo())
         self.diccContext[ctx] = hijo
 
         abuelo = ctx.parentCtx.parentCtx
         if not isinstance(abuelo, DecafGramParser.Statement_whileContext) and not isinstance(abuelo, DecafGramParser.Statement_ifContext):
-            self.arrayProd.append(hijo)
+            self.arrayProd.append(hijo.getCodigo())
 
     def exitBlock(self, ctx: DecafGramParser.BlockContext):
         nodo = Nodo(self.contNodos)
@@ -462,6 +457,12 @@ class Proyecto2(DecafGramListener):
         nodo.setCodigo(nodo1.getCodigo())
         self.diccContext[ctx] = nodo
 
+    def enterStatement_if(self, ctx: DecafGramParser.Statement_ifContext):
+        self.contStatements += 1
+        scope = 'if'+ str(self.contStatements)
+        self.scopes.append(scope)
+        self.scopeActual = scope
+
     def exitStatement_if(self, ctx: DecafGramParser.Statement_ifContext):
         if len(ctx.block()) == 1:
             nodoState = NodoState()
@@ -509,7 +510,15 @@ class Proyecto2(DecafGramListener):
         nodoState.setCodigo(codigConcat)
         self.diccContext[ctx] = nodoState
         if not isinstance(abuelo, DecafGramParser.Statement_whileContext):
-            self.arrayProd.append(nodoState)
+            self.arrayProd.append(nodoState.getCodigo())
+        self.scopes.pop()
+        self.scopeActual = self.scopes[len(self.scopes)-1]
+
+    def enterStatement_while(self, ctx: DecafGramParser.Statement_whileContext):
+        self.contStatements += 1
+        scope = 'while'+ str(self.contStatements)
+        self.scopes.append(scope)
+        self.scopeActual = scope
 
     def exitStatement_while(self, ctx: DecafGramParser.Statement_whileContext):
         nodoState = NodoState()
@@ -521,16 +530,15 @@ class Proyecto2(DecafGramListener):
         nodoB.setValorFalse(self.nuevaEtiquetaWhile('endwhile'))
 
         if(len(nodoB.getCodigo().split("\n")) >= 2):
-            temp = nodoB.getCodigo().split(
-                "\n")[2].split("=")[0].strip()
+            temp = nodoB.getCodigo().split("\n")[2].split("=")[0].strip()
         else:
             if(len(nodoB.getCodigo().split("=")) != 0):
                 temp = nodoB.getCodigo().split("=")[0].strip()
             else:
                 temp = f't{self.contadorTemporales-1}'
 
-        codigConcat = ' ' + inicio + '\n ' + nodoB.getCodigo() + \
-            ('\n  IF ' + f't{temp} > 0 ' + f'GOTO {nodoB.getValorTrue()}') + '\n ' + \
+        codigConcat = ' \n' + inicio + '\n ' + nodoB.getCodigo() + \
+            ('\n  IF ' + f'{temp} > 0 ' + f'GOTO {nodoB.getValorTrue()}') + '\n ' + \
             (f' GOTO {nodoB.getValorFalse()}') + '\n  ' + self.nuevaEtiquetaWhile(nodoB.getValorTrue()) + '\n' + '  ' + nodoS1.getCodigo() + ' ' +\
             (f' GOTO {inicio}') + '\n ' + self.nuevaEtiquetaWhile(nodoB.getValorFalse())
 
@@ -539,7 +547,9 @@ class Proyecto2(DecafGramListener):
         self.diccContext[ctx] = nodoState
         abuelo = ctx.parentCtx.parentCtx
         if not isinstance(abuelo, DecafGramParser.Statement_ifContext):
-            self.arrayProd.append(nodoState)
+            self.arrayProd.append(nodoState.getCodigo())
+        self.scopes.pop()
+        self.scopeActual = self.scopes[len(self.scopes)-1]
 
     def exitExpr_normal(self, ctx: DecafGramParser.Expr_normalContext):
         if ctx.eq_op() is not None:
@@ -627,16 +637,28 @@ class Proyecto2(DecafGramListener):
         nodoL = self.diccContext[ctx.location()]
         nodoE = self.diccContext[ctx.expr()]
 
+        bo = False
+        if "Index=Minimo(i);" in ctx.getText():
+            bo = True
+
+        if bo:
+            print(ctx.getText())
+
         nodo = Nodo(self.contNodos)
         self.contNodos += 1
 
         nombre = ''
         if ctx.location().var_id():
             nombre = ctx.location().var_id().getText()
+            if bo:
+                print('self.scopeActual', self.scopeActual)
             variable = self.tablas.getVariable(nombre, self.scopeActual)
         elif ctx.location().array_id():
             nombre = ctx.location().array_id().ID().getText()
             variable = self.tablas.getArray(nombre, self.scopeActual)
+
+        if bo:
+            print('variable', variable)
 
         if nodoL.getCodigo() != '' and nodoE.getCodigo() == '':
             codigoConcat = nodoL.getCodigo() + (' ' + nodoL.getDir() + ' = ' + nodoE.getDir())
@@ -649,7 +671,7 @@ class Proyecto2(DecafGramListener):
         self.diccContext[ctx] = nodo
         abuelo = ctx.parentCtx.parentCtx
         if not isinstance(abuelo, DecafGramParser.Statement_ifContext) and not isinstance(abuelo, DecafGramParser.Statement_whileContext):
-            self.arrayProd.append(nodo)
+            self.arrayProd.append(nodo.getCodigo())
 
     def exitStatement_return(self, ctx: DecafGramParser.Statement_returnContext):
         nodo = Nodo(self.contNodos)
@@ -660,7 +682,7 @@ class Proyecto2(DecafGramListener):
 
         abuelo = ctx.parentCtx.parentCtx
         if not isinstance(abuelo, DecafGramParser.Statement_ifContext):
-            self.arrayProd.append(nodo)
+            self.arrayProd.append(nodo.getCodigo())
         self.diccContext[ctx] = nodo
 
     def enterMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
@@ -671,7 +693,7 @@ class Proyecto2(DecafGramListener):
 
     def exitMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
         name = ctx.method_name().getText()
-        self.contTemps = 0
+        # self.contTemps = 0
         self.arrayProd.append('\nEND DEF ' + name.upper() + '\n')
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
@@ -693,7 +715,6 @@ class Proyecto2(DecafGramListener):
         args = self.visitar(ctx.expr())
 
         for arg in args:
-            print('arg', arg.getDir())
             codigo = nodo.getCodigo()
             codigo += arg.getCodigo() + (' PARAM ' + arg.getDir() + '\n')
             nodo.setCodigo(codigo)
