@@ -1287,6 +1287,8 @@ class Proyecto1(DecafListener):
                                                     else:
                                                         self.error.append(f'1170ERROR: La variable "{j}" no existe, linea: {ctx.start.line}')
                                             contNuevo += 1
+                        else:
+                            entro = True
                         if entro:
                             pass
                         elif self.tablas.varExists(var, self.scopeActual):

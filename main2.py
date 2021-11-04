@@ -213,8 +213,6 @@ class Proyecto2(DecafGramListener):
         var = self.tablas.getVariable(ctx.ID(), self.scopeActual)
         if ctx.location()[0].var_id():
             var2 = self.tablas.getVariable(ctx.location()[0].getText(), var[1])
-        # elif ctx.location()[0].array_id():
-        #     var2 = self.tablas.getArray(ctx.location().array_id().ID()[0].getText(), var[1])
         temp1 = self.genTemp()
 
         codigoConcat = ' ' + temp1 + ' = ' + str(var[6]) + ' + ' + str(var2[6]) + ' \n'
@@ -234,17 +232,6 @@ class Proyecto2(DecafGramListener):
 
         self.diccContext[ctx] = nodo
 
-    # def exitVar_id(self, ctx: DecafGramParser.Var_idContext):
-        # nombre = ctx.getText()
-        # variable = self.tablas.getVariable(nombre, self.scopeActual)
-
-        # nodo = Nodo(self.contNodos)
-        # self.contNodos += 1
-        # nodo.setCodigo("")
-        # nodo.setDir(self.generateDir(variable))
-
-        # self.diccContext[ctx] = nodo
-
     def exitArray_id_struct(self, ctx: DecafGramParser.Array_id_structContext):
         nodo = Nodo(self.contNodos)
         self.contNodos += 1
@@ -255,8 +242,6 @@ class Proyecto2(DecafGramListener):
             posi = ctx.int_literal().getText()
         elif ctx.var_id():
             posi = 'a'
-        # elif ctx.location()[0].array_id():
-        #     var2 = self.tablas.getArray(ctx.location().array_id().ID()[0].getText(), var[1])
         temp1 = self.genTemp()
         temp2 = self.genTemp()
         temp3 = self.genTemp()
@@ -304,42 +289,6 @@ class Proyecto2(DecafGramListener):
             self.contNodos += 1
 
         self.diccContext[ctx] = nodo
-
-    # def exitArray_id(self, ctx: DecafGramParser.Array_idContext):
-        # parent = ctx.parentCtx
-        # if not isinstance(parent, DecafGramParser.Field_varContext):
-        #     nombre = ctx.ID().getText()
-        #     variable = self.tablas.getArray(nombre, self.scopeActual)
-
-        #     nodo = Nodo(self.contNodos)
-        #     self.contNodos += 1
-        #     exp = 0
-        #     if ctx.int_literal():
-        #         exp = self.diccContext[ctx.int_literal()]
-        #     elif ctx.var_id():
-        #         exp = self.diccContext[ctx.var_id()]
-        #     cantTipo = 0
-        #     if variable[1] == 'int':
-        #         cantTipo = 4
-        #     elif variable[1] == 'char':
-        #         cantTipo = 2
-        #     elif variable[1] == 'boolean':
-        #         cantTipo = 1
-        #     temp1 = self.genTemp()
-        #     temp2 = self.genTemp()
-        #     offset = variable[7]
-        #     nodo.setDir(self.generateDirArray(variable, temp2))
-
-        #     codigoConcat = ' ' +exp.getCodigo() + \
-        #         (str(temp1) + ' = ' + str(cantTipo) + ' * ' + exp.getDir()) + '\n ' + \
-        #         (str(temp2) + ' = ' + str(offset) + ' + ' + str(temp1)) + '\n'
-
-        #     nodo.setCodigo(codigoConcat)
-        # else:
-        #     nodo = Nodo(self.contNodos)
-        #     self.contNodos += 1
-
-        # self.diccContext[ctx] = nodo
 
     def exitMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
         return super().exitMethod_declr(ctx)
@@ -509,7 +458,7 @@ class Proyecto2(DecafGramListener):
         abuelo = ctx.parentCtx.parentCtx
         nodoState.setCodigo(codigConcat)
         self.diccContext[ctx] = nodoState
-        if not isinstance(abuelo, DecafGramParser.Statement_whileContext):
+        if not isinstance(abuelo, DecafGramParser.Statement_whileContext) and not isinstance(abuelo, DecafGramParser.Statement_ifContext):
             self.arrayProd.append(nodoState.getCodigo())
         self.scopes.pop()
         self.scopeActual = self.scopes[len(self.scopes)-1]
@@ -720,7 +669,7 @@ class Proyecto2(DecafGramListener):
             nodo.setCodigo(codigo)
 
         codigo = nodo.getCodigo()
-        codigo += ' CALL ' + nombre + ', ' + str(len(args)) + '\n'
+        codigo += ' CALL ' + nombre + ', ' + str(len(ctx.expr())) + '\n'
         nodo.setCodigo(codigo)
         nodo.setDir('R')
         self.diccContext[ctx] = nodo
