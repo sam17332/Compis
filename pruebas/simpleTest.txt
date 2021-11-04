@@ -1,15 +1,29 @@
-class Program {
+class Program
+{
 
-	struct A{
-		int d;
-		int k;
-	};
+int A[10];
 
-	void main()
+int Minimo(int i){
+	return i;
+}
+
+void Ordenar(void)
+{
+	int i;
+	int j;
+	int temp;
+	i = 0;
+	while(i<10)
 	{
-	    int c;
-		struct A h[2];
-		h[3].k = h[3].d;
-
+		int Index;
+		Index = Minimo(i);
+		temp = A[Index];
+		A[Index] = A[i];
+		A[i]=temp;
+		i = i+1;
 	}
+}
+
+void main(){
+}
 }

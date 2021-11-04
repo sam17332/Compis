@@ -202,3 +202,11 @@ class Tablas:
             print()
             print("Estructuras")
             self.print.pprint(self.estructuras)
+
+    def searchFather(self, scope):
+        padre = ''
+        for i in range(len(self.metodos)):
+            metodo = self.metodos[i+1]
+            if metodo[0] == scope:
+                padre = metodo[3]
+        return padre

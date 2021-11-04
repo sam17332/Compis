@@ -30,7 +30,7 @@ public class DecafParser extends Parser {
 		RULE_array_id = 4, RULE_field_var = 5, RULE_var_id = 6, RULE_struct_declr = 7, 
 		RULE_method_declr = 8, RULE_return_type = 9, RULE_block = 10, RULE_statement = 11, 
 		RULE_method_call_inter = 12, RULE_method_call = 13, RULE_expr = 14, RULE_literal = 15, 
-		RULE_location = 16, RULE_callout_arg = 17, RULE_int_literal = 18, RULE_string_literal = 19, 
+		RULE_location = 16, RULE_callout_arg = 17, RULE_int_literal = 18, RULE_char_literal = 19, 
 		RULE_bool_literal = 20, RULE_rel_op = 21, RULE_eq_op = 22, RULE_cond_op = 23, 
 		RULE_bin_op = 24, RULE_arith_op = 25, RULE_var_type = 26, RULE_assign_op = 27, 
 		RULE_method_name = 28;
@@ -39,7 +39,7 @@ public class DecafParser extends Parser {
 			"program", "declaration", "vardeclr", "field_declr", "array_id", "field_var", 
 			"var_id", "struct_declr", "method_declr", "return_type", "block", "statement", 
 			"method_call_inter", "method_call", "expr", "literal", "location", "callout_arg", 
-			"int_literal", "string_literal", "bool_literal", "rel_op", "eq_op", "cond_op", 
+			"int_literal", "char_literal", "bool_literal", "rel_op", "eq_op", "cond_op", 
 			"bin_op", "arith_op", "var_type", "assign_op", "method_name"
 		};
 	}
@@ -1392,8 +1392,8 @@ public class DecafParser extends Parser {
 		public Int_literalContext int_literal() {
 			return getRuleContext(Int_literalContext.class,0);
 		}
-		public String_literalContext string_literal() {
-			return getRuleContext(String_literalContext.class,0);
+		public Char_literalContext char_literal() {
+			return getRuleContext(Char_literalContext.class,0);
 		}
 		public Bool_literalContext bool_literal() {
 			return getRuleContext(Bool_literalContext.class,0);
@@ -1422,7 +1422,7 @@ public class DecafParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(286);
-				string_literal();
+				char_literal();
 				}
 				break;
 			case T__0:
@@ -1569,17 +1569,17 @@ public class DecafParser extends Parser {
 		return _localctx;
 	}
 
-	public static class String_literalContext extends ParserRuleContext {
+	public static class Char_literalContext extends ParserRuleContext {
 		public TerminalNode CHAR_LITERAL() { return getToken(DecafParser.CHAR_LITERAL, 0); }
-		public String_literalContext(ParserRuleContext parent, int invokingState) {
+		public Char_literalContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_string_literal; }
+		@Override public int getRuleIndex() { return RULE_char_literal; }
 	}
 
-	public final String_literalContext string_literal() throws RecognitionException {
-		String_literalContext _localctx = new String_literalContext(_ctx, getState());
-		enterRule(_localctx, 38, RULE_string_literal);
+	public final Char_literalContext char_literal() throws RecognitionException {
+		Char_literalContext _localctx = new Char_literalContext(_ctx, getState());
+		enterRule(_localctx, 38, RULE_char_literal);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{

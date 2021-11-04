@@ -187,7 +187,7 @@ expr:
 	| NOT expr
 	| LROUND expr RROUND;
 
-literal: int_literal | string_literal | bool_literal;
+literal: int_literal | char_literal | bool_literal;
 
 location: var_id | array_id;
 
@@ -195,7 +195,7 @@ callout_arg: expr | CHAR_LITERAL;
 
 int_literal: DECIMAL_LITERAL;
 
-string_literal: CHAR_LITERAL;
+char_literal: CHAR_LITERAL;
 
 bool_literal: 'True' | 'False';
 

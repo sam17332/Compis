@@ -138,7 +138,7 @@ literal
 location
 callout_arg
 int_literal
-string_literal
+char_literal
 bool_literal
 rel_op
 eq_op
