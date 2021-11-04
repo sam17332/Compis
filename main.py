@@ -1346,6 +1346,7 @@ class Proyecto1(DecafListener):
                 if ctx.field_var()[i].var_id():
                     name = ctx.field_var()[i].var_id().getText()
                     if not self.tablas.varExistsOnce(name, self.scopeActual):
+                        print(self.scopeActual)
                         if self.scopeActual in self.offsetDicc:
                             off = self.offsetDicc[self.scopeActual]
                         else:
@@ -1391,14 +1392,16 @@ class Proyecto1(DecafListener):
                 if fieldVar.var_id():
                     name = fieldVar.var_id().getText()
                     if not self.tablas.varExistsOnce(name, self.scopeActual):
-                        if self.scopeActual in self.offsetDicc:
-                            off = self.offsetDicc[self.scopeActual]
+                        scope = self.scopeActual
+                        off = 0
+                        if scope in self.offsetDicc:
+                            off = self.offsetDicc[scope]
                         else:
-                            self.offsetDicc[self.scopeActual] = 0
-                            off = self.offsetDicc[self.scopeActual]
+                            scope = self.tablas.searchFather(scope)
+                            off = self.offsetDicc[scope]
                         self.contVariables += 1
-                        self.tablas.setVariable(self.contVariables, name, type, self.scopeActual, 0, size, False, off)
-                        self.offsetDicc[self.scopeActual] += size
+                        self.tablas.setVariable(self.contVariables, name, type, scope, 0, size, False, off)
+                        self.offsetDicc[scope] += size
                     else:
                         self.error.append(f'1256ERROR: La variable "{name}" ya existe, linea: {ctx.start.line}')
                 elif fieldVar.array_id():
@@ -1431,6 +1434,8 @@ class Proyecto1(DecafListener):
             self.scopes.append(name)
             self.scopeActual = name
             retorna = False
+            if name not in self.offsetDicc:
+                self.offsetDicc[name] = 0
             for i in ctx.block().statement():
                 if i.RETURN():
                   retorna = True
@@ -1455,11 +1460,13 @@ class Proyecto1(DecafListener):
                             size = 2
                         elif ctx.var_type()[i].BOOLEAN():
                             size = 1
+
                         if self.scopeActual in self.offsetDicc:
                             off = self.offsetDicc[self.scopeActual]
-                        else:
-                            self.offsetDicc[self.scopeActual] = 0
-                            off = self.offsetDicc[self.scopeActual]
+                        # else:
+                        #     self.offsetDicc[self.scopeActual] = 0
+                        #     off = self.offsetDicc[self.scopeActual]
+
                         self.contVariables += 1
                         self.tablas.setVariable(self.contVariables, param2, param1, self.scopeActual, 0, size, False, off)
                         arrayParams.append([param1, param2])
@@ -1502,6 +1509,8 @@ def mainProy1():
 
     print()
     proy1.tablas.showFullDicc()
+
+    print(proy1.offsetDicc)
 
     if proy1.notMainFunction:
         proy1.error.append("ERROR: El metodo main no esta defindo")
