@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
         self.errorForLog.setText('')
 
     def erase_code(self):
-        self.textForCode.setText('')
+        self.textForCode.setPlainText('')
 
     def compilar(self):
         try:
