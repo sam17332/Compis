@@ -1,29 +1,10 @@
 class Program
 {
 
-int A[10];
-
-int Minimo(int i){
-	return i;
-}
-
-void Ordenar(void)
-{
-	int i;
-	int j;
-	int temp;
-	i = 0;
-	while(i<10)
-	{
-		int Index;
-		Index = Minimo(i);
-		temp = A[Index];
-		A[Index] = A[i];
-		A[i]=temp;
-		i = i+1;
-	}
-}
-
 void main(){
+	int a;
+	int b;
+	int c;
+	c = a + b;
 }
 }

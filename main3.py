@@ -5,6 +5,7 @@ class Proyecto3():
         infile = open("codigo", 'rb')
         self.arrayCodigoInt = pickle.load(infile)
         self.limpiarCodigo()
+        self.generarCodigo()
 
     def limpiarCodigo(self):
         array = []
@@ -35,11 +36,22 @@ class Proyecto3():
                 cont += 1
 
         self.arrayCodigoInt = arrayFinal
+        # Debug only
         # for i in self.arrayCodigoInt:
         #     print(i)
 
+    def generarCodigo(self):
+        for i in self.arrayCodigoInt:
+            print(i)
+
+
 
 def main():
+    print('''
+---------------------------------------------------------
+--------------------- MAIN 3 ----------------------------
+---------------------------------------------------------
+    ''')
     proy3 = Proyecto3()
 
 main()

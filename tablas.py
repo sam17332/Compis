@@ -7,8 +7,8 @@ class Tablas:
         self.metodos = {}
         self.print = pprint.PrettyPrinter()
 
-    def setMetodo(self, key, name, returnType, arrayParams, padre = '', retorna = False):
-        self.metodos[key] = [name, returnType, arrayParams, padre, retorna]
+    def setMetodo(self, key, name, returnType, arrayParams, padre = '', retorna = False, peso = 0):
+        self.metodos[key] = [name, returnType, arrayParams, padre, retorna, peso]
 
     def getMetodo(self, nombre):
         if len(self.metodos) > 0:
@@ -16,6 +16,26 @@ class Tablas:
                 valor = self.metodos[i+1]
                 if nombre == valor[0]:
                     return valor
+
+    def setPesoMetodo(self, nombreMetodo, peso):
+        metodo = self.getMetodo(nombreMetodo)
+        metodo[5] = peso
+
+    def calcularPesoMetodo(self, nombreMetodo):
+        peso = 0;
+        if len(self.variables) > 0:
+            for i in self.variables:
+                variable = self.variables[i]
+                if variable[3] == nombreMetodo:
+                    peso += variable[4]
+
+        if len(self.estructuras) > 0:
+            for i in self.variables:
+                estructura = self.estructuras[i]
+                if estructura[3] == nombreMetodo:
+                    peso += estructura[4]
+
+        return peso
 
     def metodoSetReturn(self, nombre):
         if len(self.metodos) > 0:

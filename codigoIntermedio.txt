@@ -1,34 +1,6 @@
 ----CODIGO INTERMEDIO----
 
-DEF MINIMO:
- RETURN fp[0]
-END DEF MINIMO
-DEF ORDENAR:
- fp[0] = 0 
-WHILE_LOOP_0
-   t0 = fp[0] < 10
-  IF t0 > 0 GOTO IF_TRUE_0
-  GOTO END_WHILE_0
-  IF_TRUE_0:
-   PARAM fp[0]
- CALL Minimo, 1
- fp[12] = R
-  t1 = 4 * fp[12]
- t2 = 0 + t1
- fp[8] = gp[t2]
-  t3 = 4 * fp[12]
- t4 = 0 + t3
- t5 = 4 * fp[0]
- t6 = 0 + t5
- gp[t4] = gp[t6]
-  t7 = 4 * fp[0]
- t8 = 0 + t7
- gp[t8] = fp[8]
-  t9 = fp[0] + 1
- fp[0] = t9
-   GOTO WHILE_LOOP_0
- END_WHILE_0:
-END DEF ORDENAR
-DEF MAIN:
-
+DEF MAIN, 12:
+ t0 = fp[0] + fp[4]
+ fp[8] = t0
 END DEF MAIN

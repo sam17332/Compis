@@ -1480,6 +1480,7 @@ class Proyecto1(DecafListener):
 
     def exitMethod_declr(self, ctx: DecafParser.Method_declrContext):
         self.scopes.pop()
+        self.tablas.setPesoMetodo(self.scopeActual, self.tablas.calcularPesoMetodo(self.scopeActual))
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
     def enterStruct_declr(self, ctx: DecafParser.Struct_declrContext):
@@ -1496,6 +1497,11 @@ class Proyecto1(DecafListener):
         self.scopeActual = self.scopes[len(self.scopes)-1]
 
 def mainProy1():
+    print('''
+---------------------------------------------------------
+--------------------- MAIN 1 ----------------------------
+---------------------------------------------------------
+    ''')
     data = open('./pruebas/simpleTest.txt').read()
     # data = open('./pruebas/multiple_tests.txt').read()
     lexer = DecafLexer(InputStream(data))
@@ -1510,7 +1516,7 @@ def mainProy1():
     print()
     proy1.tablas.showFullDicc()
 
-    print(proy1.offsetDicc)
+    # print(proy1.offsetDicc)
 
     if proy1.notMainFunction:
         proy1.error.append("ERROR: El metodo main no esta defindo")
