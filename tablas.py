@@ -30,8 +30,8 @@ class Tablas:
                     peso += variable[4]
 
         if len(self.estructuras) > 0:
-            for i in self.variables:
-                estructura = self.estructuras[i]
+            for j in self.estructuras:
+                estructura = self.estructuras[j]
                 if estructura[3] == nombreMetodo:
                     peso += estructura[4]
 
