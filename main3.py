@@ -83,7 +83,7 @@ class Proyecto3():
         elementos = []
         inWhile = False
         for linea in self.arrayCodigoInt:
-            print(linea)
+            # print(linea)
             if self.condicionActual == "":
                 for i in self.operadoresBool.keys():
                     if i in linea:
@@ -91,23 +91,25 @@ class Proyecto3():
                         self.condicionActual = i
                         break
             if 'IF' in linea and 'GOTO' in linea and 'IF_FALSE' not in linea:
+                condSimbol = self.operadoresBool[self.condicionActual]
+                tag = self.operadoresBoolContrarios[condSimbol]
                 if inWhile:
                     self.codigoFinal += generador.whileCond()
                     self.codigoFinal += codigo
                     self.codigoFinal += generador.condicion(registros)
-                    condSimbol = self.operadoresBool[self.condicionActual]
-                    tag = self.operadoresBoolContrarios[condSimbol]
                     self.codigoFinal += generador.tagsInWhile(tag)
                 else:
                     self.codigoFinal += codigo
                     self.codigoFinal += generador.condicion(registros)
-                    condSimbol = self.operadoresBool[self.condicionActual]
-                    tag = self.operadoresBoolContrarios[condSimbol]
                     self.codigoFinal += generador.tagsInIf(tag)
                 self.condicionActual = ""
             elif 'GOTO IF_FALSE' in linea:
                 pass
             elif 'IF_TRUE' in linea:
+                pass
+            elif 'CALL' in linea:
+                pass
+            elif '= R' in linea:
                 pass
             elif 'WHILE_LOOP_' in linea:
                 inWhile = True
@@ -138,9 +140,6 @@ class Proyecto3():
             elif('END DEF' in linea):
                 self.codigoFinal += generador.finFuncion()
             else:
-                # print('------')
-                # print(linea)
-                # print('------')
                 codigo, registros, elementos = self.getReg(linea)
                 self.codigoFinal += codigo
                 if '+' in linea or '-' in linea or '*' in linea:
