@@ -82,8 +82,9 @@ class Proyecto3():
         registros = ['', '']
         elementos = []
         inWhile = False
+        # Se itera el codigo intermedio
         for linea in self.arrayCodigoInt:
-            # print(linea)
+            print(linea)
             if self.condicionActual == "":
                 for i in self.operadoresBool.keys():
                     if i in linea:
@@ -108,8 +109,17 @@ class Proyecto3():
             elif 'IF_TRUE' in linea:
                 pass
             elif 'CALL' in linea:
-                pass
+                index1 = linea.find('L', 2)
+                index2 = linea.find(',')
+                nombre = linea[index1+3:index2]
+                cantParams = linea[index2+2:len(linea)]
+                if int(cantParams) == 0:
+                    self.codigoFinal += generador.llamarFuncion(nombre)
+                else:
+                    pass
             elif '= R' in linea:
+                pass
+            elif 'PARAM' in linea:
                 pass
             elif 'WHILE_LOOP_' in linea:
                 inWhile = True
@@ -233,36 +243,32 @@ class Proyecto3():
 
             llaves = self.descriptorDirecciones.keys()
 
-            if esOperacion:  # si la instruccion es tripleta
+            if esOperacion:  # si es tripleta
+                # Buscamos las posiciones de cada parte de la operacion
                 pos_eq = tripleta.find("=")
                 pos_op = tripleta.find(operacion)
                 x = tripleta[:pos_eq].replace(' ', '')
                 y = tripleta[pos_eq+1:pos_op].replace(' ', '')
                 z = tripleta[pos_op+1:].replace(' ', '')
+                # verificamos si ya existe
                 if x not in llaves:
                     self.descriptorDirecciones[x] = [] if 't' in x else [x]
                 if y not in llaves:
                     self.descriptorDirecciones[y] = [] if 't' in y else [y]
                 if z not in llaves:
                     self.descriptorDirecciones[z] = [] if 't' in z else [z]
-                # print("Val1 ", x)
-                # print("Val2 ", y)
-                # print("Val3 ", z)
                 elementos = [x, y, z]
                 caso3 = True
-                # Revision de caso 1 y 2
+                # Caso 1 y 2
                 for llave, valor in self.descriptorRegistros.items():
                     if y in valor:
-                        # print("Entro al caso 1, no se hace nada")
-                        # print("Reg ", llave)
                         registros[1] = llave
                         caso3 = False
                         break
                     if y not in valor:
                         if len(valor) == 0:
                             # print("Reg ", llave)
-                            self.descriptorRegistros[llave] = [
-                                y]  # se ingresa al registro
+                            self.descriptorRegistros[llave] = [y]  # se ingresa al registro
                             self.descriptorDirecciones[y].append(llave)
                             esLiteral = False
                             try:
@@ -278,17 +284,15 @@ class Proyecto3():
                             registros[1] = llave
                             caso3 = False
                             break
-                if caso3:  # No encontro primeros casos
+                if caso3:
                     for llave, valor in self.descriptorDirecciones.items():
-                        # ingresar casos de caso 3
                         if len(valor) > 1:
                             index = 0
                             for val in valor:
                                 if 'R' in val:
                                     break
                                 index += 1
-                            tempR = self.descriptorDirecciones[llave].pop(
-                                index)  # se quita el registro
+                            tempR = self.descriptorDirecciones[llave].pop(index)  # se quita el registro
                             self.descriptorRegistros[tempR] = llave
                             esLiteral = False
                             try:
@@ -305,19 +309,17 @@ class Proyecto3():
                             break
 
                 caso3 = True
-                # valor z Revision de caso 1 y 2
                 for llave, valor in self.descriptorRegistros.items():
+                    # 3.1
                     if z in valor:
-                        # print("Entro al caso 1, no se hace nada")
-                        # print("Reg ", llave)
                         registros[2] = llave
                         caso3 = False
                         break
+                    # 3.2
                     if z not in valor:
                         if len(valor) == 0:
-                            # print("Reg ", llave)
-                            self.descriptorRegistros[llave] = [
-                                z]  # se ingresa al registro
+                             # se ingresa al registro
+                            self.descriptorRegistros[llave] = [z]
                             self.descriptorDirecciones[z].append(llave)
                             esLiteral = False
                             try:
@@ -359,8 +361,7 @@ class Proyecto3():
                             registros[2] = llave
                             break
 
-                # valor x
-                for llave, valor in self.descriptorRegistros.items():  # Caso 1
+                for llave, valor in self.descriptorRegistros.items():
                     if x in valor:
                         registros[0] = llave
                         break
@@ -368,10 +369,11 @@ class Proyecto3():
                 if registros[0] == '':  # No se cumple el caso 1
                     registros[0] = registros[1]
 
+                # Actualizar diccionarios
                 self.descriptorDirecciones[x].append(registros[0])
                 self.descriptorRegistros[registros[0]] = [x]
 
-            else:  # si la instruccion es una asignacion
+            else:  # si es una asignacion
                 pos_eq = tripleta.find("=")
                 x = tripleta[:pos_eq].replace(' ', '')
                 y = tripleta[pos_eq+1:].replace(' ', '')
