@@ -636,7 +636,7 @@ class Proyecto2(DecafGramListener):
 
     def enterMethod_declr(self, ctx: DecafGramParser.Method_declrContext):
         name = ctx.method_name().getText()
-        self.arrayProd.append('DEF ' + name.upper() + ', '+ str(self.tablas.getMetodo(name)[5]) + ':' '\n')
+        self.arrayProd.append('DEF ' + name.upper() + ','+ str(self.tablas.getMetodo(name)[5]) + ':' '\n')
         self.scopes.append(name)
         self.scopeActual = name
 

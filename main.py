@@ -18,7 +18,7 @@ class Proyecto1(DecafListener):
         self.contStatements = 0
         self.scopes = ["global"]
         self.scopeActual = "global"
-        self.offsetDicc = {}
+        self.offsetDicc = {'global': 0}
 
     def getErrors(self):
         return self.error

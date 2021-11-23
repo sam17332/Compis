@@ -1,10 +1,18 @@
 class Program
 {
-
-void main(){
-	int a;
-	int b;
-	int c;
-	c = a + b;
-}
+	int suma(int hola, int adios){
+		int x;
+		hola = x + adios;
+		return hola;
+	}
+	void main(){
+		int a;
+		int b;
+		while(a <= b){
+			a = b - 1;
+		}
+		if(a <= b){
+			a = b - 1;
+		}
+	}
 }

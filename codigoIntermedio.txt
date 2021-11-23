@@ -1,6 +1,25 @@
 ----CODIGO INTERMEDIO----
 
-DEF MAIN, 12:
- t0 = fp[0] + fp[4]
- fp[8] = t0
+DEF SUMA,12:
+ t0 = fp[8] + fp[4]
+ fp[0] = t0 RETURN fp[0]
+END DEF SUMA
+DEF MAIN,8:
+ 
+WHILE_LOOP_0
+   t1 = fp[0] <= fp[4]
+  IF t1 > 0 GOTO IF_TRUE_0
+  GOTO END_WHILE_0
+  IF_TRUE_0:
+   t2 = fp[4] - 1
+ fp[0] = t2
+   GOTO WHILE_LOOP_0
+ END_WHILE_0:  t3 = fp[0] <= fp[4]
+ IF t3 > 0  GOTO IF_TRUE_0
+ GOTO IF_FALSE_0
+ IF_TRUE_0:
+  t4 = fp[4] - 1
+ fp[0] = t4
+ 
+ IF_FALSE_0:
 END DEF MAIN
