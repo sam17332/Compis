@@ -24,23 +24,33 @@ class MainWindow(QMainWindow):
         self.windowEditor = QWidget()
         self.windowCodigo = QWidget()
         self.windowIntermedio = QWidget()
+        self.windowARM = QWidget()
 
         self.tabs.addTab(self.windowEditor, "Editor")
         self.tabs.addTab(self.windowCodigo, "Análisis semántico")
         self.tabs.addTab(self.windowIntermedio, "Código intermedio")
+        self.tabs.addTab(self.windowARM, "Código ARM")
 
         self.textForCode = QPlainTextEdit()
         self.textForCode.setFont(fixedfont)
 
+        self.textForCode2 = QPlainTextEdit()
+        self.textForCode2.setFont(fixedfont)
+
         self.windowIntermedio.layout = QVBoxLayout()
         self.windowIntermedio.layout.addWidget(self.textForCode)
         self.windowIntermedio.setLayout(self.windowIntermedio.layout)
+
+        self.windowARM.layout = QVBoxLayout()
+        self.windowARM.layout.addWidget(self.textForCode2)
+        self.windowARM.setLayout(self.windowARM.layout)
 
         self.editor = QPlainTextEdit()
 
         self.errorForLog = QLabel()
         self.errorForLog.setFont(fixedfont)
         self.errorForLog.setText("")
+
         self.windowCodigo.layout = QVBoxLayout()
         self.windowCodigo.layout.addWidget(self.errorForLog)
         self.windowCodigo.setLayout(self.windowCodigo.layout)
@@ -87,16 +97,17 @@ class MainWindow(QMainWindow):
         compilar_action.triggered.connect(self.compilar)
         file_toolbar.addAction(compilar_action)
 
-        borrar_action = QAction("Limpiar errores", self)
-        borrar_action.triggered.connect(self.erase_errors)
-        file_toolbar.addAction(borrar_action)
-
         generar_action = QAction("Generar código", self)
         generar_action.setStatusTip("Generar código")
         generar_action.triggered.connect(self.codigoIntermedio)
         file_toolbar.addAction(generar_action)
 
-        borrar_codigo_action = QAction("Limpiar codigo", self)
+        generar_action = QAction("Generar código ARM", self)
+        generar_action.setStatusTip("Generar código ARM")
+        generar_action.triggered.connect(self.codigoArm)
+        file_toolbar.addAction(generar_action)
+
+        borrar_codigo_action = QAction("Reiniciar", self)
         borrar_codigo_action.triggered.connect(self.erase_code)
         file_toolbar.addAction(borrar_codigo_action)
 
@@ -143,14 +154,13 @@ class MainWindow(QMainWindow):
 
                 self.update_title()
 
-    def erase_errors(self):
+    def erase_code(self):
         fileVariable = open('errores.txt', 'r+')
         fileVariable.truncate(0)
         fileVariable.close()
         self.errorForLog.setText('')
-
-    def erase_code(self):
         self.textForCode.setPlainText('')
+        self.textForCode2.setPlainText('')
 
     def compilar(self):
         try:
@@ -174,6 +184,15 @@ class MainWindow(QMainWindow):
             # print(arrayCodigo)
             codigo = ''.join(arrayCodigo)
             self.textForCode.setPlainText(codigo)
+        except:
+            print('Ha ocurrido un error al compilar')
+
+    def codigoArm(self):
+        try:
+            os.popen('python3 main3.py')
+            infile = open("codigoARM", 'rb')
+            codigo = pickle.load(infile)
+            self.textForCode2.setPlainText(codigo)
         except:
             print('Ha ocurrido un error al compilar')
 
